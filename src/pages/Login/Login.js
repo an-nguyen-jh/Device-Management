@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import { Input } from "../../components";
 import "../styles/styles.css";
+
 class Login extends Component {
   render() {
     return (
@@ -7,15 +9,15 @@ class Login extends Component {
         <div className="login">
           <h1 className="login__title">Login</h1>
           <form className="login__form">
-            <label className="login__form__label" htmlFor="">
-              Username
-            </label>
-            <input type="text" name="username" />
-            <label className="login__form__label" htmlFor="">
-              Password
-            </label>
-            <input type="text" name="password" />
-            <input type="submit" value="Login" />
+            <label className="login__form__label">Username</label>
+            <Input name="email" type="text" placeholder="Email"></Input>
+            <label className="login__form__label">Password</label>
+            <Input
+              name="password"
+              type="password"
+              placeholder="Password"
+            ></Input>
+            <button className="login__form__button"> Login</button>
           </form>
         </div>
       </div>

@@ -1,0 +1,13 @@
+.outlined-input {
+  border-radius: 5px;
+  padding: 15px 10px;
+  width: 100%;
+  border: 1px solid hsl(0, 0%, 70%);
+  margin: 10px 0;
+  transition: all var(--animationSpeed) linear;
+}
+
+.outlined-input:focus,
+.outlined-input:hover {
+  border: 1px solid hsl(0, 0%, 50%);
+}

@@ -1,0 +1,8 @@
+.contained-button {
+  border-radius: 5px;
+  border: 0;
+  outline: 0px;
+  cursor: pointer;
+  text-transform: uppercase;
+  color: #ffffff;
+}

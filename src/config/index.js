@@ -10,8 +10,8 @@ const FIREBASE_CONFIG = {
   measurementId: "G-T8B08LMKEX",
 };
 
-const DEV = {
+const ENV_CONFIG = {
   FIREBASE_CONFIG,
 };
 
-export default DEV;
+export default ENV_CONFIG;

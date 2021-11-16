@@ -7,6 +7,16 @@
   --primaryColor: #3dc3f5;
   --primaryLightColor: #63cff7;
   --primaryDarkColor: #2a88ab;
+  --secondaryColor: #ff9800;
+  --secondaryLightColor: #ffac33;
+  --secondaryDarkColor: #b26a00;
+  --animationSpeed: 0.25s;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
 }
 
 html {

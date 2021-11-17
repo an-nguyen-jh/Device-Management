@@ -11,3 +11,8 @@
 .outlined-input:hover {
   border: 1px solid hsl(0, 0%, 50%);
 }
+
+.input-error {
+  display: block;
+  color: #ff0000;
+}

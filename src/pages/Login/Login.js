@@ -3,22 +3,25 @@ import { Form, Field } from "react-final-form";
 import { Input } from "../../components";
 import "../styles/login.css";
 import { isValidEmail, isValidPassword } from "../../utils/validte";
+
 class Login extends Component {
   constructor(props) {
     super(props);
     this.handleEmailAndPasswordSubmit =
       this.handleEmailAndPasswordSubmit.bind(this);
+    this.validateEmail = this.validateEmail.bind(this);
+    this.validatePassword = this.validatePassword.bind(this);
   }
 
   handleEmailAndPasswordSubmit(values) {
-    console.log(values);
+    const { email, password } = values;
   }
 
-  validateEmail(email) {
-    return isValidEmail(email) ? "" : "Email is invalid";
-  }
+  validateEmail = (email) => {
+    return isValidEmail(email) ? undefined : "Email is invalid";
+  };
   validatePassword(password) {
-    return isValidPassword(password) ? "" : "Password is invalid";
+    return isValidPassword(password) ? undefined : "Password is invalid";
   }
 
   render() {
@@ -27,41 +30,51 @@ class Login extends Component {
         <div className="login">
           <h1 className="login__title">Login</h1>
           <Form onSubmit={this.handleEmailAndPasswordSubmit}>
-            {({ handleSubmit, submitting }) => (
-              <form onSubmit={handleSubmit} className="login__form">
-                <label className="login__form__label">Email</label>
-                <Field name="email" validate={this.validateEmail}>
-                  {(props) => (
-                    <Input
-                      name={props.input.name}
-                      type="text"
-                      placeholder="Email..."
-                      value={props.input.value}
-                      onChange={props.input.onChange}
-                    ></Input>
-                  )}
-                </Field>
-                <label className="login__form__label">Password</label>
-                <Field name="password" validate={this.validatePassword}>
-                  {(props) => (
-                    <Input
-                      name={props.input.name}
-                      type="password"
-                      placeholder="Password..."
-                      value={props.input.value}
-                      onChange={props.input.onChange}
-                    ></Input>
-                  )}
-                </Field>
-                <button
-                  type="submit"
-                  className="login__form__button"
-                  disabled={submitting}
-                >
-                  Login
-                </button>
-              </form>
-            )}
+            {({ handleSubmit, submitting }) => {
+              return (
+                <form onSubmit={handleSubmit} className="login__form">
+                  <label className="login__form__label">Email</label>
+                  <Field
+                    name="email"
+                    type="email"
+                    validate={this.validateEmail}
+                    placeholder="Email..."
+                  >
+                    {({ input, meta, ...rest }) => (
+                      <Input
+                        {...input}
+                        {...rest}
+                        error={meta.error && meta.touched}
+                        errorMsg={meta.error}
+                      ></Input>
+                    )}
+                  </Field>
+                  <label className="login__form__label">Password</label>
+                  <Field
+                    name="password"
+                    type="password"
+                    validate={this.validatePassword}
+                    placeholder="Password..."
+                  >
+                    {({ input, meta, ...rest }) => (
+                      <Input
+                        {...input}
+                        {...rest}
+                        error={meta.error && meta.touched}
+                        errorMsg={meta.error}
+                      ></Input>
+                    )}
+                  </Field>
+                  <button
+                    type="submit"
+                    className="login__form__button"
+                    disabled={submitting}
+                  >
+                    Login
+                  </button>
+                </form>
+              );
+            }}
           </Form>
         </div>
       </div>

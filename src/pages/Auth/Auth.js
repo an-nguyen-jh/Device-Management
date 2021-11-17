@@ -10,8 +10,9 @@ class Auth extends Component {
     if (userEmail) {
       //call firebase to get authorization
       try {
-        const response = await getUserByEmail(userEmail);
-        const user = response.data();
+        const userSnapshot = await getUserByEmail(userEmail);
+        const user = userSnapshot.data();
+        localStorage.setItem("userRole", user.role);
         if (user.role === "2") {
           this.props.history.push({
             pathname: "/auth/employee",
@@ -35,11 +36,13 @@ class Auth extends Component {
         <PrivateRoute
           path={"/auth/employee"}
           exact
+          requiredRole="2"
           component={Employee}
         ></PrivateRoute>
         <PrivateRoute
           path={"/auth/admin"}
           exact
+          requiredRole="1"
           component={Admin}
         ></PrivateRoute>
       </Switch>

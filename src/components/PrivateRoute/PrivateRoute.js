@@ -4,7 +4,7 @@ import { Redirect, Route } from "react-router-dom";
 const PrivateRoute = ({ component: Component, ...rest }) => {
   //get user info and check authrization
   const userRole = localStorage.getItem("userRole");
-  console.log(rest);
+
   if (userRole === rest.requiredRole) {
     return (
       <Route {...rest} render={(routeProps) => <Component {...routeProps} />} />

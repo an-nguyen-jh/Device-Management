@@ -4,7 +4,6 @@ import "../styles/input.css";
 class Input extends Component {
   render() {
     const { className, error, errorMsg, ...rest } = this.props;
-
     return (
       <>
         <input

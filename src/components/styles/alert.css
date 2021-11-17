@@ -1,0 +1,16 @@
+.success-alert,
+.error-alert {
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.error-alert {
+  background-color: var(--errorBgColor);
+  color: var(--errorTextColor);
+}
+
+.success-alert {
+  background-color: var(--successBgColor);
+  color: var(--successTextColor);
+}

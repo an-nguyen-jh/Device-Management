@@ -1,20 +1,32 @@
 import React, { Component } from "react";
 import { Form, Field } from "react-final-form";
-import { Input } from "../../components";
+import { Input, Alert } from "../../components";
 import "../styles/login.css";
 import { isValidEmail, isValidPassword } from "../../utils/validte";
+import { loginWithEmailAndPassword } from "../../apiService";
 
 class Login extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      errorMsg: "",
+    };
     this.handleEmailAndPasswordSubmit =
       this.handleEmailAndPasswordSubmit.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
     this.validatePassword = this.validatePassword.bind(this);
   }
 
-  handleEmailAndPasswordSubmit(values) {
+  async handleEmailAndPasswordSubmit(values) {
     const { email, password } = values;
+    try {
+      this.setState({ errorMsg: "" });
+      const result = await loginWithEmailAndPassword(email, password);
+      //store user info
+      localStorage.setItem("token", result._tokenResponse);
+    } catch (error) {
+      this.setState({ errorMsg: "Failed to login" });
+    }
   }
 
   validateEmail = (email) => {
@@ -25,11 +37,16 @@ class Login extends Component {
   }
 
   render() {
+    const { errorMsg } = this.state;
     return (
       <div className="container login-bg-color">
         <div className="login">
           <h1 className="login__title">Login</h1>
-          <Form onSubmit={this.handleEmailAndPasswordSubmit}>
+          {errorMsg && <Alert type="error">{errorMsg}</Alert>}
+          <Form
+            onSubmit={this.handleEmailAndPasswordSubmit}
+            subscription={{ submitting: true }}
+          >
             {({ handleSubmit, submitting }) => {
               return (
                 <form onSubmit={handleSubmit} className="login__form">
@@ -39,6 +56,11 @@ class Login extends Component {
                     type="email"
                     validate={this.validateEmail}
                     placeholder="Email..."
+                    subscription={{
+                      value: true,
+                      touched: true,
+                      error: true,
+                    }}
                   >
                     {({ input, meta, ...rest }) => (
                       <Input
@@ -55,6 +77,11 @@ class Login extends Component {
                     type="password"
                     validate={this.validatePassword}
                     placeholder="Password..."
+                    subscription={{
+                      value: true,
+                      touched: true,
+                      error: true,
+                    }}
                   >
                     {({ input, meta, ...rest }) => (
                       <Input

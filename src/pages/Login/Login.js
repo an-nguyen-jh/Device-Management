@@ -4,6 +4,7 @@ import { Input, Alert } from "../../components";
 import "../styles/login.css";
 import { isValidEmail, isValidPassword } from "../../utils/validte";
 import { loginWithEmailAndPassword } from "../../apiService";
+import { withRouter } from "react-router-dom";
 
 class Login extends Component {
   constructor(props) {
@@ -24,6 +25,9 @@ class Login extends Component {
       const result = await loginWithEmailAndPassword(email, password);
       //store user info
       localStorage.setItem("token", result._tokenResponse);
+      this.props.history.push({
+        pathname: `auth/employee`,
+      });
     } catch (error) {
       this.setState({ errorMsg: "Failed to login" });
     }
@@ -109,4 +113,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);

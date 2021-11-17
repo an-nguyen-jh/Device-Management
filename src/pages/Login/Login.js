@@ -4,7 +4,7 @@ import { Input, Alert } from "../../components";
 import "../styles/login.css";
 import { isValidEmail, isValidPassword } from "../../utils/validte";
 import { loginWithEmailAndPassword } from "../../apiService";
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 
 class Login extends Component {
   constructor(props) {
@@ -12,6 +12,7 @@ class Login extends Component {
     this.state = {
       errorMsg: "",
     };
+
     this.handleEmailAndPasswordSubmit =
       this.handleEmailAndPasswordSubmit.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
@@ -24,9 +25,11 @@ class Login extends Component {
       this.setState({ errorMsg: "" });
       const result = await loginWithEmailAndPassword(email, password);
       //store user info
-      localStorage.setItem("token", result._tokenResponse);
+      localStorage.setItem("token", result._tokenResponse.idToken);
+      localStorage.setItem("userEmail", result._tokenResponse.email);
+
       this.props.history.push({
-        pathname: `auth/employee`,
+        pathname: `/auth`,
       });
     } catch (error) {
       this.setState({ errorMsg: "Failed to login" });
@@ -42,6 +45,10 @@ class Login extends Component {
 
   render() {
     const { errorMsg } = this.state;
+    const authenticatedUser = localStorage.getItem("userEmail");
+    if (authenticatedUser) {
+      return <Redirect to="/auth" />;
+    }
     return (
       <div className="container login-bg-color">
         <div className="login">

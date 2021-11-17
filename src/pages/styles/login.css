@@ -1,11 +1,11 @@
 .login-bg-color {
-  background: var(--primarBgColor);
+  background: #ffffff;
 }
 
 .login {
   width: 100%;
   height: 100%;
-  background: var(--primarBgColor);
+  background: #ffffff;
   border-radius: 0px;
   padding: 40px;
 }

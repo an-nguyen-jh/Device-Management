@@ -1,21 +1,14 @@
-// const regExpPrototype = {
-//   email: new RegExp(
-//     /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9]+/,
-//     "g"
-//   ),
-//   password: new RegExp(/\w{6,}/),
-//   // Match string with more than 6 characters(alphanumeric & underscore)
-// };
-
 function isValidEmail(email) {
-  return new RegExp(
+  const emailValidator = new RegExp(
     /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9]+/,
     "g"
-  ).test(email);
+  );
+  return emailValidator.test(email);
 }
 
 function isValidPassword(password) {
-  return new RegExp(/\w{6,}/).test(password);
+  const passwordValidator = new RegExp(/\w{6,}/);
+  return passwordValidator.test(password);
 }
 
 export { isValidEmail, isValidPassword };

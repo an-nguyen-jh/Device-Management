@@ -1,6 +1,6 @@
 import { getFirestore, getDoc, doc } from "firebase/firestore";
 
-export default function databaseService() {
+export default function generateDatabaseService() {
   const firebaseDB = getFirestore();
 
   function getUserByEmail(email) {

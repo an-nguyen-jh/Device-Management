@@ -6,7 +6,7 @@ class Alert extends Component {
   render() {
     const { type, children } = this.props;
     return (
-      <div className={classNames({ [`${type}-alert`]: true })}>{children}</div>
+      <div className={classNames({ [`alert--${type}`]: true })}>{children}</div>
     );
   }
 }

@@ -3,11 +3,11 @@ import "../styles/button.css";
 import classNames from "classnames";
 class Button extends Component {
   render() {
-    const { children, handler, className } = this.props;
+    const { children, onClickHandle, className } = this.props;
     return (
       <button
-        className={classNames("contained-button", className)}
-        onClick={handler}
+        className={classNames("button--contained", className)}
+        onClick={onClickHandle}
       >
         {children}
       </button>

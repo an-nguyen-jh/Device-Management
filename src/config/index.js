@@ -10,8 +10,14 @@ const FIREBASE_CONFIG = {
   measurementId: "G-T8B08LMKEX",
 };
 
+const ROLE = {
+  EMPLOYEE: "2",
+  ADMIN: "1",
+};
+
 const ENV_CONFIG = {
   FIREBASE_CONFIG,
+  ROLE,
 };
 
 export default ENV_CONFIG;

@@ -1,12 +1,11 @@
 import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
 import config from "../config";
-import "firebase/compat/auth";
-import { getAuth } from "firebase/auth";
+import generateAuthenticationService from "./authService";
+import generatedDatabaseService from "./dbService";
 
 // Initialize Firebase
 firebase.initializeApp(config.FIREBASE_CONFIG);
+const { loginWithEmailAndPassword, signout } = generateAuthenticationService();
+const { getUserByEmail } = generatedDatabaseService();
 
-const firebaseAuth = getAuth();
-
-export { firebaseAuth };
+export { loginWithEmailAndPassword, signout, getUserByEmail };

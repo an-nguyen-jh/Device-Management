@@ -3,7 +3,7 @@ import { Admin, Employee } from "../index";
 import { PrivateRoute } from "../../components";
 import { Switch, withRouter } from "react-router-dom";
 import { getUserByEmail } from "../../apiService";
-
+import ENV_CONFIG from "../../config";
 class Auth extends Component {
   async componentDidMount() {
     const userEmail = localStorage.getItem("userEmail");
@@ -13,7 +13,7 @@ class Auth extends Component {
         const userSnapshot = await getUserByEmail(userEmail);
         const user = userSnapshot.data();
         localStorage.setItem("userRole", user.role);
-        if (user.role === "2") {
+        if (user.role === ENV_CONFIG.ROLE.EMPLOYEE) {
           this.props.history.push({
             pathname: "/auth/employee",
           });
@@ -36,13 +36,13 @@ class Auth extends Component {
         <PrivateRoute
           path={"/auth/employee"}
           exact
-          requiredRole="2"
+          requiredRole={ENV_CONFIG.ROLE.EMPLOYEE}
           component={Employee}
         ></PrivateRoute>
         <PrivateRoute
           path={"/auth/admin"}
           exact
-          requiredRole="1"
+          requiredRole={ENV_CONFIG.ROLE.ADMIN}
           component={Admin}
         ></PrivateRoute>
       </Switch>

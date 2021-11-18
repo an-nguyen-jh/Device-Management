@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Form, Field } from "react-final-form";
 import { Input, Alert } from "../../components";
 import "../styles/login.css";
-import { isValidEmail, isValidPassword } from "../../utils/validte";
+import { isValidEmail, isValidPassword } from "../../utils/validtor";
 import { loginWithEmailAndPassword } from "../../apiService";
 import { withRouter, Redirect } from "react-router-dom";
 
@@ -12,7 +12,6 @@ class Login extends Component {
     this.state = {
       errorMsg: "",
     };
-
     this.handleEmailAndPasswordSubmit =
       this.handleEmailAndPasswordSubmit.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
@@ -45,6 +44,7 @@ class Login extends Component {
 
   render() {
     const { errorMsg } = this.state;
+    console.log(this.context);
     const authenticatedUser = localStorage.getItem("userEmail");
     if (authenticatedUser) {
       return <Redirect to="/auth" />;

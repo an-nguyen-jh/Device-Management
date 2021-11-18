@@ -3,9 +3,9 @@ import { Form, Field } from "react-final-form";
 import { Input, Alert } from "../../components";
 import "../styles/login.css";
 import { isValidEmail, isValidPassword } from "../../utils/validtor";
-import { loginWithEmailAndPassword } from "../../apiService";
-import { withRouter, Redirect } from "react-router-dom";
-
+import { getUserByEmail, loginWithEmailAndPassword } from "../../apiService";
+import { withRouter } from "react-router-dom";
+import privateRoute from "../../config/routes";
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -27,8 +27,12 @@ class Login extends Component {
       localStorage.setItem("token", result._tokenResponse.idToken);
       localStorage.setItem("userEmail", result._tokenResponse.email);
 
+      const userSnapshot = await getUserByEmail(email);
+      const user = userSnapshot.data();
+      localStorage.setItem("userRole", user.role);
+
       this.props.history.push({
-        pathname: `/auth`,
+        pathname: `${privateRoute[user.role].pathname}`,
       });
     } catch (error) {
       this.setState({ errorMsg: "Failed to login" });
@@ -38,17 +42,23 @@ class Login extends Component {
   validateEmail = (email) => {
     return isValidEmail(email) ? undefined : "Email is invalid";
   };
+
   validatePassword(password) {
     return isValidPassword(password) ? undefined : "Password is invalid";
   }
 
+  componentDidMount() {
+    const userRole = localStorage.getItem("userRole");
+    if (userRole) {
+      this.props.history.push({
+        pathname: `${privateRoute[userRole].pathname}`,
+      });
+    }
+  }
+
   render() {
     const { errorMsg } = this.state;
-    console.log(this.context);
-    const authenticatedUser = localStorage.getItem("userEmail");
-    if (authenticatedUser) {
-      return <Redirect to="/auth" />;
-    }
+
     return (
       <div className="container login-bg-color">
         <div className="login">

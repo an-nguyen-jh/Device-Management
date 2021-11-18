@@ -8,7 +8,13 @@ import privateRoute from "./config/routes";
 function App() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<div className="container">Loading...</div>}>
+      <Suspense
+        fallback={
+          <div className="container">
+            <h1>Loading...</h1>
+          </div>
+        }
+      >
         <Switch>
           <PrivateRoute
             path={privateRoute[ENV_CONFIG.ROLE.EMPLOYEE].pathname}

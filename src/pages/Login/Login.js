@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Form, Field } from "react-final-form";
 import { Input, Alert } from "../../components";
 import "../styles/login.css";
-import { isValidEmail, isValidPassword } from "../../utils/validtor";
+import { isValidEmail, isValidPassword } from "../../utils/validator";
 import { getUserByEmail, loginWithEmailAndPassword } from "../../apiService";
 import { withRouter } from "react-router-dom";
 import privateRoute from "../../config/routes";

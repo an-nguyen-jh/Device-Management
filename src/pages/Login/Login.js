@@ -69,6 +69,7 @@ class Login extends Component {
           <Form
             onSubmit={this.handleEmailAndPasswordSubmit}
             subscription={{ submitting: true }}
+            initialValues={{ email: "", password: "" }}
           >
             {({ handleSubmit, submitting }) => {
               return (

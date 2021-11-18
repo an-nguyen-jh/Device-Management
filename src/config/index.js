@@ -1,3 +1,5 @@
+import ACTION_TAG from "./redux/actionTag";
+
 const FIREBASE_CONFIG = {
   apiKey: process.env.REACT_APP_FIREBASE_API,
   authDomain: "device-management-911c9.firebaseapp.com",
@@ -19,5 +21,7 @@ const ENV_CONFIG = {
   FIREBASE_CONFIG,
   ROLE,
 };
+
+export { ACTION_TAG };
 
 export default ENV_CONFIG;

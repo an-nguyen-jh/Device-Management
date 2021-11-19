@@ -20,6 +20,7 @@ function configStore() {
   );
 
   reduxStore.subscribe(
+    //prevent store state to localStorage many times in a period
     throttle(() => {
       saveStateToLocal({
         auth: reduxStore.getState().auth,

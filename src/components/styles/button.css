@@ -5,4 +5,9 @@
   cursor: pointer;
   text-transform: uppercase;
   color: #ffffff;
+  padding: 10px 20px;
+}
+
+.primary-color {
+  background-color: var(--primaryColor);
 }

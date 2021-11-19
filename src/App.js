@@ -5,7 +5,9 @@ import ENV_CONFIG from "./config";
 import { Login, NotFound } from "./pages";
 import privateRoute from "./config/routes";
 import { Provider } from "react-redux";
-import reduxStore from "./store";
+import configStore from "./store/configStore";
+
+const reduxStore = configStore();
 
 function App() {
   return (

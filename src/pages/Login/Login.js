@@ -6,6 +6,9 @@ import { isValidEmail, isValidPassword } from "../../utils/validator";
 import { getUserByEmail, loginWithEmailAndPassword } from "../../apiService";
 import { withRouter } from "react-router-dom";
 import privateRoute from "../../config/routes";
+import { connect } from "react-redux";
+import { authenticationAction } from "../../store/actions";
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -23,14 +26,13 @@ class Login extends Component {
     try {
       this.setState({ errorMsg: "" });
       const result = await loginWithEmailAndPassword(email, password);
-      //store user info
-      localStorage.setItem("token", result._tokenResponse.idToken);
-      localStorage.setItem("userEmail", result._tokenResponse.email);
-
       const userSnapshot = await getUserByEmail(email);
       const user = userSnapshot.data();
-      localStorage.setItem("userRole", user.role);
-
+      this.props.storeUserAuthenticationInfo(
+        result._tokenResponse.idToken,
+        result._tokenResponse.email,
+        user.role
+      );
       this.props.history.push({
         pathname: `${privateRoute[user.role].pathname}`,
       });
@@ -48,7 +50,7 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    const userRole = localStorage.getItem("userRole");
+    const userRole = this.props.userRole;
     if (userRole) {
       this.props.history.push({
         pathname: `${privateRoute[userRole].pathname}`,
@@ -67,6 +69,7 @@ class Login extends Component {
           <Form
             onSubmit={this.handleEmailAndPasswordSubmit}
             subscription={{ submitting: true }}
+            initialValues={{ email: "", password: "" }}
           >
             {({ handleSubmit, submitting }) => {
               return (
@@ -130,4 +133,16 @@ class Login extends Component {
   }
 }
 
-export default withRouter(Login);
+const mapStateToProps = (state) => {
+  return {
+    userToken: state.auth.userToken,
+    userEmail: state.auth.userEmail,
+    userRole: state.auth.userRole,
+  };
+};
+
+const mapDispatchToProps = {
+  storeUserAuthenticationInfo: authenticationAction.storeUserAuthenticationInfo,
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

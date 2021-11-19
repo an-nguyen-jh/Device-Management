@@ -1,4 +1,4 @@
-import { ACTION_TAG } from "../../config";
+import ACTION_TAG from "../../config/redux/actionTag";
 
 const authenticationAction = {
   storeUserAuthenticationInfo: (token, email, role) => ({

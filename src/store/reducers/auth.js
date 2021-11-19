@@ -1,4 +1,4 @@
-import { ACTION_TAG } from "../../config";
+import ACTION_TAG from "../../config/redux/actionTag";
 
 const authInitState = {
   userToken: null,

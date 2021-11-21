@@ -4,9 +4,9 @@
 }
 
 :root {
-  --primaryColor: #3dc3f5;
-  --primaryLightColor: #63cff7;
-  --primaryDarkColor: #2a88ab;
+  --primaryColor: #3d93f5;
+  --primaryLightColor: #63a8f7;
+  --primaryDarkColor: #2a66ab;
   --secondaryColor: #ff9800;
   --secondaryLightColor: #ffac33;
   --secondaryDarkColor: #b26a00;
@@ -46,9 +46,29 @@ h3 {
 
 .container {
   width: 100%;
-  min-height: 100vh;
   margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+  /* transition: width var(--animationSpeed) ease-in; */
+}
+
+.primary-color {
+  background-color: var(--primaryColor);
+}
+
+@media only screen and (min-width: 1024px) {
+  .content {
+    width: 70%;
+  }
 }

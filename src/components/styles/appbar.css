@@ -1,0 +1,60 @@
+.appbar {
+  height: 60px;
+  background-color: var(--primaryColor);
+  width: 100%;
+  position: fixed;
+  top: 0;
+  display: flex;
+  align-items: center;
+  /* transition: all var(--animationSpeed) ease-in; */
+}
+
+.appbar__title {
+  width: 100%;
+  max-width: 400px;
+  color: #ffffff;
+  text-overflow: ellipsis;
+  font-size: 1.25rem;
+  line-height: 60px;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0 16px;
+}
+
+.appbar__dropdown {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  /* transition: width var(--animationSpeed) linear;
+  transition: height var(--animationSpeed) linear;
+  transition-delay: 0, var(--animationSpeed); */
+}
+
+.appbar__dropdown__icon {
+  width: 48px;
+  height: 48px;
+}
+
+/* .nav__list {
+  margin: 0;
+  background-color: var(--primaryColor);
+  height: calc(100vh - 60px);
+  opacity: 1;
+  width: 100%;
+  display: none;
+}
+
+.nav__list--expand {
+  height: calc(100vh - 60px);
+  display: flex;
+} */
+
+@media screen and (min-width: 1024px) {
+  .appbar {
+    height: 100vh;
+    position: sticky;
+    width: 30%;
+  }
+}

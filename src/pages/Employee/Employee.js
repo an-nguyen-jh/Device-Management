@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect, Route } from "react-router";
 import { signout } from "../../apiService";
-import { Button } from "../../components";
+import { Button, Appbar } from "../../components";
 import { authenticationAction } from "../../store/actions";
 
 class Employee extends Component {
@@ -13,17 +14,25 @@ class Employee extends Component {
   async signOut() {
     try {
       await signout();
-
       this.props.removeUserAuthenticationInfo();
     } catch (error) {}
   }
 
   render() {
     return (
-      <>
-        <h1>Employee</h1>
-        <Button onClick={this.signOut}>SIGN OUT</Button>
-      </>
+      <div className="container page-wrapper">
+        <Appbar></Appbar>
+        <div className="content"></div>
+        {/* <Route exact path="/provide-info">
+          <div>Provide Devices Info Form</div>
+        </Route>
+        <Route exact path="/ request-device">
+          <div>Request Devices Form</div>
+        </Route>
+        <Route exact path={`/employee`}>
+          <Redirect to="/employee/provide-info" />
+        </Route> */}
+      </div>
     );
   }
 }

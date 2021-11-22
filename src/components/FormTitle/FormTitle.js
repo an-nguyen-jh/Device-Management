@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-// import { withRouter } from "react-router";
-// import  privateRoute from "../../config/routes";
+import "../styles/form.css";
 
-class FormTitle extends Component() {
+class FormTitle extends Component {
   // constructor(props){
   //   super(props);
   // }
   render() {
-    console.log(this.props.title);
-    return <div> </div>;
+    return <h1 className="form__title"> {this.props.children}</h1>;
   }
 }
 export default FormTitle;

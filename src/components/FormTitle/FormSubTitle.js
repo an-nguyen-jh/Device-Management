@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class FormTitle extends Component() {
+class FormTitle extends Component {
   render() {
     return <div> </div>;
   }

@@ -10,6 +10,7 @@
   --secondaryColor: #ff9800;
   --secondaryLightColor: #ffac33;
   --secondaryDarkColor: #b26a00;
+  --primaryBgColor: #ede7f6;
   --animationSpeed: 0.25s;
   --errorBgColor: #fdeded;
   --errorTextColor: #5f2120;
@@ -57,18 +58,18 @@ a {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  min-height: 100vh;
+  /* min-height: 100vh; */
+  height: 100%;
 }
 
 .page-wrapper {
-  background-color: var(--primaryColor);
 }
 
 .content {
   padding-top: var(--appbarHeight);
   width: 100%;
   min-height: 100vh;
-  background-color: white;
+  background-color: var(--primaryBgColor);
 }
 
 .primary-color {
@@ -80,7 +81,4 @@ a {
 }
 
 @media only screen and (min-width: 1024px) {
-  .content {
-    width: 75%;
-  }
 }

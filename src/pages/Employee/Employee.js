@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Redirect, Route, withRouter, Switch } from "react-router-dom";
-import { Appbar, Button } from "../../components";
+import { Appbar } from "../../components";
 import { employeeSubRouters } from "../../config/routes";
 
 class Employee extends Component {
@@ -15,7 +15,7 @@ class Employee extends Component {
                 exact
                 key={router.pathname}
                 path={`${this.props.match.path}${router.pathname}`}
-                render={(props) => <Button>Render device-info</Button>}
+                component={router.component}
               ></Route>
             ))}
             <Route exact path={`${this.props.match.path}`}>

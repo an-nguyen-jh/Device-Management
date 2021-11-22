@@ -120,27 +120,3 @@
     width: auto;
   }
 }
-
-@media screen and (min-width: 1024px) {
-  .appbar {
-    height: 100vh;
-    position: sticky;
-    width: 25%;
-  }
-  .appbar__dropdown {
-    display: none;
-  }
-  .appbar__nav-menu {
-    display: flex;
-    padding-top: var(--appbarHeight);
-    justify-content: space-between;
-    height: 100%;
-  }
-  .appbar__overlay {
-    display: none;
-  }
-
-  .appbar__nav-btn {
-    text-align: center;
-  }
-}

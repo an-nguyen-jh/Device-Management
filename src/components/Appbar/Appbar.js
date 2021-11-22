@@ -48,6 +48,7 @@ class Appbar extends Component {
       const routerTitle = getRouterTile(employeeSubRouters, subPathname);
       this.setState({
         title: routerTitle,
+        sidebarToggle: false,
       });
     }
   }

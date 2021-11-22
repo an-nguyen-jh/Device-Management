@@ -6,6 +6,12 @@ import generatedDatabaseService from "./dbService";
 // Initialize Firebase
 firebase.initializeApp(config.FIREBASE_CONFIG);
 const { loginWithEmailAndPassword, signout } = generateAuthenticationService();
-const { getUserByEmail } = generatedDatabaseService();
+const { getUserByEmail, getDeviceInfoOfUserByEmail } =
+  generatedDatabaseService();
 
-export { loginWithEmailAndPassword, signout, getUserByEmail };
+export {
+  loginWithEmailAndPassword,
+  signout,
+  getUserByEmail,
+  getDeviceInfoOfUserByEmail,
+};

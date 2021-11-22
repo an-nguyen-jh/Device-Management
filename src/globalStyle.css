@@ -58,7 +58,7 @@ a {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  /* min-height: 100vh; */
+  min-height: 100vh;
   height: 100%;
 }
 
@@ -68,7 +68,6 @@ a {
 .content {
   padding-top: var(--appbarHeight);
   width: 100%;
-  min-height: 100vh;
   background-color: var(--primaryBgColor);
 }
 

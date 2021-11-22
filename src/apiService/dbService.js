@@ -7,5 +7,10 @@ export default function generateDatabaseService() {
     const userRef = doc(firebaseDB, "users", email);
     return getDoc(userRef);
   }
-  return { getUserByEmail };
+
+  function getDeviceInfoOfUserByEmail(email) {
+    const deviceInfoRef = doc(firebaseDB, "deviceInfos", email);
+    return getDoc(deviceInfoRef);
+  }
+  return { getUserByEmail, getDeviceInfoOfUserByEmail };
 }

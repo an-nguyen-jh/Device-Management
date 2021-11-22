@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { Field, Form } from "react-final-form";
 import { Input } from "..";
+import { getDeviceInfoOfUserByEmail } from "../../apiService";
 import { Button } from "../index";
 import "../styles/form.css";
+import { connect } from "react-redux";
 
 const teamOptions = ["Sweet Cake", "Yin Yang", "Designer", "Admin"];
 
@@ -12,8 +14,19 @@ class DeviceInfoForm extends Component {
     this.state = {
       previewImgSource: [],
       previewImages: [],
+      name: "",
+      team: "",
+      computerCompanyName: "",
+      computersSeriNumber: "",
+      computerConfig: "",
+      screenSize: "",
+      screenConfig: "",
+      numberOfScreen: "",
+      mouseCompanyName: "",
+      numberOfMouse: "",
     };
     this.hanldeChooseImages = this.previewChosenImages.bind(this);
+    this.handleDeviceInfoSubmit = this.handleDeviceInfoSubmit.bind(this);
   }
 
   previewChosenImages = async (e) => {
@@ -41,15 +54,34 @@ class DeviceInfoForm extends Component {
     }
   };
 
+  async handleDeviceInfoSubmit(values) {}
+
+  async componentDidMount() {
+    const userEmail = this.props.userEmail;
+    try {
+      const deviceInfoSnapshot = await getDeviceInfoOfUserByEmail(userEmail);
+      const oldDeviceInfo = deviceInfoSnapshot.data();
+      this.setState({
+        ...oldDeviceInfo,
+      });
+    } catch (error) {
+      //notice error
+    }
+  }
+
   render() {
     const { previewImages } = this.state;
     return (
       <div className="form-wrapper">
         <div className="form-center-container">
-          <Form onSubmit={() => {}} subscription={{ submitting: true }}>
+          <Form
+            onSubmit={this.handleDeviceInfoSubmit}
+            subscription={{ submitting: true }}
+            initialValues={{ ...this.state }}
+          >
             {({ handleSubmit, submitting }) => {
               return (
-                <form className="device__form">
+                <form onSubmit={handleSubmit} className="device__form">
                   <h2 className="form__title"> quản lý thiết bị</h2>
                   <div className="form__split-bar"></div>
                   <div className="device__form__input-row">
@@ -125,7 +157,7 @@ class DeviceInfoForm extends Component {
                       </label>
                       <Field
                         required
-                        name="LaptopCompanyName"
+                        name="computerCompanyName"
                         type="text"
                         placeholder="Tên hãng PC/LapTop (Mac, Hp, Dell,...)"
                         subscription={{
@@ -150,7 +182,7 @@ class DeviceInfoForm extends Component {
                         <span className="device__form__input-required">*</span>
                       </label>
                       <Field
-                        name="seriNumber"
+                        name="computersSeriNumber"
                         type="text"
                         required
                         placeholder="Số seri của thiết bị "
@@ -358,8 +390,10 @@ class DeviceInfoForm extends Component {
                   </div>
                   <div className="form__split-bar"></div>
                   <div className="device__form__btn-group">
-                    <Button color="primary"> Submit </Button>
-                    <Button type="text"> Clear Form </Button>
+                    <Button type="submit" color="primary" disabled={submitting}>
+                      Submit
+                    </Button>
+                    <Button variant="text"> Clear Form </Button>
                   </div>
                 </form>
               );
@@ -370,5 +404,10 @@ class DeviceInfoForm extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    userEmail: state.auth.userEmail,
+  };
+};
 
-export default DeviceInfoForm;
+export default connect(mapStateToProps, null)(DeviceInfoForm);

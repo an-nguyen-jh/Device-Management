@@ -1,24 +1,9 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { Redirect, Route, withRouter, Switch } from "react-router-dom";
-import { signout } from "../../apiService";
 import { Appbar, Button } from "../../components";
 import { employeeSubRouters } from "../../config/routes";
-import { authenticationAction } from "../../store/actions";
 
 class Employee extends Component {
-  constructor(props) {
-    super(props);
-    this.signOut = this.signOut.bind(this);
-  }
-
-  async signOut() {
-    try {
-      await signout();
-      this.props.removeUserAuthenticationInfo();
-    } catch (error) {}
-  }
-
   render() {
     return (
       <div className="container page-wrapper">
@@ -44,9 +29,5 @@ class Employee extends Component {
     );
   }
 }
-const mapDispatchToProps = {
-  removeUserAuthenticationInfo:
-    authenticationAction.removeUserAuthenticationInfo,
-};
 
-export default withRouter(connect(null, mapDispatchToProps)(Employee));
+export default withRouter(Employee);

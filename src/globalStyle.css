@@ -57,10 +57,10 @@ a {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  min-height: 100vh;
 }
 
 .page-wrapper {
-  min-height: 100vh;
   background-color: var(--primaryColor);
 }
 
@@ -73,6 +73,10 @@ a {
 
 .primary-color {
   background-color: var(--primaryColor);
+}
+
+.secondary-color {
+  background-color: var(--secondaryColor);
 }
 
 @media only screen and (min-width: 1024px) {

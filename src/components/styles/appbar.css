@@ -1,27 +1,30 @@
 .appbar {
-  height: 60px;
+  height: var(--appbarHeight);
   background-color: var(--primaryColor);
   width: 100%;
   position: fixed;
   top: 0;
-  display: flex;
-  align-items: center;
   /* transition: all var(--animationSpeed) ease-in; */
 }
+.appbar__dropdown {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
 
-.appbar__title {
+.appbar__dropdown__title {
   width: 100%;
   max-width: 400px;
   color: #ffffff;
   text-overflow: ellipsis;
-  font-size: 1.25rem;
-  line-height: 60px;
+  line-height: var(--appbarHeight);
   white-space: nowrap;
   overflow: hidden;
   padding: 0 16px;
 }
 
-.appbar__dropdown {
+.appbar__dropdown__btn {
+  width: 60px;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -33,28 +36,88 @@
 }
 
 .appbar__dropdown__icon {
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
 }
 
-/* .nav__list {
+.appbar__overlay {
+  position: absolute;
+  top: var(--appbarHeight);
+  left: 0;
+  width: 100%;
+  height: calc(100vh - var(--appbarHeight));
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.appbar__nav-list {
   margin: 0;
   background-color: var(--primaryColor);
-  height: calc(100vh - 60px);
+  z-index: 10;
+  max-width: 460px;
+  position: relative;
   opacity: 1;
   width: 100%;
   display: none;
+  padding: 0;
+  list-style-type: none;
+  flex-direction: column;
 }
 
-.nav__list--expand {
-  height: calc(100vh - 60px);
+.appbar__nav-list--expand {
   display: flex;
-} */
+}
+
+.appbar__nav-item {
+  width: 100%;
+  height: var(--appbarHeight);
+  padding: 16px;
+  cursor: pointer;
+  color: white;
+  transition: background-color var(--animationSpeed) ease-in;
+}
+
+.appbar__nav-item:hover,
+.appbar__nav-item:focus {
+  background-color: var(--primaryLightColor);
+  outline: none;
+}
+
+.appbar__nav-link {
+  display: flex;
+  align-items: center;
+}
+
+.appbar__nav-link svg {
+  width: 24px;
+  height: 24px;
+}
+
+.appbar__nav-link span {
+  margin-left: 10px;
+}
+
+@media screen and (min-width: 678px) {
+  .appbar__dropdown__title {
+    width: auto;
+  }
+}
 
 @media screen and (min-width: 1024px) {
   .appbar {
     height: 100vh;
     position: sticky;
-    width: 30%;
+    width: 25%;
+  }
+  .appbar__dropdown {
+    display: none;
+  }
+  .appbar__nav-list {
+    display: flex;
+  }
+  .appbar__nav-list {
+    margin-top: var(--appbarHeight);
+  }
+  .appbar__overlay {
+    display: none;
   }
 }

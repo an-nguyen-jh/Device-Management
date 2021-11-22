@@ -18,13 +18,13 @@ const privateRoute = {
 
 const employeeSubRouters = [
   {
-    pathname: "/provide-info",
-    title: "Provide Device Info Form",
+    pathname: "/device-info",
+    title: "Device's Info Form",
     icon: <MdOutlineDeviceUnknown />,
   },
   {
-    pathname: "/request-device",
-    title: "Request Device Form",
+    pathname: "/device-request",
+    title: "Device Request Form",
     icon: <MdOutlineDevices />,
   },
 ];

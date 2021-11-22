@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect, Route } from "react-router";
+import { Redirect, Route, withRouter, Switch } from "react-router-dom";
 import { signout } from "../../apiService";
-import { Button, Appbar } from "../../components";
+import { Appbar, Button } from "../../components";
+import { employeeSubRouters } from "../../config/routes";
 import { authenticationAction } from "../../store/actions";
 
 class Employee extends Component {
@@ -22,16 +23,23 @@ class Employee extends Component {
     return (
       <div className="container page-wrapper">
         <Appbar></Appbar>
-        <div className="content"></div>
-        {/* <Route exact path="/provide-info">
-          <div>Provide Devices Info Form</div>
-        </Route>
-        <Route exact path="/ request-device">
-          <div>Request Devices Form</div>
-        </Route>
-        <Route exact path={`/employee`}>
-          <Redirect to="/employee/provide-info" />
-        </Route> */}
+        <div className="content">
+          <Switch>
+            {employeeSubRouters.map((router) => (
+              <Route
+                exact
+                key={router.pathname}
+                path={`${this.props.match.path}${router.pathname}`}
+                render={(props) => <Button>Render device-info</Button>}
+              ></Route>
+            ))}
+            <Route exact path={`${this.props.match.path}`}>
+              <Redirect
+                to={`${this.props.match.path}${employeeSubRouters[0].pathname}`}
+              />
+            </Route>
+          </Switch>
+        </div>
       </div>
     );
   }
@@ -41,4 +49,4 @@ const mapDispatchToProps = {
     authenticationAction.removeUserAuthenticationInfo,
 };
 
-export default connect(null, mapDispatchToProps)(Employee);
+export default withRouter(connect(null, mapDispatchToProps)(Employee));

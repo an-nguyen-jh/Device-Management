@@ -36,11 +36,18 @@
 .device__form__input-wrapper {
   width: 100%;
   margin: 0 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .device__form__label {
   line-height: 1.15;
   font-weight: 600;
+}
+
+.device__form__input-required {
+  color: red;
 }
 
 .device__form__btn-group {
@@ -49,6 +56,20 @@
   align-items: center;
   padding: 24px 0;
 }
+
+.device__form__preview-img {
+  margin: 12px;
+  object-fit: contain;
+  width: 200px;
+  border: 1px solid var(--primaryColor);
+  border-radius: 10px;
+}
+
+.device__form__upload-img {
+  width: 100%;
+  margin: 12px;
+}
+
 @media only screen and (min-width: 1024px) {
   .device__form__input-row {
     flex-wrap: nowrap;

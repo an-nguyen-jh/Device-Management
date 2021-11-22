@@ -7,7 +7,42 @@ import "../styles/form.css";
 const teamOptions = ["Sweet Cake", "Yin Yang", "Designer", "Admin"];
 
 class DeviceInfoForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      previewImgSource: [],
+      previewImages: [],
+    };
+    this.hanldeChooseImages = this.previewChosenImages.bind(this);
+  }
+
+  previewChosenImages = async (e) => {
+    if (e.target.files.length > 0) {
+      const images = Array.from(e.target.files);
+      this.setState({
+        previewImgSource: images,
+      });
+      try {
+        const imageURIPromises = images.map((img) => {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.addEventListener("load", (event) => {
+              resolve(event.target.result);
+            });
+            reader.addEventListener("error", reject);
+            reader.readAsDataURL(img);
+          });
+        });
+        const previewImageURIs = await Promise.all(imageURIPromises);
+        this.setState({ previewImages: previewImageURIs });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   render() {
+    const { previewImages } = this.state;
     return (
       <div className="form-wrapper">
         <div className="form-center-container">
@@ -19,11 +54,15 @@ class DeviceInfoForm extends Component {
                   <div className="form__split-bar"></div>
                   <div className="device__form__input-row">
                     <div className="device__form__input-wrapper">
-                      <label className="device__form__label">1. Họ tên</label>
+                      <label className="device__form__label">
+                        1. Họ tên:{" "}
+                        <span className="device__form__input-required">*</span>
+                      </label>
                       <Field
                         name="name"
                         type="text"
                         placeholder="Nhập họ và tên"
+                        required
                         subscription={{
                           value: true,
                           touched: true,
@@ -43,10 +82,14 @@ class DeviceInfoForm extends Component {
                   </div>
                   <div className="device__form__input-row">
                     <div className="device__form__input-wrapper">
-                      <label className="device__form__label">2. Team</label>
+                      <label className="device__form__label">
+                        2. Team{" "}
+                        <span className="device__form__input-required">*</span>
+                      </label>
                       <Field
                         name="team"
                         type="text"
+                        required
                         subscription={{
                           value: true,
                           touched: true,
@@ -77,9 +120,11 @@ class DeviceInfoForm extends Component {
                   <div className="device__form__input-row">
                     <div className="device__form__input-wrapper">
                       <label className="device__form__label">
-                        3. Tên hãng của Laptop/ PC do công ty cấp:
+                        3. Tên hãng của Laptop/ PC do công ty cấp:{" "}
+                        <span className="device__form__input-required">*</span>
                       </label>
                       <Field
+                        required
                         name="LaptopCompanyName"
                         type="text"
                         placeholder="Tên hãng PC/LapTop (Mac, Hp, Dell,...)"
@@ -101,11 +146,13 @@ class DeviceInfoForm extends Component {
                     </div>
                     <div className="device__form__input-wrapper ">
                       <label className="device__form__label">
-                        4. Số seri của Laptop/ PC do công ty cấp:
+                        4. Số seri của Laptop/ PC do công ty cấp:{" "}
+                        <span className="device__form__input-required">*</span>
                       </label>
                       <Field
                         name="seriNumber"
                         type="text"
+                        required
                         placeholder="Số seri của thiết bị "
                         subscription={{
                           value: true,
@@ -128,11 +175,13 @@ class DeviceInfoForm extends Component {
                     <div className="device__form__input-wrapper">
                       <label className="device__form__label">
                         5. Cấu hình của Laptop/ PC do công ty cấp (System Name/
-                        System Model/ Processor) :
+                        System Model/ Processor):{" "}
+                        <span className="device__form__input-required">*</span>
                       </label>
                       <Field
                         name="computerConfig"
                         type="text"
+                        required
                         placeholder="System Name/System Model/ Processor"
                         subscription={{
                           value: true,
@@ -159,7 +208,7 @@ class DeviceInfoForm extends Component {
                       <Field
                         name="screenSize"
                         type="text"
-                        placeholder="Kích thước màn hình (dài * rộng)"
+                        placeholder="Kích thước màn hình (dài x rộng)"
                         subscription={{
                           value: true,
                           touched: true,
@@ -183,7 +232,6 @@ class DeviceInfoForm extends Component {
                       <Field
                         name="screenConfig"
                         type="text"
-                        placeholder="Số seri của thiết bị "
                         subscription={{
                           value: true,
                           touched: true,
@@ -209,6 +257,7 @@ class DeviceInfoForm extends Component {
                       <Field
                         name="numberOfScreen"
                         type="number"
+                        min="0"
                         subscription={{
                           value: true,
                           touched: true,
@@ -258,6 +307,7 @@ class DeviceInfoForm extends Component {
                       <Field
                         name="numberOfMouse"
                         type="number"
+                        min="0"
                         subscription={{
                           value: true,
                           touched: true,
@@ -274,6 +324,37 @@ class DeviceInfoForm extends Component {
                         )}
                       </Field>
                     </div>
+                  </div>
+                  <div
+                    className="device__form__input-row"
+                    style={{ flexWrap: "wrap" }}
+                  >
+                    {previewImages.length > 0 &&
+                      previewImages.map((imgSrc) => (
+                        <img
+                          key={imgSrc}
+                          className="device__form__preview-img"
+                          alt="Preview"
+                          id="image-review"
+                          src={imgSrc}
+                        ></img>
+                      ))}
+                    <Field name="file" className="device__form__upload-img">
+                      {({ input: { value, onChange, ...input }, ...rest }) => (
+                        // do not re-assign value for input type="file"
+                        <input
+                          {...input}
+                          {...rest}
+                          accept=".png, .jpg, .jpeg"
+                          type="file"
+                          multiple
+                          onChange={(e) => {
+                            onChange(e.target.files);
+                            this.previewChosenImages(e);
+                          }}
+                        />
+                      )}
+                    </Field>
                   </div>
                   <div className="form__split-bar"></div>
                   <div className="device__form__btn-group">

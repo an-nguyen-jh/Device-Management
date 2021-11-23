@@ -8,6 +8,7 @@ import { withRouter } from "react-router-dom";
 import privateRoute from "../../config/routes";
 import { connect } from "react-redux";
 import { authenticationAction } from "../../store/actions";
+import toast, { Toaster } from "react-hot-toast";
 
 class Login extends Component {
   constructor(props) {
@@ -24,7 +25,6 @@ class Login extends Component {
   async handleEmailAndPasswordSubmit(values) {
     const { email, password } = values;
     try {
-      this.setState({ errorMsg: "" });
       const result = await loginWithEmailAndPassword(email, password);
       const userSnapshot = await getUserByEmail(email);
       const user = userSnapshot.data();
@@ -37,7 +37,7 @@ class Login extends Component {
         pathname: `${privateRoute[user.role].pathname}`,
       });
     } catch (error) {
-      this.setState({ errorMsg: "Failed to login" });
+      toast.error("Failed to login", { style: { width: "300px" } });
     }
   }
 
@@ -63,6 +63,7 @@ class Login extends Component {
 
     return (
       <div className="container login-bg-color">
+        <Toaster />
         <div className="login">
           <h1 className="login__title">Login</h1>
           {errorMsg && <Alert type="error">{errorMsg}</Alert>}

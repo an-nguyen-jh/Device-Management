@@ -7,16 +7,18 @@ import generateStorageService from "./storeService";
 // Initialize Firebase
 firebase.initializeApp(config.FIREBASE_CONFIG);
 const { loginWithEmailAndPassword, signout } = generateAuthenticationService();
-const { getUserByEmail, getDeviceInfoOfUserByEmail, updateDeviceInfoForm } =
+const { getUserByEmail, getDeviceInfoOfEmployeeByEmail, updateDeviceInfoForm } =
   generatedDatabaseService();
 
-const { uploadEmployeeDeviceImage } = generateStorageService();
+const { uploadEmployeeDeviceImage, deleteOldEmployeeImage } =
+  generateStorageService();
 
 export {
   loginWithEmailAndPassword,
   signout,
   getUserByEmail,
-  getDeviceInfoOfUserByEmail,
+  getDeviceInfoOfEmployeeByEmail,
   updateDeviceInfoForm,
   uploadEmployeeDeviceImage,
+  deleteOldEmployeeImage,
 };

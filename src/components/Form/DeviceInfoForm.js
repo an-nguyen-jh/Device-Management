@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import { Field, Form } from "react-final-form";
 import { Input } from "..";
 import {
-  getDeviceInfoOfUserByEmail,
+  getDeviceInfoOfEmployeeByEmail,
   updateDeviceInfoForm,
   uploadEmployeeDeviceImage,
+  deleteOldEmployeeImage,
 } from "../../apiService";
 import { Button } from "../index";
 import "../styles/form.css";
 import { connect } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
 
 const teamOptions = ["Sweet Cake", "Yin Yang", "Designer", "Admin"];
 
@@ -16,7 +18,8 @@ class DeviceInfoForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      previewImgSources: [],
+      chosenImageSrc: [],
+      oldImageSrcs: [],
       previewImages: [],
       name: "",
       team: "",
@@ -37,7 +40,7 @@ class DeviceInfoForm extends Component {
     if (e.target.files.length > 0) {
       const images = Array.from(e.target.files);
       this.setState({
-        previewImgSources: images,
+        chosenImageSrc: images,
       });
       try {
         const imageURIPromises = images.map((img) => {
@@ -57,7 +60,7 @@ class DeviceInfoForm extends Component {
       }
     } else {
       this.setState({
-        previewImgSources: [],
+        chosenImageSrc: [],
         previewImages: [],
       });
     }
@@ -72,12 +75,10 @@ class DeviceInfoForm extends Component {
   };
 
   async uploadEmployeeDeviceImages(images, userEmail) {
-    if (images.length === 0) {
-      return;
-    }
     try {
+      const userIdentifier = userEmail.split(/@/)[0];
       const imageUploadPromises = images.map((image) => {
-        return uploadEmployeeDeviceImage(image, userEmail);
+        return uploadEmployeeDeviceImage(image, userIdentifier);
       });
       const imageDownloadURLs = await Promise.all(imageUploadPromises);
       return imageDownloadURLs;
@@ -87,33 +88,56 @@ class DeviceInfoForm extends Component {
     }
   }
 
-  async handleDeviceInfoSubmit(values) {
-    const { previewImgSources } = this.state;
-    const { userEmail } = this.props;
+  async deleteOldEmployeeDeviceImages(images, userEmail) {
     try {
-      const imageDownloadURLs = await this.uploadEmployeeDeviceImages(
-        previewImgSources,
-        userEmail
-      );
-      await updateDeviceInfoForm(
-        { ...values, previewImages: imageDownloadURLs },
-        this.props.userEmail
-      );
+      const imageDeletePromises = images.map((image) => {
+        return deleteOldEmployeeImage(image, userEmail);
+      });
+      await Promise.all(imageDeletePromises);
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  async handleDeviceInfoSubmit(values) {
+    const { chosenImageSrc, oldImageSrcs } = this.state;
+    const { userEmail } = this.props;
+    try {
+      let updateData = { ...values };
+      if (chosenImageSrc.length > 0) {
+        await this.deleteOldEmployeeDeviceImages(oldImageSrcs, userEmail);
+        const imageDownloadURLs = await this.uploadEmployeeDeviceImages(
+          chosenImageSrc,
+          userEmail
+        );
+        Object.assign(updateData, { oldImageSrcs: imageDownloadURLs });
+      }
+      await updateDeviceInfoForm(updateData, this.props.userEmail);
+      toast.success("Success store device's info", {
+        style: { width: "300px" },
+      });
+    } catch (error) {
+      toast.error("Error in update device's info", {
+        style: { width: "300px" },
+      });
     }
   }
 
   async componentDidMount() {
     const userEmail = this.props.userEmail;
     try {
-      const deviceInfoSnapshot = await getDeviceInfoOfUserByEmail(userEmail);
+      const deviceInfoSnapshot = await getDeviceInfoOfEmployeeByEmail(
+        userEmail
+      );
       const oldDeviceInfo = deviceInfoSnapshot.data();
       this.setState({
         ...oldDeviceInfo,
+        previewImages: oldDeviceInfo.oldImageSrcs,
       });
     } catch (error) {
-      //notice error
+      toast.error("Can't load old device's info", {
+        style: { width: "300px" },
+      });
     }
   }
 
@@ -133,6 +157,7 @@ class DeviceInfoForm extends Component {
     } = this.state;
     return (
       <div className="form-wrapper">
+        <Toaster />
         <div className="form-center-container">
           <Form
             onSubmit={this.handleDeviceInfoSubmit}
@@ -455,6 +480,9 @@ class DeviceInfoForm extends Component {
                     className="device__form__input-row"
                     style={{ flexWrap: "wrap" }}
                   >
+                    <label className="device__form__label">
+                      12. Ảnh chụp tình trạng hiện tại của thiết bị:
+                    </label>
                     {previewImages.length > 0 &&
                       previewImages.map((imgSrc) => (
                         <img

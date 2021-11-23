@@ -1,4 +1,4 @@
-import { getFirestore, getDoc, doc, setDoc } from "firebase/firestore";
+import { getFirestore, getDoc, doc, updateDoc } from "firebase/firestore";
 
 export default function generateDatabaseService() {
   const firebaseDB = getFirestore();
@@ -8,15 +8,19 @@ export default function generateDatabaseService() {
     return getDoc(userRef);
   }
 
-  function getDeviceInfoOfUserByEmail(email) {
+  function getDeviceInfoOfEmployeeByEmail(email) {
     const deviceInfoRef = doc(firebaseDB, "deviceInfos", email);
     return getDoc(deviceInfoRef);
   }
 
   function updateDeviceInfoForm(values, email) {
-    return setDoc(doc(firebaseDB, "deviceInfos", email), {
+    return updateDoc(doc(firebaseDB, "deviceInfos", email), {
       ...values,
     });
   }
-  return { getUserByEmail, getDeviceInfoOfUserByEmail, updateDeviceInfoForm };
+  return {
+    getUserByEmail,
+    getDeviceInfoOfEmployeeByEmail,
+    updateDeviceInfoForm,
+  };
 }

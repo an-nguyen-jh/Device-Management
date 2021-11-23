@@ -44,6 +44,7 @@
 .device__form__label {
   line-height: 1.15;
   font-weight: 600;
+  width: 100%;
 }
 
 .device__form__input-required {

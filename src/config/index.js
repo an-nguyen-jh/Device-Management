@@ -18,6 +18,8 @@ const ROLE = {
 const ENV_CONFIG = {
   FIREBASE_CONFIG,
   ROLE,
+  URL_FIRESTORE:
+    "https://firebasestorage.googleapis.com/v0/b/device-management-911c9.appspot.com/o/",
 };
 
 export default ENV_CONFIG;

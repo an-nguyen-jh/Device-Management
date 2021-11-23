@@ -84,13 +84,14 @@ class Login extends Component {
                       value: true,
                       touched: true,
                       error: true,
+                      active: true,
                     }}
                   >
                     {({ input, meta, ...rest }) => (
                       <Input
                         {...input}
                         {...rest}
-                        error={meta.error && meta.touched}
+                        error={meta.error && meta.touched && !meta.active}
                         errorMsg={meta.error}
                       ></Input>
                     )}
@@ -105,13 +106,14 @@ class Login extends Component {
                       value: true,
                       touched: true,
                       error: true,
+                      active: true,
                     }}
                   >
                     {({ input, meta, ...rest }) => (
                       <Input
                         {...input}
                         {...rest}
-                        error={meta.error && meta.touched}
+                        error={meta.error && meta.touched && !meta.active}
                         errorMsg={meta.error}
                       ></Input>
                     )}

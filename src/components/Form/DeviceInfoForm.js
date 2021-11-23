@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { Field, Form } from "react-final-form";
 import { Input } from "..";
-import { getDeviceInfoOfUserByEmail } from "../../apiService";
+import {
+  getDeviceInfoOfUserByEmail,
+  updateDeviceInfoForm,
+  uploadEmployeeDeviceImage,
+} from "../../apiService";
 import { Button } from "../index";
 import "../styles/form.css";
 import { connect } from "react-redux";
@@ -12,7 +16,7 @@ class DeviceInfoForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      previewImgSource: [],
+      previewImgSources: [],
       previewImages: [],
       name: "",
       team: "",
@@ -21,9 +25,9 @@ class DeviceInfoForm extends Component {
       computerConfig: "",
       screenSize: "",
       screenConfig: "",
-      numberOfScreen: "",
+      numberOfScreen: 0,
       mouseCompanyName: "",
-      numberOfMouse: "",
+      numberOfMouse: 0,
     };
     this.hanldeChooseImages = this.previewChosenImages.bind(this);
     this.handleDeviceInfoSubmit = this.handleDeviceInfoSubmit.bind(this);
@@ -33,7 +37,7 @@ class DeviceInfoForm extends Component {
     if (e.target.files.length > 0) {
       const images = Array.from(e.target.files);
       this.setState({
-        previewImgSource: images,
+        previewImgSources: images,
       });
       try {
         const imageURIPromises = images.map((img) => {
@@ -51,10 +55,54 @@ class DeviceInfoForm extends Component {
       } catch (error) {
         console.log(error);
       }
+    } else {
+      this.setState({
+        previewImgSources: [],
+        previewImages: [],
+      });
     }
   };
 
-  async handleDeviceInfoSubmit(values) {}
+  validateRequireField = (value) => {
+    return value.length > 0 ? undefined : "This field is required";
+  };
+
+  validateNumberOfDevice = (value) => {
+    return value >= 0 ? undefined : "Number of device must be positive";
+  };
+
+  async uploadEmployeeDeviceImages(images, userEmail) {
+    if (images.length === 0) {
+      return;
+    }
+    try {
+      const imageUploadPromises = images.map((image) => {
+        return uploadEmployeeDeviceImage(image, userEmail);
+      });
+      const imageDownloadURLs = await Promise.all(imageUploadPromises);
+      return imageDownloadURLs;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  }
+
+  async handleDeviceInfoSubmit(values) {
+    const { previewImgSources } = this.state;
+    const { userEmail } = this.props;
+    try {
+      const imageDownloadURLs = await this.uploadEmployeeDeviceImages(
+        previewImgSources,
+        userEmail
+      );
+      await updateDeviceInfoForm(
+        { ...values, previewImages: imageDownloadURLs },
+        this.props.userEmail
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async componentDidMount() {
     const userEmail = this.props.userEmail;
@@ -70,14 +118,37 @@ class DeviceInfoForm extends Component {
   }
 
   render() {
-    const { previewImages } = this.state;
+    const {
+      previewImages,
+      name,
+      team,
+      computerCompanyName,
+      computersSeriNumber,
+      computerConfig,
+      screenSize,
+      screenConfig,
+      numberOfScreen,
+      mouseCompanyName,
+      numberOfMouse,
+    } = this.state;
     return (
       <div className="form-wrapper">
         <div className="form-center-container">
           <Form
             onSubmit={this.handleDeviceInfoSubmit}
             subscription={{ submitting: true }}
-            initialValues={{ ...this.state }}
+            initialValues={{
+              name,
+              team,
+              computerCompanyName,
+              computersSeriNumber,
+              computerConfig,
+              screenSize,
+              screenConfig,
+              numberOfScreen,
+              mouseCompanyName,
+              numberOfMouse,
+            }}
           >
             {({ handleSubmit, submitting }) => {
               return (
@@ -95,17 +166,19 @@ class DeviceInfoForm extends Component {
                         type="text"
                         placeholder="Nhập họ và tên"
                         required
+                        validate={this.validateRequireField}
                         subscription={{
                           value: true,
                           touched: true,
                           error: true,
+                          active: true,
                         }}
                       >
                         {({ input, meta, ...rest }) => (
                           <Input
                             {...input}
                             {...rest}
-                            error={meta.error && meta.touched}
+                            error={meta.error && meta.touched && !meta.active}
                             errorMsg={meta.error}
                           ></Input>
                         )}
@@ -126,25 +199,33 @@ class DeviceInfoForm extends Component {
                           value: true,
                           touched: true,
                           error: true,
+                          active: true,
                         }}
+                        validate={this.validateRequireField}
                         options={teamOptions}
                       >
-                        {({ input, meta, options, name, ...rest }) => (
-                          <select
-                            className="input--outlined"
-                            name={name}
-                            defaultValue=""
-                            {...rest}
-                          >
-                            <option key={""} value={""}></option>
-                            {options.map((team) => {
-                              return (
-                                <option key={team} value={team}>
-                                  Team {team}
-                                </option>
-                              );
-                            })}
-                          </select>
+                        {({ input, meta, options, ...rest }) => (
+                          <>
+                            <select
+                              className="input--outlined"
+                              {...rest}
+                              {...input}
+                            >
+                              <option key={""} value={""}></option>
+                              {options.map((team) => {
+                                return (
+                                  <option key={team} value={team}>
+                                    Team {team}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                            {meta.error && meta.touched && (
+                              <span className="input--error">
+                                * {meta.error}
+                              </span>
+                            )}
+                          </>
                         )}
                       </Field>
                     </div>
@@ -160,17 +241,19 @@ class DeviceInfoForm extends Component {
                         name="computerCompanyName"
                         type="text"
                         placeholder="Tên hãng PC/LapTop (Mac, Hp, Dell,...)"
+                        validate={this.validateRequireField}
                         subscription={{
                           value: true,
                           touched: true,
                           error: true,
+                          active: true,
                         }}
                       >
                         {({ input, meta, ...rest }) => (
                           <Input
                             {...input}
                             {...rest}
-                            error={meta.error && meta.touched}
+                            error={meta.error && meta.touched && !meta.active}
                             errorMsg={meta.error}
                           ></Input>
                         )}
@@ -185,18 +268,20 @@ class DeviceInfoForm extends Component {
                         name="computersSeriNumber"
                         type="text"
                         required
+                        validate={this.validateRequireField}
                         placeholder="Số seri của thiết bị "
                         subscription={{
                           value: true,
                           touched: true,
                           error: true,
+                          active: true,
                         }}
                       >
                         {({ input, meta, ...rest }) => (
                           <Input
                             {...input}
                             {...rest}
-                            error={meta.error && meta.touched}
+                            error={meta.error && meta.touched && !meta.active}
                             errorMsg={meta.error}
                           ></Input>
                         )}
@@ -214,18 +299,20 @@ class DeviceInfoForm extends Component {
                         name="computerConfig"
                         type="text"
                         required
-                        placeholder="System Name/System Model/ Processor"
+                        validate={this.validateRequireField}
+                        placeholder="(System Name/System Model/Processor)"
                         subscription={{
                           value: true,
                           touched: true,
                           error: true,
+                          active: true,
                         }}
                       >
                         {({ input, meta, ...rest }) => (
                           <Input
                             {...input}
                             {...rest}
-                            error={meta.error && meta.touched}
+                            error={meta.error && meta.touched && !meta.active}
                             errorMsg={meta.error}
                           ></Input>
                         )}
@@ -245,13 +332,14 @@ class DeviceInfoForm extends Component {
                           value: true,
                           touched: true,
                           error: true,
+                          active: true,
                         }}
                       >
                         {({ input, meta, ...rest }) => (
                           <Input
                             {...input}
                             {...rest}
-                            error={meta.error && meta.touched}
+                            error={meta.error && meta.touched && !meta.active}
                             errorMsg={meta.error}
                           ></Input>
                         )}
@@ -268,13 +356,14 @@ class DeviceInfoForm extends Component {
                           value: true,
                           touched: true,
                           error: true,
+                          active: true,
                         }}
                       >
                         {({ input, meta, ...rest }) => (
                           <Input
                             {...input}
                             {...rest}
-                            error={meta.error && meta.touched}
+                            error={meta.error && meta.touched && !meta.active}
                             errorMsg={meta.error}
                           ></Input>
                         )}
@@ -289,20 +378,23 @@ class DeviceInfoForm extends Component {
                       <Field
                         name="numberOfScreen"
                         type="number"
-                        min="0"
+                        validate={this.validateNumberOfDevice}
                         subscription={{
                           value: true,
                           touched: true,
                           error: true,
+                          active: true,
                         }}
                       >
                         {({ input, meta, ...rest }) => (
-                          <Input
-                            {...input}
-                            {...rest}
-                            error={meta.error && meta.touched}
-                            errorMsg={meta.error}
-                          ></Input>
+                          <>
+                            <Input
+                              {...input}
+                              {...rest}
+                              error={meta.error && meta.touched && !meta.active}
+                              errorMsg={meta.error}
+                            ></Input>
+                          </>
                         )}
                       </Field>
                     </div>
@@ -320,13 +412,14 @@ class DeviceInfoForm extends Component {
                           value: true,
                           touched: true,
                           error: true,
+                          active: true,
                         }}
                       >
                         {({ input, meta, ...rest }) => (
                           <Input
                             {...input}
                             {...rest}
-                            error={meta.error && meta.touched}
+                            error={meta.error && meta.touched && !meta.active}
                             errorMsg={meta.error}
                           ></Input>
                         )}
@@ -339,18 +432,19 @@ class DeviceInfoForm extends Component {
                       <Field
                         name="numberOfMouse"
                         type="number"
-                        min="0"
+                        validate={this.validateNumberOfDevice}
                         subscription={{
                           value: true,
                           touched: true,
                           error: true,
+                          active: true,
                         }}
                       >
                         {({ input, meta, ...rest }) => (
                           <Input
                             {...input}
                             {...rest}
-                            error={meta.error && meta.touched}
+                            error={meta.error && meta.touched && !meta.active}
                             errorMsg={meta.error}
                           ></Input>
                         )}
@@ -371,22 +465,13 @@ class DeviceInfoForm extends Component {
                           src={imgSrc}
                         ></img>
                       ))}
-                    <Field name="file" className="device__form__upload-img">
-                      {({ input: { value, onChange, ...input }, ...rest }) => (
-                        // do not re-assign value for input type="file"
-                        <input
-                          {...input}
-                          {...rest}
-                          accept=".png, .jpg, .jpeg"
-                          type="file"
-                          multiple
-                          onChange={(e) => {
-                            onChange(e.target.files);
-                            this.previewChosenImages(e);
-                          }}
-                        />
-                      )}
-                    </Field>
+                    <input
+                      className="device__form__upload-img"
+                      accept=".png, .jpg, .jpeg"
+                      type="file"
+                      multiple
+                      onChange={this.previewChosenImages}
+                    />
                   </div>
                   <div className="form__split-bar"></div>
                   <div className="device__form__btn-group">

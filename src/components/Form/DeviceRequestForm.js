@@ -4,6 +4,8 @@ import toast, { Toaster } from "react-hot-toast";
 import { Field, Form } from "react-final-form";
 import { Button, Input } from "..";
 import { teamOptions, deviceOptions } from "../../config/formData/formData";
+import { connect } from "react-redux";
+import { addNewRequestDevice } from "../../apiService";
 
 class DeviceRequestForm extends Component {
   constructor(props) {
@@ -12,6 +14,7 @@ class DeviceRequestForm extends Component {
       name: "",
       team: "",
       device: "",
+      numberOfDevice: 1,
     };
     this.handleRequestDeviceSubmit = this.handleRequestDeviceSubmit.bind(this);
     this.clearFormInput = this.clearFormInput.bind(this);
@@ -30,13 +33,27 @@ class DeviceRequestForm extends Component {
       name: "",
       team: "",
       device: "",
+      numberOfDevice: 1,
     });
   }
 
-  handleRequestDeviceSubmit(values) {}
+  async handleRequestDeviceSubmit(values) {
+    try {
+      const newRequestDevice = { ...values, employee: this.props.userEmail };
+      await addNewRequestDevice(newRequestDevice);
+      toast.success("Success request device", {
+        style: { width: "300px" },
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Error in request device", {
+        style: { width: "300px" },
+      });
+    }
+  }
 
   render() {
-    const { name, team, device } = this.state;
+    const { name, team, device, numberOfDevice } = this.state;
     return (
       <div className="form-wrapper">
         <Toaster />
@@ -48,6 +65,7 @@ class DeviceRequestForm extends Component {
               name,
               team,
               device,
+              numberOfDevice,
             }}
           >
             {({ handleSubmit, submitting }) => {
@@ -101,7 +119,7 @@ class DeviceRequestForm extends Component {
                           error: true,
                           active: true,
                         }}
-                        // validate={this.validateRequireField}
+                        validate={this.validateRequireField}
                         options={teamOptions}
                       >
                         {({ input, meta, options, ...rest }) => (
@@ -174,16 +192,41 @@ class DeviceRequestForm extends Component {
                         )}
                       </Field>
                     </div>
+                    <div className="device__form__input-wrapper ">
+                      <label className="device__form__label">
+                        4. Số lượng thiết bị cần cung cấp:
+                      </label>
+                      <Field
+                        name="numberOfDevice"
+                        type="number"
+                        validate={this.validateNumberOfDevice}
+                        subscription={{
+                          value: true,
+                          touched: true,
+                          error: true,
+                          active: true,
+                        }}
+                      >
+                        {({ input, meta, ...rest }) => (
+                          <Input
+                            {...input}
+                            {...rest}
+                            error={meta.error && meta.touched && !meta.active}
+                            errorMsg={meta.error}
+                          ></Input>
+                        )}
+                      </Field>
+                    </div>
                   </div>
                   <div className="device__form__input-row">
                     <div className="device__form__input-wrapper">
                       <label className="device__form__label">
-                        1. Chú thích:{" "}
+                        5. Chú thích:{" "}
                       </label>
                       <Field
                         name="reason"
                         type="text"
-                        placeholder="Chú thích ..."
+                        placeholder="Lý do cần cấp, yêu cầu về thiết bị, ..."
                         subscription={{
                           value: true,
                           touched: true,
@@ -221,4 +264,10 @@ class DeviceRequestForm extends Component {
   }
 }
 
-export default DeviceRequestForm;
+const mapStateToProps = (state) => {
+  return {
+    userEmail: state.auth.userEmail,
+  };
+};
+
+export default connect(mapStateToProps, null)(DeviceRequestForm);

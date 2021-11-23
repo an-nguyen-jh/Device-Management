@@ -113,11 +113,11 @@ class DeviceInfoForm extends Component {
         Object.assign(updateData, { oldImageSrcs: imageDownloadURLs });
       }
       await updateDeviceInfoForm(updateData, this.props.userEmail);
-      toast.success("Success store device's info", {
+      toast.success("Success store device info", {
         style: { width: "300px" },
       });
     } catch (error) {
-      toast.error("Error in update device's info", {
+      toast.error("Error in update device info", {
         style: { width: "300px" },
       });
     }

@@ -34,6 +34,7 @@ class DeviceInfoForm extends Component {
     };
     this.hanldeChooseImages = this.previewChosenImages.bind(this);
     this.handleDeviceInfoSubmit = this.handleDeviceInfoSubmit.bind(this);
+    this.clearFormInfo = this.clearFormInfo.bind(this);
   }
 
   previewChosenImages = async (e) => {
@@ -121,6 +122,21 @@ class DeviceInfoForm extends Component {
         style: { width: "300px" },
       });
     }
+  }
+
+  clearFormInfo() {
+    this.setState({
+      name: "",
+      team: "",
+      computerCompanyName: "",
+      computersSeriNumber: "",
+      computerConfig: "",
+      screenSize: "",
+      screenConfig: "",
+      numberOfScreen: 0,
+      mouseCompanyName: "",
+      numberOfMouse: 0,
+    });
   }
 
   async componentDidMount() {
@@ -506,7 +522,9 @@ class DeviceInfoForm extends Component {
                     <Button type="submit" color="primary" disabled={submitting}>
                       Submit
                     </Button>
-                    <Button variant="text"> Clear Form </Button>
+                    <Button variant="text" onClick={this.clearFormInfo}>
+                      Clear Form
+                    </Button>
                   </div>
                 </form>
               );

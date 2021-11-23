@@ -5,7 +5,8 @@ import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import Appbar from "./Appbar/Appbar";
 import DeviceRequestForm from "./Form/DeviceRequestForm";
 import DeviceInfoForm from "./Form/DeviceInfoForm";
-
+import Select from "./Select/Select";
+import UploadImage from "./UploadImage/UploadImage";
 export {
   Input,
   Button,
@@ -14,4 +15,6 @@ export {
   Appbar,
   DeviceInfoForm,
   DeviceRequestForm,
+  Select,
+  UploadImage,
 };

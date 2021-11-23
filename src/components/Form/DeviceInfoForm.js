@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Field, Form } from "react-final-form";
-import { Input } from "..";
+import { Input, Select, UploadImage } from "..";
 import {
   getDeviceInfoOfEmployeeByEmail,
   updateDeviceInfoForm,
@@ -245,27 +245,13 @@ class DeviceInfoForm extends Component {
                         options={teamOptions}
                       >
                         {({ input, meta, options, ...rest }) => (
-                          <>
-                            <select
-                              className="input--outlined"
-                              {...rest}
-                              {...input}
-                            >
-                              <option key={""} value={""}></option>
-                              {options.map((team) => {
-                                return (
-                                  <option key={team} value={team}>
-                                    Team {team}
-                                  </option>
-                                );
-                              })}
-                            </select>
-                            {meta.error && meta.touched && (
-                              <span className="input--error">
-                                * {meta.error}
-                              </span>
-                            )}
-                          </>
+                          <Select
+                            {...rest}
+                            {...input}
+                            options={options}
+                            error={meta.error && meta.touched && !meta.active}
+                            errorMsg={meta.error}
+                          ></Select>
                         )}
                       </Field>
                     </div>
@@ -498,26 +484,10 @@ class DeviceInfoForm extends Component {
                     <label className="device__form__label">
                       12. Ảnh chụp tình trạng hiện tại của thiết bị:
                     </label>
-                    <div className="device__form__preview-wrapper">
-                      {previewImages.length > 0 &&
-                        previewImages.map((imgSrc) => (
-                          <div className="device__form__preview" key={imgSrc}>
-                            <img
-                              className="device__form__preview__img"
-                              alt="Preview"
-                              id="image-review"
-                              src={imgSrc}
-                            ></img>
-                          </div>
-                        ))}
-                    </div>
-                    <input
-                      className="device__form__upload-img"
-                      accept=".png, .jpg, .jpeg"
-                      type="file"
-                      multiple
+                    <UploadImage
+                      uploadImages={previewImages}
                       onChange={this.previewChosenImages}
-                    />
+                    ></UploadImage>
                   </div>
                   <div className="form__split-bar"></div>
                   <div className="device__form__btn-group">

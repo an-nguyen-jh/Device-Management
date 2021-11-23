@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../styles/form.css";
 import toast, { Toaster } from "react-hot-toast";
 import { Field, Form } from "react-final-form";
-import { Button, Input } from "..";
+import { Button, Input, Select } from "..";
 import { teamOptions, deviceOptions } from "../../config/formData/formData";
 import { connect } from "react-redux";
 import { addNewRequestDevice } from "../../apiService";
@@ -123,27 +123,13 @@ class DeviceRequestForm extends Component {
                         options={teamOptions}
                       >
                         {({ input, meta, options, ...rest }) => (
-                          <>
-                            <select
-                              className="input--outlined"
-                              {...rest}
-                              {...input}
-                            >
-                              <option key={""} value={""}></option>
-                              {options.map((team) => {
-                                return (
-                                  <option key={team} value={team}>
-                                    Team {team}
-                                  </option>
-                                );
-                              })}
-                            </select>
-                            {meta.error && meta.touched && (
-                              <span className="input--error">
-                                * {meta.error}
-                              </span>
-                            )}
-                          </>
+                          <Select
+                            {...rest}
+                            {...input}
+                            options={options}
+                            error={meta.error && meta.touched && !meta.active}
+                            errorMsg={meta.error}
+                          ></Select>
                         )}
                       </Field>
                     </div>
@@ -168,27 +154,13 @@ class DeviceRequestForm extends Component {
                         options={deviceOptions}
                       >
                         {({ input, meta, options, ...rest }) => (
-                          <>
-                            <select
-                              className="input--outlined"
-                              {...rest}
-                              {...input}
-                            >
-                              <option key={""} value={""}></option>
-                              {options.map((device) => {
-                                return (
-                                  <option key={device} value={device}>
-                                    {device}
-                                  </option>
-                                );
-                              })}
-                            </select>
-                            {meta.error && meta.touched && (
-                              <span className="input--error">
-                                * {meta.error}
-                              </span>
-                            )}
-                          </>
+                          <Select
+                            {...rest}
+                            {...input}
+                            options={options}
+                            error={meta.error && meta.touched && !meta.active}
+                            errorMsg={meta.error}
+                          ></Select>
                         )}
                       </Field>
                     </div>

@@ -68,6 +68,7 @@ a {
 .content {
   padding-top: var(--appbarHeight);
   width: 100%;
+  min-height: 100vh;
   background-color: var(--primaryBgColor);
 }
 

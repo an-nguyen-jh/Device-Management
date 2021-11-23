@@ -25,14 +25,17 @@
 
 .appbar__dropdown__btn {
   width: 60px;
-  height: 100%;
+  height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  /* transition: width var(--animationSpeed) linear;
-  transition: height var(--animationSpeed) linear;
-  transition-delay: 0, var(--animationSpeed); */
+  transition: background-color var(--animationSpeed) linear;
+}
+
+.appbar__dropdown__btn:hover,
+.appbar__dropdown__btn:focus {
+  background-color: var(--primaryLightColor);
 }
 
 .appbar__dropdown__icon {
@@ -59,7 +62,6 @@
   width: 100%;
   display: none;
   padding: 0;
-
   flex-direction: column;
 }
 

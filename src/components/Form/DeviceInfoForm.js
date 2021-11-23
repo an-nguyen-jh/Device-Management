@@ -11,8 +11,7 @@ import { Button } from "../index";
 import "../styles/form.css";
 import { connect } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
-
-const teamOptions = ["Sweet Cake", "Yin Yang", "Designer", "Admin"];
+import { teamOptions } from "../../config/formData/formData";
 
 class DeviceInfoForm extends Component {
   constructor(props) {
@@ -34,7 +33,7 @@ class DeviceInfoForm extends Component {
     };
     this.hanldeChooseImages = this.previewChosenImages.bind(this);
     this.handleDeviceInfoSubmit = this.handleDeviceInfoSubmit.bind(this);
-    this.clearFormInfo = this.clearFormInfo.bind(this);
+    this.clearFormInput = this.clearFormInput.bind(this);
   }
 
   previewChosenImages = async (e) => {
@@ -124,7 +123,7 @@ class DeviceInfoForm extends Component {
     }
   }
 
-  clearFormInfo() {
+  clearFormInput() {
     this.setState({
       name: "",
       team: "",
@@ -499,16 +498,19 @@ class DeviceInfoForm extends Component {
                     <label className="device__form__label">
                       12. Ảnh chụp tình trạng hiện tại của thiết bị:
                     </label>
-                    {previewImages.length > 0 &&
-                      previewImages.map((imgSrc) => (
-                        <img
-                          key={imgSrc}
-                          className="device__form__preview-img"
-                          alt="Preview"
-                          id="image-review"
-                          src={imgSrc}
-                        ></img>
-                      ))}
+                    <div className="device__form__preview-wrapper">
+                      {previewImages.length > 0 &&
+                        previewImages.map((imgSrc) => (
+                          <div className="device__form__preview" key={imgSrc}>
+                            <img
+                              className="device__form__preview__img"
+                              alt="Preview"
+                              id="image-review"
+                              src={imgSrc}
+                            ></img>
+                          </div>
+                        ))}
+                    </div>
                     <input
                       className="device__form__upload-img"
                       accept=".png, .jpg, .jpeg"
@@ -522,7 +524,7 @@ class DeviceInfoForm extends Component {
                     <Button type="submit" color="primary" disabled={submitting}>
                       Submit
                     </Button>
-                    <Button variant="text" onClick={this.clearFormInfo}>
+                    <Button variant="text" onClick={this.clearFormInput}>
                       Clear Form
                     </Button>
                   </div>

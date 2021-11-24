@@ -21,11 +21,11 @@ class DeviceRequestForm extends Component {
   }
 
   validateRequireField = (value) => {
-    return value.length > 0 ? undefined : "This field is required";
+    return value && value.length > 0 ? undefined : "This field is required";
   };
 
   validateNumberOfDevice = (value) => {
-    return value >= 0 ? undefined : "Number of device must be positive";
+    return value > 0 ? undefined : "Number of device must be positive";
   };
 
   clearFormInput() {

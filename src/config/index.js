@@ -15,11 +15,18 @@ const ROLE = {
   ADMIN: "1",
 };
 
+const REQUEST = {
+  SOLVE: 1,
+  PENDING: 0,
+  DENY: -1,
+};
+
 const ENV_CONFIG = {
   FIREBASE_CONFIG,
   ROLE,
   URL_FIRESTORAGE:
     "https://firebasestorage.googleapis.com/v0/b/device-management-911c9.appspot.com/o/",
+  REQUEST,
 };
 
 export default ENV_CONFIG;

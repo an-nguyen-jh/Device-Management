@@ -67,7 +67,7 @@ class DeviceInfoForm extends Component {
   };
 
   validateRequireField = (value) => {
-    return value.length > 0 ? undefined : "This field is required";
+    return value && value.length > 0 ? undefined : "This field is required";
   };
 
   validateNumberOfDevice = (value) => {

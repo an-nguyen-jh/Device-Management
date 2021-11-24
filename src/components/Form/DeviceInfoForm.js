@@ -88,10 +88,10 @@ class DeviceInfoForm extends Component {
     }
   }
 
-  async deleteOldEmployeeDeviceImages(images, userEmail) {
+  async deleteOldEmployeeDeviceImages(images) {
     try {
-      const imageDeletePromises = images.map((image) => {
-        return deleteOldEmployeeImage(image, userEmail);
+      const imageDeletePromises = images.map((imageURL) => {
+        return deleteOldEmployeeImage(imageURL);
       });
       await Promise.all(imageDeletePromises);
     } catch (error) {
@@ -105,14 +105,14 @@ class DeviceInfoForm extends Component {
     try {
       let updateData = { ...values };
       if (chosenImageSrc.length > 0) {
-        await this.deleteOldEmployeeDeviceImages(oldImageSrcs, userEmail);
+        await this.deleteOldEmployeeDeviceImages(oldImageSrcs);
         const imageDownloadURLs = await this.uploadEmployeeDeviceImages(
           chosenImageSrc,
           userEmail
         );
         Object.assign(updateData, { oldImageSrcs: imageDownloadURLs });
       }
-      await updateDeviceInfoForm(updateData, this.props.userEmail);
+      await updateDeviceInfoForm(updateData, userEmail);
       toast.success("Success store device info", {
         style: { width: "300px" },
       });

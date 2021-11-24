@@ -14,16 +14,16 @@ class Appbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sidebarToggle: false,
+      appbarToggle: false,
       title: "",
     };
-    this.toggleSidebar = this.toggleSidebar.bind(this);
+    this.toggleAppbar = this.toggleAppbar.bind(this);
     this.signOut = this.signOut.bind(this);
   }
 
-  toggleSidebar() {
+  toggleAppbar() {
     this.setState({
-      sidebarToggle: !this.state.sidebarToggle,
+      appbarToggle: !this.state.appbarToggle,
     });
   }
 
@@ -48,13 +48,13 @@ class Appbar extends Component {
       const routerTitle = getRouterTile(employeeSubRouters, subPathname);
       this.setState({
         title: routerTitle,
-        sidebarToggle: false,
+        appbarToggle: false,
       });
     }
   }
 
   render() {
-    const { sidebarToggle: toggle, title } = this.state;
+    const { appbarToggle: toggle, title } = this.state;
     const path = this.props.match.path;
     const subPathname = this.props.location.pathname.split("/")[2];
 
@@ -64,7 +64,7 @@ class Appbar extends Component {
           <div className="appbar__dropdown__title">{title}</div>
           <div className="appbar__dropdown__btn">
             <MdArrowDropDown
-              onClick={this.toggleSidebar}
+              onClick={this.toggleAppbar}
               className="appbar__dropdown__icon"
               color="white"
             ></MdArrowDropDown>
@@ -72,7 +72,7 @@ class Appbar extends Component {
         </div>
         <div
           className={classNames({ appbar__overlay: toggle })}
-          onClick={this.toggleSidebar}
+          onClick={this.toggleAppbar}
         ></div>
         <div
           className={classNames("appbar__nav-menu", {

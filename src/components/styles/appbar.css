@@ -4,8 +4,8 @@
   width: 100%;
   position: fixed;
   top: 0;
-  /* transition: all var(--animationSpeed) ease-in; */
 }
+
 .appbar__dropdown {
   width: 100%;
   display: flex;

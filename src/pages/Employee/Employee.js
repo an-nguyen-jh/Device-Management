@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from "react";
+import React, { Component } from "react";
 import { Redirect, Route, withRouter, Switch } from "react-router-dom";
 import { Appbar } from "../../components";
 import { employeeSubRouters } from "../../config/routes";

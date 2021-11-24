@@ -5,7 +5,7 @@ import {
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
-import parsefullFileURL from "../utils/parser";
+import parseFullFileURL from "../utils/parser";
 
 export default function generateStorageService() {
   const firebaseStorage = getStorage();
@@ -18,7 +18,7 @@ export default function generateStorageService() {
   }
 
   function deleteOldEmployeeImage(fileURL) {
-    const webFileURL = parsefullFileURL(fileURL);
+    const webFileURL = parseFullFileURL(fileURL);
     const normalizedFileURL = webFileURL.replace(/%2F/g, "/");
     const imageRef = ref(firebaseStorage, normalizedFileURL);
     return deleteObject(imageRef);

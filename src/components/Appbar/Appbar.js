@@ -4,7 +4,10 @@ import { Link, withRouter } from "react-router-dom";
 import { MdArrowDropDown } from "react-icons/md";
 import { employeeSubRouters } from "../../config/routes";
 import "../styles/appbar.css";
-import { getRouterTile } from "../../utils/routerHandler";
+import {
+  getRouterLastSubDirectory,
+  getRouterTitle,
+} from "../../utils/routerHandler";
 import { Button } from "..";
 import { signout } from "../../apiService";
 import { authenticationAction } from "../../store/actions";
@@ -35,17 +38,24 @@ class Appbar extends Component {
   }
 
   componentDidMount() {
-    const subPathname = this.props.location.pathname.split("/")[2];
-    const routerTitle = getRouterTile(employeeSubRouters, subPathname);
+    const lastSubDirectory = getRouterLastSubDirectory(
+      this.props.location.pathname
+    );
+    const routerTitle = getRouterTitle(employeeSubRouters, lastSubDirectory);
     this.setState({
       title: routerTitle,
     });
   }
 
   componentDidUpdate(prevProps) {
-    const subPathname = this.props.location.pathname.split("/")[2];
-    if (subPathname !== prevProps.location.pathname.split("/")[2]) {
-      const routerTitle = getRouterTile(employeeSubRouters, subPathname);
+    const lastSubDirectory = getRouterLastSubDirectory(
+      this.props.location.pathname
+    );
+    if (
+      lastSubDirectory !==
+      getRouterLastSubDirectory(prevProps.location.pathname)
+    ) {
+      const routerTitle = getRouterTitle(employeeSubRouters, lastSubDirectory);
       this.setState({
         title: routerTitle,
         appbarToggle: false,

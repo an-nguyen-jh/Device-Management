@@ -3,11 +3,20 @@ import "../styles/input.css";
 import classNames from "classnames";
 class Input extends Component {
   render() {
-    const { className, error, errorMsg, ...rest } = this.props;
+    const { className, error, errorMsg, placeholder, ...rest } = this.props;
     return (
       <>
-        <input className={classNames("input--outlined", className)} {...rest} />
-        {error && <span className="input--error">* {errorMsg}</span>}
+        <input
+          className={classNames("input--outlined", className)}
+          placeholder={placeholder ? placeholder : "Your answer"}
+          {...rest}
+        />
+        <span
+          className="input--error"
+          style={{ visibility: `${error ? "visible" : "hidden"}` }}
+        >
+          * {errorMsg}
+        </span>
       </>
     );
   }

@@ -3,14 +3,14 @@ import "../styles/button.css";
 import classNames from "classnames";
 class Button extends Component {
   render() {
-    const { children, className, color, ...rest } = this.props;
+    const { children, className, color, variant, ...rest } = this.props;
     return (
       <button
         {...rest}
         className={classNames(
-          "button--contained",
+          `button--${variant ? variant : "contained"}`,
           className,
-          `${color ? color : "primary"}-color`
+          { [`button--${color}-color`]: color }
         )}
       >
         {children}

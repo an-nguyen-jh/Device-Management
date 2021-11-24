@@ -4,17 +4,19 @@
 }
 
 :root {
-  --primaryColor: #3dc3f5;
-  --primaryLightColor: #63cff7;
-  --primaryDarkColor: #2a88ab;
+  --primaryColor: #3d93f5;
+  --primaryLightColor: #63a8f7;
+  --primaryDarkColor: #2a66ab;
   --secondaryColor: #ff9800;
   --secondaryLightColor: #ffac33;
   --secondaryDarkColor: #b26a00;
+  --primaryBgColor: #ede7f6;
   --animationSpeed: 0.25s;
   --errorBgColor: #fdeded;
   --errorTextColor: #5f2120;
   --successBgColor: #e5f6fd;
   --successTextColor: #014361;
+  --appbarHeight: 60px;
 }
 
 *,
@@ -44,11 +46,39 @@ h3 {
   font-size: 1.75rem;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .container {
   width: 100%;
-  min-height: 100vh;
   margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
+  min-height: 100vh;
+  height: 100%;
+}
+
+.page-wrapper {
+}
+
+.content {
+  padding-top: var(--appbarHeight);
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--primaryBgColor);
+}
+
+.primary-color {
+  background-color: var(--primaryColor);
+}
+
+.secondary-color {
+  background-color: var(--secondaryColor);
+}
+
+@media only screen and (min-width: 1024px) {
 }

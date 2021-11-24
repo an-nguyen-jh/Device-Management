@@ -23,13 +23,11 @@ function App() {
           <Switch>
             <PrivateRoute
               path={privateRoute[ENV_CONFIG.ROLE.EMPLOYEE].pathname}
-              exact
               requiredRole={ENV_CONFIG.ROLE.EMPLOYEE}
               component={privateRoute[ENV_CONFIG.ROLE.EMPLOYEE].component}
             ></PrivateRoute>
             <PrivateRoute
               path={privateRoute[ENV_CONFIG.ROLE.ADMIN].pathname}
-              exact
               requiredRole={ENV_CONFIG.ROLE.ADMIN}
               component={privateRoute[ENV_CONFIG.ROLE.ADMIN].component}
             ></PrivateRoute>

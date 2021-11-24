@@ -56,7 +56,7 @@ class DeviceInfoForm extends Component {
         const previewImageURIs = await Promise.all(imageURIPromises);
         this.setState({ previewImages: previewImageURIs });
       } catch (error) {
-        console.log(error);
+        //ignore error
       }
     } else {
       this.setState({
@@ -83,7 +83,7 @@ class DeviceInfoForm extends Component {
       const imageDownloadURLs = await Promise.all(imageUploadPromises);
       return imageDownloadURLs;
     } catch (error) {
-      console.log(error);
+      //ignore error
       return [];
     }
   }
@@ -95,7 +95,7 @@ class DeviceInfoForm extends Component {
       });
       await Promise.all(imageDeletePromises);
     } catch (error) {
-      console.log(error);
+      //ignore error
     }
   }
 
@@ -147,7 +147,7 @@ class DeviceInfoForm extends Component {
       const oldDeviceInfo = deviceInfoSnapshot.data();
       this.setState({
         ...oldDeviceInfo,
-        previewImages: oldDeviceInfo.oldImageSrcs,
+        previewImages: oldDeviceInfo.oldImageSrcs || [],
       });
     } catch (error) {
       toast.error("Can't load old device's info", {

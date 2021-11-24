@@ -45,7 +45,6 @@ class DeviceRequestForm extends Component {
         style: { width: "300px" },
       });
     } catch (error) {
-      console.log(error);
       toast.error("Error in request device", {
         style: { width: "300px" },
       });

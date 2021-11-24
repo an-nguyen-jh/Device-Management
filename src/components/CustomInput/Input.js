@@ -11,7 +11,12 @@ class Input extends Component {
           placeholder={placeholder ? placeholder : "Your answer"}
           {...rest}
         />
-        {error && <span className="input--error">* {errorMsg}</span>}
+        <span
+          className="input--error"
+          style={{ visibility: `${error ? "visible" : "hidden"}` }}
+        >
+          * {errorMsg}
+        </span>
       </>
     );
   }

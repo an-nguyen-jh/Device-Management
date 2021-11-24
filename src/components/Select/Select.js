@@ -17,7 +17,12 @@ class Select extends Component {
             );
           })}
         </select>
-        {error && <span className="input--error">* {errorMsg}</span>}
+        <span
+          className="input--error"
+          style={{ visibility: `${error ? "visible" : "hidden"}` }}
+        >
+          * {errorMsg}
+        </span>
       </>
     );
   }

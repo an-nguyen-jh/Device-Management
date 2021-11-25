@@ -27,12 +27,12 @@ export default function generateDatabaseService() {
     return getDoc(deviceInfoRef);
   }
 
-  function updateDeviceInfoForm(data, email) {
-    const deviceUpdateDoc = doc(firebaseDB, "deviceInfos", email).withConverter(
+  function addDeviceInfoForm(data, email) {
+    const deviceInfoDoc = doc(firebaseDB, "deviceInfos", email).withConverter(
       deviceInfoConverter
     );
-    const deviceUpdateData = new DeviceInfo(data);
-    return setDoc(deviceUpdateDoc, deviceUpdateData, { merge: true });
+    const deviceInfoData = new DeviceInfo(data);
+    return setDoc(deviceInfoDoc, deviceInfoData, { merge: true });
   }
 
   function addNewRequestDevice(data) {
@@ -46,7 +46,7 @@ export default function generateDatabaseService() {
   return {
     getUserByEmail,
     getDeviceInfoOfEmployeeByEmail,
-    updateDeviceInfoForm,
+    addDeviceInfoForm,
     addNewRequestDevice,
   };
 }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "../styles/form.css";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { Field, Form } from "react-final-form";
 import { Button, Input, Select } from "..";
 import { teamOptions, deviceOptions } from "../../config/formData/formData";
@@ -15,6 +15,7 @@ class DeviceRequestForm extends Component {
       team: "",
       device: "",
       numberOfDevice: 1,
+      notice: "",
     };
     this.handleRequestDeviceSubmit = this.handleRequestDeviceSubmit.bind(this);
     this.clearFormInput = this.clearFormInput.bind(this);
@@ -34,6 +35,7 @@ class DeviceRequestForm extends Component {
       team: "",
       device: "",
       numberOfDevice: 1,
+      notice: "",
     });
   }
 
@@ -42,20 +44,19 @@ class DeviceRequestForm extends Component {
       const newRequestDevice = { ...values, employee: this.props.userEmail };
       await addNewRequestDevice(newRequestDevice);
       toast.success("Success request device", {
-        style: { width: "300px" },
+        className: "toast-notification",
       });
     } catch (error) {
       toast.error("Error in request device", {
-        style: { width: "300px" },
+        className: "toast-notification",
       });
     }
   }
 
   render() {
-    const { name, team, device, numberOfDevice } = this.state;
+    const { name, team, device, numberOfDevice, notice } = this.state;
     return (
       <div className="form-wrapper">
-        <Toaster />
         <div className="form-center-container">
           <Form
             onSubmit={this.handleRequestDeviceSubmit}
@@ -65,6 +66,7 @@ class DeviceRequestForm extends Component {
               team,
               device,
               numberOfDevice,
+              notice,
             }}
           >
             {({ handleSubmit, submitting }) => {
@@ -195,7 +197,7 @@ class DeviceRequestForm extends Component {
                         5. Chú thích:{" "}
                       </label>
                       <Field
-                        name="reason"
+                        name="notice"
                         type="text"
                         placeholder="Lý do cần cấp, yêu cầu về thiết bị, ..."
                         subscription={{

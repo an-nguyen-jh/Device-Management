@@ -37,7 +37,7 @@ class Login extends Component {
         pathname: `${privateRoute[user.role].pathname}`,
       });
     } catch (error) {
-      toast.error("Failed to login", { style: { width: "300px" } });
+      toast.error("Failed to login", { className: "toast-notification" });
     }
   }
 

@@ -3,15 +3,16 @@ import { Field, Form } from "react-final-form";
 import { Input, Select, UploadImage } from "..";
 import {
   getDeviceInfoOfEmployeeByEmail,
-  updateDeviceInfoForm,
+  addDeviceInfoForm,
   uploadEmployeeDeviceImage,
   deleteOldEmployeeImage,
 } from "../../apiService";
 import { Button } from "../index";
 import "../styles/form.css";
 import { connect } from "react-redux";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { teamOptions } from "../../config/formData/formData";
+import { withRouter } from "react-router";
 
 class DeviceInfoForm extends Component {
   constructor(props) {
@@ -104,6 +105,16 @@ class DeviceInfoForm extends Component {
     const { userEmail } = this.props;
     try {
       let updateData = { ...values };
+      const isDeviceInfoExists = (
+        await getDeviceInfoOfEmployeeByEmail(userEmail)
+      ).exists();
+      if (isDeviceInfoExists) {
+        toast.error("You already store your device info", {
+          className: "toast-notification",
+        });
+        return;
+      }
+
       if (chosenImageSrc.length > 0) {
         await this.deleteOldEmployeeDeviceImages(oldImageSrcs);
         const imageDownloadURLs = await this.uploadEmployeeDeviceImages(
@@ -112,13 +123,16 @@ class DeviceInfoForm extends Component {
         );
         Object.assign(updateData, { oldImageSrcs: imageDownloadURLs });
       }
-      await updateDeviceInfoForm(updateData, userEmail);
-      toast.success("Success store device info", {
-        style: { width: "300px" },
-      });
+      await addDeviceInfoForm(updateData, userEmail);
+      toast.success(
+        "Success store device info, request another device if you need",
+        {
+          className: "toast-notification",
+        }
+      );
     } catch (error) {
       toast.error("Error in update device info", {
-        style: { width: "300px" },
+        className: "toast-notification",
       });
     }
   }
@@ -139,19 +153,27 @@ class DeviceInfoForm extends Component {
   }
 
   async componentDidMount() {
-    const userEmail = this.props.userEmail;
+    const { userEmail, history } = this.props;
     try {
       const deviceInfoSnapshot = await getDeviceInfoOfEmployeeByEmail(
         userEmail
       );
-      const oldDeviceInfo = deviceInfoSnapshot.data();
-      this.setState({
-        ...oldDeviceInfo,
-        previewImages: oldDeviceInfo.oldImageSrcs || [],
-      });
+
+      if (deviceInfoSnapshot.exists()) {
+        history.push({ pathname: "/employee/device-request" });
+        toast(
+          "You provided your device info, let's request another device if you need",
+          {
+            duration: 6000,
+            className: 'toast-notification'
+          }
+        );
+      }
     } catch (error) {
+      history.push({ pathname: "/employee/device-request" });
       toast.error("Can't load old device's info", {
-        style: { width: "300px" },
+        className: 'toast-notification'
+
       });
     }
   }
@@ -172,7 +194,6 @@ class DeviceInfoForm extends Component {
     } = this.state;
     return (
       <div className="form-wrapper">
-        <Toaster />
         <div className="form-center-container">
           <Form
             onSubmit={this.handleDeviceInfoSubmit}
@@ -513,4 +534,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(DeviceInfoForm);
+export default withRouter(connect(mapStateToProps, null)(DeviceInfoForm));

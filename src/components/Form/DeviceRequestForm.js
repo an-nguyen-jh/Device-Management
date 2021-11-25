@@ -44,11 +44,11 @@ class DeviceRequestForm extends Component {
       const newRequestDevice = { ...values, employee: this.props.userEmail };
       await addNewRequestDevice(newRequestDevice);
       toast.success("Success request device", {
-        style: { width: "300px" },
+        className: "toast-notification",
       });
     } catch (error) {
       toast.error("Error in request device", {
-        style: { width: "300px" },
+        className: "toast-notification",
       });
     }
   }

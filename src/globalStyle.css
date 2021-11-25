@@ -80,5 +80,10 @@ a {
   background-color: var(--secondaryColor);
 }
 
+.toast-notification {
+  width: 450px;
+  text-align: center;
+}
+
 @media only screen and (min-width: 1024px) {
 }

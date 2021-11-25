@@ -25,7 +25,7 @@ const privateRoute = {
 const employeeSubRouters = [
   {
     pathname: "/device-info",
-    title: "Device's Info Form",
+    title: "Device Information Form",
     icon: <MdOutlineDeviceUnknown />,
     component: DeviceInfoForm,
   },

@@ -10,7 +10,7 @@ const { loginWithEmailAndPassword, signout } = generateAuthenticationService();
 const {
   getUserByEmail,
   getDeviceInfoOfEmployeeByEmail,
-  updateDeviceInfoForm,
+  addDeviceInfoForm,
   addNewRequestDevice,
 } = generatedDatabaseService();
 
@@ -22,7 +22,7 @@ export {
   signout,
   getUserByEmail,
   getDeviceInfoOfEmployeeByEmail,
-  updateDeviceInfoForm,
+  addDeviceInfoForm,
   uploadEmployeeDeviceImage,
   deleteOldEmployeeImage,
   addNewRequestDevice,

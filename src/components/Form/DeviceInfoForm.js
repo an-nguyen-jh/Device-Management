@@ -3,7 +3,7 @@ import { Field, Form } from "react-final-form";
 import { Input, Select, UploadImage } from "..";
 import {
   getDeviceInfoOfEmployeeByEmail,
-  updateDeviceInfoForm,
+  addDeviceInfoForm,
   uploadEmployeeDeviceImage,
   deleteOldEmployeeImage,
 } from "../../apiService";
@@ -105,6 +105,16 @@ class DeviceInfoForm extends Component {
     const { userEmail } = this.props;
     try {
       let updateData = { ...values };
+      const isDeviceInfoExists = (
+        await getDeviceInfoOfEmployeeByEmail(userEmail)
+      ).exists();
+      if (isDeviceInfoExists) {
+        toast.error("You already store your device info", {
+          className: "toast-notification",
+        });
+        return;
+      }
+
       if (chosenImageSrc.length > 0) {
         await this.deleteOldEmployeeDeviceImages(oldImageSrcs);
         const imageDownloadURLs = await this.uploadEmployeeDeviceImages(
@@ -113,13 +123,16 @@ class DeviceInfoForm extends Component {
         );
         Object.assign(updateData, { oldImageSrcs: imageDownloadURLs });
       }
-      await updateDeviceInfoForm(updateData, userEmail);
-      toast.success("Success store device info", {
-        style: { width: "300px" },
-      });
+      await addDeviceInfoForm(updateData, userEmail);
+      toast.success(
+        "Success store device info, request another device if you need",
+        {
+          className: "toast-notification",
+        }
+      );
     } catch (error) {
       toast.error("Error in update device info", {
-        style: { width: "300px" },
+        className: "toast-notification",
       });
     }
   }
@@ -152,14 +165,15 @@ class DeviceInfoForm extends Component {
           "You provided your device info, let's request another device if you need",
           {
             duration: 6000,
-            style: { width: "500px", textAlign: "center" },
+            className: 'toast-notification'
           }
         );
       }
     } catch (error) {
       history.push({ pathname: "/employee/device-request" });
       toast.error("Can't load old device's info", {
-        style: { width: "300px" },
+        className: 'toast-notification'
+
       });
     }
   }

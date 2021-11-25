@@ -9,7 +9,7 @@ class Employee extends Component {
     return (
       <div className="container page-wrapper">
         <Toaster />
-        <Appbar></Appbar>
+        <Appbar routers={employeeSubRouters}></Appbar>
         <div className="content">
           <Switch>
             {employeeSubRouters.map((router) => (

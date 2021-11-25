@@ -1,7 +1,8 @@
 import { lazy } from "react";
 import ENV_CONFIG from "..";
 import { MdOutlineDevices, MdOutlineDeviceUnknown } from "react-icons/md";
-
+import { HiDocumentDuplicate } from "react-icons/hi";
+import { FaList } from "react-icons/fa";
 const Employee = lazy(() => import("../../pages/Employee/Employee"));
 const Admin = lazy(() => import("../../pages/Admin/Admin"));
 const DeviceInfoForm = lazy(() =>
@@ -9,6 +10,13 @@ const DeviceInfoForm = lazy(() =>
 );
 const DeviceRequestForm = lazy(() =>
   import("../../components/Form/DeviceRequestForm")
+);
+
+const DeviceRequest = lazy(() =>
+  import("../../components/DeviceRequest/DeviceRequest")
+);
+const EmployeeDevice = lazy(() =>
+  import("../../components/EmployeeDevice/EmployeeDevice")
 );
 
 const privateRoute = {
@@ -37,7 +45,20 @@ const employeeSubRouters = [
   },
 ];
 
-const adminSubRouters = [];
+const adminSubRouters = [
+  {
+    pathname: "/items-list",
+    title: "Employee Devices List",
+    icon: <HiDocumentDuplicate />,
+    component: EmployeeDevice,
+  },
+  {
+    pathname: "/device-request-list",
+    title: "Device Request list",
+    icon: <FaList />,
+    component: DeviceRequest,
+  },
+];
 
 export { employeeSubRouters, adminSubRouters };
 

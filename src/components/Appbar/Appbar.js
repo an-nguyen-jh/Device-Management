@@ -2,7 +2,6 @@ import classNames from "classnames";
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { MdArrowDropDown } from "react-icons/md";
-import { employeeSubRouters } from "../../config/routes";
 import "../styles/appbar.css";
 import {
   getRouterLastSubDirectory,
@@ -38,16 +37,18 @@ class Appbar extends Component {
   }
 
   componentDidMount() {
+    const routers = this.props.routers;
     const lastSubDirectory = getRouterLastSubDirectory(
       this.props.location.pathname
     );
-    const routerTitle = getRouterTitle(employeeSubRouters, lastSubDirectory);
+    const routerTitle = getRouterTitle(routers, lastSubDirectory);
     this.setState({
       title: routerTitle,
     });
   }
 
   componentDidUpdate(prevProps) {
+    const routers = this.props.routers;
     const lastSubDirectory = getRouterLastSubDirectory(
       this.props.location.pathname
     );
@@ -55,7 +56,7 @@ class Appbar extends Component {
       lastSubDirectory !==
       getRouterLastSubDirectory(prevProps.location.pathname)
     ) {
-      const routerTitle = getRouterTitle(employeeSubRouters, lastSubDirectory);
+      const routerTitle = getRouterTitle(routers, lastSubDirectory);
       this.setState({
         title: routerTitle,
         appbarToggle: false,
@@ -66,6 +67,7 @@ class Appbar extends Component {
   render() {
     const { appbarToggle: toggle, title } = this.state;
     const path = this.props.match.path;
+    const routers = this.props.routers;
     const subPathname = this.props.location.pathname.split("/")[2];
 
     return (
@@ -90,7 +92,7 @@ class Appbar extends Component {
           })}
         >
           <ul className="appbar__nav-list">
-            {employeeSubRouters.map((router) => (
+            {routers.map((router) => (
               <li
                 key={router.pathname}
                 className={classNames("appbar__nav-item", {

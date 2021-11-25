@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
+import { Toolbar } from "..";
 
 function DeviceRequest() {
-  return <div> </div>;
+  return (
+    <div>
+      <Toolbar></Toolbar>
+    </div>
+  );
 }
 export default DeviceRequest;

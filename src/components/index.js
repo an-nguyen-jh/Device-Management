@@ -7,6 +7,7 @@ import DeviceRequestForm from "./Form/DeviceRequestForm";
 import DeviceInfoForm from "./Form/DeviceInfoForm";
 import Select from "./Select/Select";
 import UploadImage from "./UploadImage/UploadImage";
+import Toolbar from "./Toolbar/Toolbar";
 
 export {
   Input,
@@ -18,4 +19,5 @@ export {
   DeviceRequestForm,
   Select,
   UploadImage,
+  Toolbar,
 };

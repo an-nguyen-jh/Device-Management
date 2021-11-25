@@ -11,7 +11,7 @@ import { Button } from "../index";
 import "../styles/form.css";
 import { connect } from "react-redux";
 import toast from "react-hot-toast";
-import { teamOptions } from "../../config/formData/formData";
+import { teamOptions } from "../../config/options/options";
 import { withRouter } from "react-router";
 
 class DeviceInfoForm extends Component {
@@ -165,15 +165,14 @@ class DeviceInfoForm extends Component {
           "You provided your device info, let's request another device if you need",
           {
             duration: 6000,
-            className: 'toast-notification'
+            className: "toast-notification",
           }
         );
       }
     } catch (error) {
       history.push({ pathname: "/employee/device-request" });
       toast.error("Can't load old device's info", {
-        className: 'toast-notification'
-
+        className: "toast-notification",
       });
     }
   }

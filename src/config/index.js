@@ -21,12 +21,20 @@ const REQUEST = {
   DENY: -1,
 };
 
+const SORT = {
+  ASCEND_NAME: "ascendName",
+  DESCEND_NAME: "descendName",
+  ASCEND_UPDATE_DATE: "ascendUpdatedTime",
+  DESCEND_UPDATE_DATE: "descendUpdatedTime",
+};
+
 const ENV_CONFIG = {
   FIREBASE_CONFIG,
   ROLE,
   URL_FIRESTORAGE:
     "https://firebasestorage.googleapis.com/v0/b/device-management-911c9.appspot.com/o/",
   REQUEST,
+  SORT,
 };
 
 export default ENV_CONFIG;

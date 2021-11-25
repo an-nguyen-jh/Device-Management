@@ -10,7 +10,7 @@ function Admin() {
     <div className="container page-wrapper">
       <Toaster />
       <Appbar routers={adminSubRouters}></Appbar>
-      <div className="content bg-white">
+      <div className="content ">
         <Switch>
           {adminSubRouters.map((router) => (
             <Route

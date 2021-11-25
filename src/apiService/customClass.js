@@ -14,16 +14,22 @@ export class DeviceInfo {
     team,
   }) {
     this.createdTime = new Date();
-    this.computerCompanyName = computerCompanyName;
-    this.computerConfig = computerConfig;
-    this.computersSeriNumber = computersSeriNumber;
-    this.mouseCompanyName = mouseCompanyName;
     this.name = name;
-    this.numberOfMouse = numberOfMouse || 0;
-    this.numberOfScreen = numberOfScreen || 0;
-    this.screenConfig = screenConfig || 0;
-    this.screenSize = screenSize;
     this.team = team;
+    this.computer = {
+      companyName: computerCompanyName,
+      config: computerConfig,
+      seriNumber: computersSeriNumber,
+    };
+    this.mouse = {
+      companyName: mouseCompanyName,
+      numberOf: numberOfMouse || 0,
+    };
+    this.screen = {
+      numberOf: numberOfScreen || 0,
+      config: screenConfig || 0,
+      size: screenSize,
+    };
   }
 }
 
@@ -31,16 +37,17 @@ export const deviceInfoConverter = {
   toFirestore: (deviceInfo) => {
     return {
       name: deviceInfo.name,
-      computerCompanyName: deviceInfo.computerCompanyName,
-      computerConfig: deviceInfo.computerConfig,
-      computersSeriNumber: deviceInfo.computersSeriNumber,
-      mouseCompanyName: deviceInfo.mouseCompanyName,
-      numberOfMouse: deviceInfo.numberOfMouse,
-      numberOfScreen: deviceInfo.numberOfScreen,
-      screenConfig: deviceInfo.screenConfig,
-      screenSize: deviceInfo.screenSize,
       team: deviceInfo.team,
       createdTime: deviceInfo.createdTime,
+      computer: {
+        ...deviceInfo.computer,
+      },
+      mouse: {
+        ...deviceInfo.mouse,
+      },
+      screen: {
+        ...deviceInfo.screen,
+      },
     };
   },
   fromFirestore: (snapshot, options) => {
@@ -50,13 +57,14 @@ export const deviceInfoConverter = {
 };
 
 export class DeviceRequest {
-  constructor({ name, team, device, numberOfDevice }) {
+  constructor({ name, team, device, numberOfDevice, notice }) {
     this.team = team;
     this.device = device;
     this.name = name;
     this.numberOfDevice = numberOfDevice;
     this.createdTime = new Date();
     this.status = ENV_CONFIG.REQUEST.PENDING;
+    this.notice = notice;
   }
 }
 
@@ -69,6 +77,7 @@ export const deviceRequestConverter = {
       numberOfDevice: deviceRequest.numberOfDevice,
       team: deviceRequest.team,
       status: deviceRequest.status,
+      notice: deviceRequest.notice,
     };
   },
   fromFirestore: (snapshot, options) => {

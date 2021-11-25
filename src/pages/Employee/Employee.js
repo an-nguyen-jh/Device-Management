@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import { Redirect, Route, withRouter, Switch } from "react-router-dom";
 import { Appbar } from "../../components";
 import { employeeSubRouters } from "../../config/routes";
+import { Toaster } from "react-hot-toast";
 
 class Employee extends Component {
   render() {
     return (
       <div className="container page-wrapper">
+        <Toaster />
         <Appbar></Appbar>
         <div className="content">
           <Switch>

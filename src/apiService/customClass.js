@@ -14,6 +14,7 @@ export class DeviceInfo {
     team,
   }) {
     this.createdTime = new Date();
+    this.updatedTime = new Date();
     this.name = name;
     this.team = team;
     this.computer = {
@@ -39,6 +40,7 @@ export const deviceInfoConverter = {
       name: deviceInfo.name,
       team: deviceInfo.team,
       createdTime: deviceInfo.createdTime,
+      updatedTime: deviceInfo.updatedTime,
       computer: {
         ...deviceInfo.computer,
       },

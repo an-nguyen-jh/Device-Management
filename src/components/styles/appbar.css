@@ -21,6 +21,7 @@
   white-space: nowrap;
   overflow: hidden;
   padding: 0 16px;
+  margin: 0 12px;
 }
 
 .appbar__dropdown__btn {

@@ -14,12 +14,14 @@
 
 .toolbar__functional-group {
   display: flex;
+  margin-left: 12px;
 }
 
 .toolbar__functional-sort {
   margin: auto;
   width: 200px;
   padding: 10px;
+  cursor: pointer;
 }
 
 .toolbar__layout-btn {

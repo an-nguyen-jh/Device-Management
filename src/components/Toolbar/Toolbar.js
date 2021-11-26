@@ -1,14 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import "../styles/toolbar.css";
 import { AiOutlineTable, AiOutlineUnorderedList } from "react-icons/ai";
 import { Select } from "..";
 import { sortOptions } from "../../config/options/options";
 
-function Toolbar() {
-  const [isListView, setIsListView] = useState(true);
-
-  const changeLayoutView = () => setIsListView(!isListView);
-
+function Toolbar({ isListView, changeLayout }) {
   return (
     <div className="toolbar-wrapper">
       <div className="container-fluid">
@@ -20,7 +16,7 @@ function Toolbar() {
               options={sortOptions}
             ></Select>
           </div>
-          <div className="toolbar__layout-btn" onClick={changeLayoutView}>
+          <div className="toolbar__layout-btn" onClick={changeLayout}>
             {isListView ? (
               <AiOutlineTable className="toolbar__layout-btn__icon" />
             ) : (

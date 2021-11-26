@@ -8,8 +8,8 @@ import DeviceInfoForm from "./Form/DeviceInfoForm";
 import Select from "./Select/Select";
 import UploadImage from "./UploadImage/UploadImage";
 import Toolbar from "./Toolbar/Toolbar";
-import ListView from "./ListView/ListView";
-
+import ListView from "./Views/ListView";
+import GridView from "./Views/GridView";
 export {
   Input,
   Button,
@@ -22,4 +22,5 @@ export {
   UploadImage,
   ListView,
   Toolbar,
+  GridView,
 };

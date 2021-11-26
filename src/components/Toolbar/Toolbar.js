@@ -18,9 +18,9 @@ function Toolbar({ isListView, changeLayout }) {
           </div>
           <div className="toolbar__layout-btn" onClick={changeLayout}>
             {isListView ? (
-              <AiOutlineTable className="toolbar__layout-btn__icon" />
-            ) : (
               <AiOutlineUnorderedList className="toolbar__layout-btn__icon" />
+            ) : (
+              <AiOutlineTable className="toolbar__layout-btn__icon" />
             )}
           </div>
         </div>

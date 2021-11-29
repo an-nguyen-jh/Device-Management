@@ -2,9 +2,14 @@ import React from "react";
 import "../styles/toolbar.css";
 import { AiOutlineTable, AiOutlineUnorderedList } from "react-icons/ai";
 import { Select } from "..";
-import { sortOptions } from "../../config/options/options";
 
-function Toolbar({ isListView, changeLayout }) {
+function Toolbar({
+  isListView,
+  changeLayout,
+  sortOptions,
+  sortHandler,
+  selectOption,
+}) {
   return (
     <div className="toolbar-wrapper">
       <div className="container-fluid">
@@ -12,7 +17,8 @@ function Toolbar({ isListView, changeLayout }) {
           <div className="toolbar__functional-group">
             <Select
               className="toolbar__functional-sort"
-              placeholder="--Sort by --"
+              value={selectOption}
+              onChange={sortHandler}
               options={sortOptions}
             ></Select>
           </div>

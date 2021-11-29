@@ -22,10 +22,15 @@ const REQUEST = {
 };
 
 const SORT = {
-  ASCEND_NAME: "ascendName",
-  DESCEND_NAME: "descendName",
-  ASCEND_UPDATE_DATE: "ascendUpdatedTime",
-  DESCEND_UPDATE_DATE: "descendUpdatedTime",
+  ASCEND_NAME: "name_asc",
+  DESCEND_NAME: "name_desc",
+  ASCEND_UPDATE_DATE: "updatedTime_asc",
+  DESCEND_UPDATE_DATE: "updatedTime_desc",
+};
+
+const ITEM_LIMIT = {
+  LIST_LAYOUT: 10,
+  GRID_LAYOUT: 12,
 };
 
 const ENV_CONFIG = {
@@ -35,6 +40,7 @@ const ENV_CONFIG = {
     "https://firebasestorage.googleapis.com/v0/b/device-management-911c9.appspot.com/o/",
   REQUEST,
   SORT,
+  ITEM_LIMIT,
 };
 
 export default ENV_CONFIG;

@@ -4,7 +4,12 @@ import {
   doc,
   setDoc,
   collection,
+  query,
+  limit,
+  orderBy,
+  getDocs,
 } from "firebase/firestore";
+import { parseSortOption } from "../utils/parser";
 import {
   DeviceInfo,
   deviceInfoConverter,
@@ -43,10 +48,25 @@ export default function generateDatabaseService() {
 
     return setDoc(deviceRequestRef, deviceRequestNewData);
   }
+
+  function getDeviceInfos(currentPage, pageLimit, sortOption) {
+    const deviceInfoRef = collection(firebaseDB, "deviceInfos");
+    const sortTokens = parseSortOption(sortOption, "_");
+    console.log(sortTokens);
+    const deviceInfoQuery = query(
+      deviceInfoRef,
+      orderBy(sortTokens[0], sortTokens[1]),
+      limit(pageLimit)
+    );
+
+    return getDocs(deviceInfoQuery);
+  }
+
   return {
     getUserByEmail,
     getDeviceInfoOfEmployeeByEmail,
     addDeviceInfoForm,
     addNewRequestDevice,
+    getDeviceInfos,
   };
 }

@@ -12,6 +12,7 @@ export class DeviceInfo {
     screenConfig,
     screenSize,
     team,
+    oldImageSrcs,
   }) {
     this.createdTime = new Date();
     this.updatedTime = new Date();
@@ -31,6 +32,7 @@ export class DeviceInfo {
       config: screenConfig || "0",
       size: screenSize || "",
     };
+    this.imageSrcs = oldImageSrcs || [];
   }
 }
 
@@ -50,6 +52,7 @@ export const deviceInfoConverter = {
       screen: {
         ...deviceInfo.screen,
       },
+      imageSrcs: deviceInfo.imageSrcs,
     };
   },
   fromFirestore: (snapshot, options) => {

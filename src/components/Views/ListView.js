@@ -1,8 +1,9 @@
 import React from "react";
 import "../styles/listView.css";
 import classNames from "classnames";
+import { MdOutlineDeleteOutline } from "react-icons/md";
 
-function ListView({ tableHeaders, deviceInfos }) {
+function ListView({ tableHeaders, deviceInfos, handleDelete }) {
   return (
     <div className="list-layout-wrapper">
       <div className="list-layout__header-wrapper">
@@ -11,9 +12,15 @@ function ListView({ tableHeaders, deviceInfos }) {
             {tableHeaders.map((tableHeader, i) => (
               <div
                 key={tableHeader}
-                className={classNames("list-layout__cell", {
-                  "list-layout__first-cell": i === 0,
-                })}
+                className={classNames(
+                  "list-layout__cell",
+                  {
+                    "list-layout__first-cell": i === 0,
+                  },
+                  {
+                    "list-layout__last-cell": i === tableHeaders.length - 1,
+                  }
+                )}
               >
                 {tableHeader}
               </div>
@@ -48,6 +55,14 @@ function ListView({ tableHeaders, deviceInfos }) {
               </div>
               <div className="list-layout__cell">
                 <span> {deviceInfo.updatedTime.toLocaleDateString()}</span>
+              </div>
+              <div className="list-layout__last-cell">
+                <div
+                  className="list-layout__delete-btn"
+                  onClick={() => handleDelete(deviceInfo.email)}
+                >
+                  <MdOutlineDeleteOutline></MdOutlineDeleteOutline>
+                </div>
               </div>
             </div>
           ))}

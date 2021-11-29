@@ -1,8 +1,9 @@
 import React from "react";
+import { Button } from "..";
 import { generateAvatarByName } from "../../utils/generateAvatar";
 import "../styles/gridView.css";
 
-function GridView({ deviceInfos }) {
+function GridView({ deviceInfos, handleDelete }) {
   return (
     <div className="grid-layout-wrapper">
       <div className="container-fluid">
@@ -35,7 +36,7 @@ function GridView({ deviceInfos }) {
                   "grid-layout__card-body__avatar"
                 )}
                 <div className="grid-layout__card-body__owner">
-                  {deviceInfo.name}:
+                  {deviceInfo.name}
                 </div>
                 <div className="grid-layout__card-body__team">
                   {deviceInfo.team}
@@ -44,6 +45,11 @@ function GridView({ deviceInfos }) {
                 <div className="grid-layout__card-body__update-date">
                   Update Date: {deviceInfo.updatedTime.toLocaleDateString()}
                 </div>
+              </div>
+              <div className="grid-layout__card-footer">
+                <Button className="grid-layout__card-footer__delete">
+                  Delete
+                </Button>
               </div>
             </div>
           ))}

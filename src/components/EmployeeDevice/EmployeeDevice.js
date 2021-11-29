@@ -9,7 +9,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { deviceInfoAction } from "../../store/actions";
 import { parseSortOption } from "../../utils/parser";
 import { sortDeviceInfos } from "../../utils/sort";
-const tableHeaders = ["Thông tin", "Team", "Sửa đổi lần cuối"];
+
+const tableHeaders = ["Thông tin", "Team", "Sửa đổi lần cuối", ""];
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -65,6 +66,9 @@ function EmployeeDevice() {
       `${location.pathname}?sort=${sortOption}&page=${selectedPage}`
     );
   };
+
+  const handleDeleteDeviceInfo = (email) => {};
+
   useEffect(() => {
     (async () => {
       const sortTokens = parseSortOption(sortOption, "_");

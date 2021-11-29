@@ -3,5 +3,9 @@ const ACTION_TAG = {
     SIGN_IN: " USER_SIGN_IN",
     SIGN_OUT: "USER_SIGN_OUT",
   },
+  DEVICE_INFO: {
+    STORE: "STORE_DEVICE_INFO",
+    REMOVE: "REMOVE_DEVICE_INFO",
+  },
 };
 export default ACTION_TAG;

@@ -5,11 +5,9 @@ import {
   setDoc,
   collection,
   query,
-  limit,
-  orderBy,
   getDocs,
 } from "firebase/firestore";
-import { parseSortOption } from "../utils/parser";
+
 import {
   DeviceInfo,
   deviceInfoConverter,
@@ -49,14 +47,9 @@ export default function generateDatabaseService() {
     return setDoc(deviceRequestRef, deviceRequestNewData);
   }
 
-  function getDeviceInfos(currentPage, pageLimit, sortOption) {
+  function getDeviceInfos() {
     const deviceInfoRef = collection(firebaseDB, "deviceInfos");
-    const sortTokens = parseSortOption(sortOption, "_");
-    const deviceInfoQuery = query(
-      deviceInfoRef,
-      orderBy(sortTokens[0], sortTokens[1]),
-      limit(pageLimit)
-    );
+    const deviceInfoQuery = query(deviceInfoRef);
 
     return getDocs(deviceInfoQuery);
   }

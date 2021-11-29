@@ -47,7 +47,7 @@ function ListView({ tableHeaders, deviceInfos }) {
                 <span>{deviceInfo.team}</span>
               </div>
               <div className="list-layout__cell">
-                <span> {deviceInfo.updatedTime}</span>
+                <span> {deviceInfo.updatedTime.toLocaleDateString()}</span>
               </div>
             </div>
           ))}

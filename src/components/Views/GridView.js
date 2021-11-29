@@ -42,7 +42,7 @@ function GridView({ deviceInfos }) {
                 </div>
 
                 <div className="grid-layout__card-body__update-date">
-                  Update Date: {deviceInfo.updatedTime}
+                  Update Date: {deviceInfo.updatedTime.toLocaleDateString()}
                 </div>
               </div>
             </div>

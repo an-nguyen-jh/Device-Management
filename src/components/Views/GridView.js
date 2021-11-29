@@ -47,7 +47,15 @@ function GridView({ deviceInfos, handleDelete }) {
                 </div>
               </div>
               <div className="grid-layout__card-footer">
-                <Button className="grid-layout__card-footer__delete">
+                <Button
+                  className="grid-layout__card-footer__delete"
+                  onClick={() =>
+                    handleDelete({
+                      email: deviceInfo.email,
+                      name: deviceInfo.name,
+                    })
+                  }
+                >
                   Delete
                 </Button>
               </div>

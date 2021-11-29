@@ -59,7 +59,12 @@ function ListView({ tableHeaders, deviceInfos, handleDelete }) {
               <div className="list-layout__last-cell">
                 <div
                   className="list-layout__delete-btn"
-                  onClick={() => handleDelete(deviceInfo.email)}
+                  onClick={() =>
+                    handleDelete({
+                      email: deviceInfo.email,
+                      name: deviceInfo.name,
+                    })
+                  }
                 >
                   <MdOutlineDeleteOutline></MdOutlineDeleteOutline>
                 </div>

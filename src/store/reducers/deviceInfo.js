@@ -5,20 +5,20 @@ const deviceInfoInitState = {
   selectedEmail: "",
 };
 
-function deviceInfoReducer(authState = deviceInfoInitState, action) {
+function deviceInfoReducer(deviceInfoState = deviceInfoInitState, action) {
   switch (action.type) {
     case ACTION_TAG.DEVICE_INFO.STORE:
       return {
-        ...authState,
+        ...deviceInfoState,
         deviceInfos: [...action.payload],
       };
     case ACTION_TAG.DEVICE_INFO.REMOVE:
       return {
-        ...authState,
+        ...deviceInfoState,
         deviceInfos: [],
       };
     default:
-      return deviceInfoInitState;
+      return deviceInfoState;
   }
 }
 

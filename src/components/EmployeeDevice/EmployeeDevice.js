@@ -6,7 +6,7 @@ import { getDeviceInfos } from "../../apiService";
 import toast from "react-hot-toast";
 import { useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { deviceInfoAction } from "../../store/actions";
+import { confirmDialogAction, deviceInfoAction } from "../../store/actions";
 import { parseSortOption } from "../../utils/parser";
 import { sortDeviceInfos } from "../../utils/sort";
 
@@ -67,7 +67,8 @@ function EmployeeDevice() {
     );
   };
 
-  const handleDeleteDeviceInfo = (email) => {};
+  const handleDeleteDeviceInfo = ({ email, name }) =>
+    dispatch(confirmDialogAction.visible({ name, email }));
 
   useEffect(() => {
     (async () => {
@@ -114,9 +115,13 @@ function EmployeeDevice() {
         <ListView
           tableHeaders={tableHeaders}
           deviceInfos={deviceInfos}
+          handleDelete={handleDeleteDeviceInfo}
         ></ListView>
       ) : (
-        <GridView deviceInfos={deviceInfos}></GridView>
+        <GridView
+          deviceInfos={deviceInfos}
+          handleDelete={handleDeleteDeviceInfo}
+        ></GridView>
       )}
       <Pagination
         currentPage={currentPage}

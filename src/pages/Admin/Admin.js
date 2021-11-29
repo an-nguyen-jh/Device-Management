@@ -1,5 +1,5 @@
 import React from "react";
-import { Appbar } from "../../components";
+import { Appbar, ConfirmDeleteDialog } from "../../components";
 import { Toaster } from "react-hot-toast";
 import { adminSubRouters } from "../../config/routes";
 import { Route, Switch, Redirect, useRouteMatch } from "react-router-dom";
@@ -10,6 +10,7 @@ function Admin() {
     <div className="container page-wrapper">
       <Toaster />
       <Appbar routers={adminSubRouters}></Appbar>
+      <ConfirmDeleteDialog />
       <div className="content bg-white">
         <Switch>
           {adminSubRouters.map((router) => (

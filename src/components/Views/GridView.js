@@ -53,6 +53,7 @@ function GridView({ deviceInfos, handleDelete }) {
                     handleDelete({
                       email: deviceInfo.email,
                       name: deviceInfo.name,
+                      imageSrcs: deviceInfo.imageSrcs,
                     })
                   }
                 >

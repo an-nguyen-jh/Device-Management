@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Alert, Button } from "..";
-import { confirmDialogAction } from "../../store/actions";
+import { confirmDialogAction, updateListAction } from "../../store/actions";
 import "../styles/dialog.css";
 import { IoWarningOutline } from "react-icons/io5";
 import {
@@ -12,10 +12,11 @@ import {
 import toast from "react-hot-toast";
 
 function ConfirmDeleteDialog() {
-  const { shouldDisplay, name, email } = useSelector((state) => ({
+  const { shouldDisplay, name, email, imageSrcs } = useSelector((state) => ({
     shouldDisplay: state.confirmDialog.open,
     name: state.confirmDialog.name,
     email: state.confirmDialog.email,
+    imageSrcs: state.confirmDialog.imageSrcs,
   }));
   const dispatch = useDispatch();
 
@@ -23,10 +24,12 @@ function ConfirmDeleteDialog() {
 
   const deleteOldEmployeeDeviceImages = async (images) => {
     try {
-      const imageDeletePromises = images.map((imageURL) => {
-        return deleteOldEmployeeImage(imageURL);
-      });
-      await Promise.all(imageDeletePromises);
+      if (imageSrcs) {
+        const imageDeletePromises = images.map((imageURL) => {
+          return deleteOldEmployeeImage(imageURL);
+        });
+        await Promise.all(imageDeletePromises);
+      }
     } catch (error) {
       //ignore error
     }
@@ -36,11 +39,12 @@ function ConfirmDeleteDialog() {
     try {
       await deleteDeviceInfoByEmail(email);
       await deleteAllRelativeDeviceRequest(email);
-      // await deleteOldEmployeeDeviceImages([]);
+      await deleteOldEmployeeDeviceImages(imageSrcs);
       handleClose();
       toast.success("Successful delete employee's device info", {
         className: "toast-notification",
       });
+      dispatch(updateListAction.update());
     } catch (error) {
       console.log(error);
     }

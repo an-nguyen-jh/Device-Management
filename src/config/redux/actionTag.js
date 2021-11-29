@@ -11,5 +11,6 @@ const ACTION_TAG = {
     SHOW: "SHOW_CONFIRM_DIALOG",
     HIDDEN: "HIDDEN_CONFIRM_DIALOG",
   },
+  UPDATE_LIST: "UPDATE",
 };
 export default ACTION_TAG;

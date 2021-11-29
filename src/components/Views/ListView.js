@@ -63,6 +63,7 @@ function ListView({ tableHeaders, deviceInfos, handleDelete }) {
                     handleDelete({
                       email: deviceInfo.email,
                       name: deviceInfo.name,
+                      imageSrcs: deviceInfo.imageSrcs,
                     })
                   }
                 >

@@ -30,6 +30,7 @@ function EmployeeDevice() {
   const [isListView, setIsListView] = useState(true);
   const sortOption = query.get("sort") || sortOptions[0].key;
   const currentPage = parseInt(query.get("page")) || 1;
+  const isUpdate = useSelector((state) => state.updateList);
 
   const changeLayoutView = () => {
     setIsListView(!isListView);
@@ -67,8 +68,8 @@ function EmployeeDevice() {
     );
   };
 
-  const handleDeleteDeviceInfo = ({ email, name }) =>
-    dispatch(confirmDialogAction.visible({ name, email }));
+  const handleDeleteDeviceInfo = ({ email, name, imageSrcs }) =>
+    dispatch(confirmDialogAction.visible({ name, email, imageSrcs }));
 
   useEffect(() => {
     (async () => {
@@ -99,8 +100,8 @@ function EmployeeDevice() {
 
     //free memory in localStorage
     return dispatch(deviceInfoAction.removeDeviceInfo());
-    //useEffect run once after mounting
-  }, []);
+    //useEffect run once after mounting or need to update
+  }, [isUpdate]);
 
   return (
     <div>

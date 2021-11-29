@@ -3,6 +3,7 @@ import ACTION_TAG from "../../config/redux/actionTag";
 const confirmDialogInitState = {
   name: "",
   email: "",
+  imageSrcs: null,
   open: false,
 };
 
@@ -21,6 +22,7 @@ function confirmDialogReducer(
         name: "",
         email: "",
         open: false,
+        imageSrcs: null,
       };
     default:
       return confirmDialogState;

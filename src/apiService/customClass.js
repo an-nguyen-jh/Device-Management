@@ -62,9 +62,10 @@ export const deviceInfoConverter = {
 };
 
 export class DeviceRequest {
-  constructor({ name, team, device, numberOfDevice, notice }) {
+  constructor({ name, email, team, device, numberOfDevice, notice }) {
     this.team = team;
     this.device = device;
+    this.email = email;
     this.name = name;
     this.numberOfDevice = numberOfDevice;
     this.createdTime = new Date();
@@ -77,6 +78,7 @@ export const deviceRequestConverter = {
   toFirestore: (deviceRequest) => {
     return {
       name: deviceRequest.name,
+      email: deviceRequest.email,
       createdTime: deviceRequest.createdTime,
       device: deviceRequest.device,
       numberOfDevice: deviceRequest.numberOfDevice,

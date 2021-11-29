@@ -4,6 +4,12 @@ import { Alert, Button } from "..";
 import { confirmDialogAction } from "../../store/actions";
 import "../styles/dialog.css";
 import { IoWarningOutline } from "react-icons/io5";
+import {
+  deleteAllRelativeDeviceRequest,
+  deleteDeviceInfoByEmail,
+  deleteOldEmployeeImage,
+} from "../../apiService";
+import toast from "react-hot-toast";
 
 function ConfirmDeleteDialog() {
   const { shouldDisplay, name, email } = useSelector((state) => ({
@@ -12,9 +18,33 @@ function ConfirmDeleteDialog() {
     email: state.confirmDialog.email,
   }));
   const dispatch = useDispatch();
-  console.log({ shouldDisplay, name, email });
 
   const handleClose = () => dispatch(confirmDialogAction.invisible());
+
+  const deleteOldEmployeeDeviceImages = async (images) => {
+    try {
+      const imageDeletePromises = images.map((imageURL) => {
+        return deleteOldEmployeeImage(imageURL);
+      });
+      await Promise.all(imageDeletePromises);
+    } catch (error) {
+      //ignore error
+    }
+  };
+
+  const handleDeleteDeviceInfo = async () => {
+    try {
+      await deleteDeviceInfoByEmail(email);
+      await deleteAllRelativeDeviceRequest(email);
+      // await deleteOldEmployeeDeviceImages([]);
+      handleClose();
+      toast.success("Successful delete employee's device info", {
+        className: "toast-notification",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return shouldDisplay ? (
     <div className="dialog-wrapper">
@@ -41,7 +71,11 @@ function ConfirmDeleteDialog() {
           <Button variant="text" onClick={handleClose}>
             CANCEL
           </Button>
-          <Button variant="contained" style={{ background: "#ff0000" }}>
+          <Button
+            variant="contained"
+            style={{ background: "#ff0000" }}
+            onClick={handleDeleteDeviceInfo}
+          >
             DELETE
           </Button>
         </div>

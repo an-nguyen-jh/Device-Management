@@ -11,7 +11,7 @@ import Toolbar from "./Toolbar/Toolbar";
 import ListView from "./Views/ListView";
 import GridView from "./Views/GridView";
 import Pagination from "./Pagination/Pagination";
-import ConfirmDeleteDialog from "./Dialog/ComFirmDeleteDialog";
+import ConfirmDeleteDialog from "./Dialog/ConFirmDeleteDialog";
 
 export {
   Input,

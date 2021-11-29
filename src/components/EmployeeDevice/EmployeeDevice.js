@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Toolbar, ListView, GridView } from "..";
+import { Toolbar, ListView, GridView, Pagination } from "..";
 import { sortOptions } from "../../config/options/options";
 import ENV_CONFIG from "../../config";
 import { getDeviceInfos } from "../../apiService";
@@ -21,30 +21,53 @@ function EmployeeDevice() {
   const location = useLocation();
   const query = useQuery();
   const dispatch = useDispatch();
-  const { deviceInfos } = useSelector((state) => state.deviceInfo);
+  const [deviceInfos, setDeviceInfos] = useState([]);
+  const { totalDeviceInfos } = useSelector((state) => ({
+    totalDeviceInfos: state.deviceInfo.deviceInfos,
+  }));
+  const pageLimit = ENV_CONFIG.ITEM_LIMIT;
   const [isListView, setIsListView] = useState(true);
   const sortOption = query.get("sort") || sortOptions[0].key;
+  const currentPage = parseInt(query.get("page")) || 1;
 
-  const [currentPage, setCurrentPage] = useState(0);
-  const changeLayoutView = () => setIsListView(!isListView);
+  const changeLayoutView = () => {
+    setIsListView(!isListView);
+    const deviceInfoInPage = totalDeviceInfos.slice(
+      (currentPage - 1) * pageLimit,
+      currentPage * pageLimit
+    );
+    setDeviceInfos(deviceInfoInPage);
+  };
 
   const handleSortChange = (e) => {
     const sortTokens = parseSortOption(e.target.value, "_");
-    const tempDeviceInfos = [...deviceInfos];
+    const tempDeviceInfos = [...totalDeviceInfos];
     sortDeviceInfos(tempDeviceInfos, sortTokens);
     dispatch(deviceInfoAction.storeDeviceInfos(tempDeviceInfos));
-    history.push(`${location.pathname}?sort=${e.target.value}`);
+    const deviceInfoInPage = tempDeviceInfos.slice(
+      (currentPage - 1) * pageLimit,
+      currentPage * pageLimit
+    );
+    setDeviceInfos(deviceInfoInPage);
+    history.push(
+      `${location.pathname}?sort=${e.target.value}&page=${currentPage}`
+    );
   };
 
-  const handlePagination = (selectedPage) => setCurrentPage(selectedPage);
+  const handlePagination = (selectedPage) => {
+    const deviceInfoInPage = totalDeviceInfos.slice(
+      (selectedPage - 1) * pageLimit,
+      selectedPage * pageLimit
+    );
 
+    setDeviceInfos(deviceInfoInPage);
+    history.push(
+      `${location.pathname}?sort=${sortOption}&page=${selectedPage}`
+    );
+  };
   useEffect(() => {
     (async () => {
-      const pageLimit = isListView
-        ? ENV_CONFIG.ITEM_LIMIT.LIST_LAYOUT
-        : ENV_CONFIG.ITEM_LIMIT.GRID_LAYOUT;
       const sortTokens = parseSortOption(sortOption, "_");
-
       try {
         const deviceInfoSnapshots = await getDeviceInfos();
         const tempDeviceInfos = [];
@@ -56,6 +79,11 @@ function EmployeeDevice() {
         });
         sortDeviceInfos(tempDeviceInfos, sortTokens);
         dispatch(deviceInfoAction.storeDeviceInfos(tempDeviceInfos));
+        const deviceInfoInPage = tempDeviceInfos.slice(
+          (currentPage - 1) * pageLimit,
+          currentPage * pageLimit
+        );
+        setDeviceInfos(deviceInfoInPage);
       } catch (error) {
         console.log(error);
         toast.error("Can not get devices list of employee", {
@@ -86,6 +114,12 @@ function EmployeeDevice() {
       ) : (
         <GridView deviceInfos={deviceInfos}></GridView>
       )}
+      <Pagination
+        currentPage={currentPage}
+        handlePageChange={handlePagination}
+        totalItem={totalDeviceInfos.length}
+        limit={pageLimit}
+      ></Pagination>
     </div>
   );
 }

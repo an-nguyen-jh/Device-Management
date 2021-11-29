@@ -28,10 +28,7 @@ const SORT = {
   DESCEND_UPDATE_DATE: "updatedTime_desc",
 };
 
-const ITEM_LIMIT = {
-  LIST_LAYOUT: 10,
-  GRID_LAYOUT: 12,
-};
+const ITEM_LIMIT = 12;
 
 const ENV_CONFIG = {
   FIREBASE_CONFIG,

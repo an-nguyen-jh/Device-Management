@@ -10,6 +10,8 @@ import UploadImage from "./UploadImage/UploadImage";
 import Toolbar from "./Toolbar/Toolbar";
 import ListView from "./Views/ListView";
 import GridView from "./Views/GridView";
+import Pagination from "./Pagination/Pagination";
+
 export {
   Input,
   Button,
@@ -23,4 +25,5 @@ export {
   ListView,
   Toolbar,
   GridView,
+  Pagination,
 };

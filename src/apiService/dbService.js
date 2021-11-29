@@ -52,7 +52,6 @@ export default function generateDatabaseService() {
   function getDeviceInfos(currentPage, pageLimit, sortOption) {
     const deviceInfoRef = collection(firebaseDB, "deviceInfos");
     const sortTokens = parseSortOption(sortOption, "_");
-    console.log(sortTokens);
     const deviceInfoQuery = query(
       deviceInfoRef,
       orderBy(sortTokens[0], sortTokens[1]),

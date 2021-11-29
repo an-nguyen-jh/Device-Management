@@ -36,7 +36,7 @@
   width: 100%;
 }
 
-.grid-layout__card-footer {
+.grid-layout__card-body {
   height: 30%;
   padding: 12px 12px;
   display: grid;
@@ -47,20 +47,19 @@
     "avatar updateDate updateDate";
 }
 
-.grid-layout__card-footer__avatar {
+.grid-layout__card-body__avatar {
   width: 40px;
-  font-size: 1rem;
   height: 40px;
   grid-area: avatar;
 }
 
-.grid-layout__card-footer__owner {
+.grid-layout__card-body__owner {
   grid-area: name;
 }
-.grid-layout__card-footer__update-date {
+.grid-layout__card-body__update-date {
   grid-area: updateDate;
 }
-.grid-layout__card-footer__team {
+.grid-layout__card-body__team {
   grid-area: team;
 }
 

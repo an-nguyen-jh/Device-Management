@@ -4,7 +4,7 @@ import { sortOptions } from "../../config/options/options";
 import ENV_CONFIG from "../../config";
 import { getDeviceInfos } from "../../apiService";
 import toast from "react-hot-toast";
-import { useParams, useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 const tableHeaders = ["Thông tin", "Team", "Sửa đổi lần cuối"];
 
@@ -14,7 +14,6 @@ function useQuery() {
 }
 
 function EmployeeDevice() {
-  // const { sort } = useParams();
   const history = useHistory();
   const location = useLocation();
   const query = useQuery();
@@ -45,13 +44,12 @@ function EmployeeDevice() {
         const tempDeviceInfos = [];
         deviceInfoSnapshots.forEach((deviceInfo) => {
           const temp = deviceInfo.data();
-          console.log(temp);
           temp.updatedTime = temp.updatedTime.toDate().toLocaleDateString();
           tempDeviceInfos.push(temp);
         });
 
         setStartPoint(deviceInfoSnapshots[deviceInfoSnapshots.length - 1]);
-
+        console.log(tempDeviceInfos);
         setDeviceInfos(tempDeviceInfos);
       } catch (error) {
         console.log(error);

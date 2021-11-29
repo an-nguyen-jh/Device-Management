@@ -23,15 +23,15 @@ function ListView({ tableHeaders, deviceInfos }) {
       </div>
       <div className="container-fluid">
         <div className="list-layout__body">
-          {deviceInfos.map((deviceInfos, i) => (
-            <div className="list-layout__row">
+          {deviceInfos.map((deviceInfo, i) => (
+            <div className="list-layout__row" key={`${deviceInfo.name}${i}`}>
               <div className="list-layout__cell list-layout__first-cell">
                 <div className="list-layout__row__img">
-                  {deviceInfos.imageSrcs.length !== 0 ? (
+                  {deviceInfo.imageSrcs && deviceInfo.imageSrcs.length !== 0 ? (
                     <>
-                      <img src={deviceInfos.imageSrcs[0]} alt="device" />
+                      <img src={deviceInfo.imageSrcs[0]} alt="device" />
                       <span className="list-layout__row__img-overlay">
-                        + {deviceInfos.imageSrcs.length}
+                        + {deviceInfo.imageSrcs.length}
                       </span>
                     </>
                   ) : (
@@ -41,13 +41,13 @@ function ListView({ tableHeaders, deviceInfos }) {
                     />
                   )}
                 </div>
-                <span>{deviceInfos.name}</span>
+                <span>{deviceInfo.name}</span>
               </div>
               <div className="list-layout__cell">
-                <span>{deviceInfos.team}</span>
+                <span>{deviceInfo.team}</span>
               </div>
               <div className="list-layout__cell">
-                <span> {deviceInfos.updatedTime}</span>
+                <span> {deviceInfo.updatedTime}</span>
               </div>
             </div>
           ))}

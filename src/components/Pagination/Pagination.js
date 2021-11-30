@@ -4,8 +4,9 @@ import classNames from "classnames";
 
 function Pagination({ currentPage, handlePageChange, totalItem, limit }) {
   const pageIndexes = [currentPage];
+  const paginationRange = 2;
 
-  for (let i = 1; i <= 2; i++) {
+  for (let i = 1; i <= paginationRange; i++) {
     if (currentPage - i >= 1) {
       pageIndexes.unshift(currentPage - i);
     }

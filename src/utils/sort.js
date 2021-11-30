@@ -1,3 +1,5 @@
+const lengthOfSortTokensRequired = 2;
+
 const sortPrototypes = {
   name: {
     asc: (a, b) => {
@@ -18,7 +20,7 @@ const sortPrototypes = {
 };
 
 export function sortByElementProperty(unsortedArray, sortTokens) {
-  if (sortTokens.length === 2) {
+  if (sortTokens.length === lengthOfSortTokensRequired) {
     unsortedArray.sort(sortPrototypes[sortTokens[0]][sortTokens[1]]);
   }
 }

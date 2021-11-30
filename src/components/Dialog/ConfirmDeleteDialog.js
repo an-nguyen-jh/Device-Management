@@ -22,7 +22,7 @@ function ConfirmDeleteDialog() {
 
   const handleClose = () => dispatch(confirmDialogAction.invisible());
 
-  const deleteOldEmployeeDeviceImages = async (images) => {
+  const deleteEmployeeDeviceImages = async (images) => {
     try {
       if (imageSrcs) {
         const imageDeletePromises = images.map((imageURL) => {
@@ -35,15 +35,21 @@ function ConfirmDeleteDialog() {
     }
   };
 
+  const deleteDeviceInfoAndRelativeResources = async (email) => {
+    return await Promise.all([
+      await deleteDeviceInfoByEmail(email),
+      await deleteAllRelativeDeviceRequests(email),
+      await deleteEmployeeDeviceImages(imageSrcs),
+    ]);
+  };
+
   const handleDeleteDeviceInfo = async () => {
     try {
-      await deleteDeviceInfoByEmail(email);
-      await deleteAllRelativeDeviceRequests(email);
-      await deleteOldEmployeeDeviceImages(imageSrcs);
-      handleClose();
+      await deleteDeviceInfoAndRelativeResources(email);
       toast.success("Successful delete employee's device info", {
         className: "toast-notification",
       });
+      handleClose();
       dispatch(updateListAction.update());
     } catch (error) {
       //ignore error

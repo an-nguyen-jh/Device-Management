@@ -8,7 +8,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { confirmDialogAction, deviceInfoAction } from "../../store/actions";
 import { parseSortOption } from "../../utils/parser";
-import { sortDeviceInfos } from "../../utils/sort";
+import { sortByElementProperty } from "../../utils/sort";
 import { useQuery } from "../../utils/routerHandler";
 
 const tableHeaders = ["Thông tin", "Team", "Sửa đổi lần cuối", ""];
@@ -34,7 +34,7 @@ function EmployeeDevice() {
   const handleSortChange = (e) => {
     const sortTokens = parseSortOption(e.target.value, "_");
     const tempDeviceInfos = [...totalDeviceInfos];
-    sortDeviceInfos(tempDeviceInfos, sortTokens);
+    sortByElementProperty(tempDeviceInfos, sortTokens);
     dispatch(deviceInfoAction.storeDeviceInfos(tempDeviceInfos));
     const deviceInfoInPage = tempDeviceInfos.slice(
       (currentPage - 1) * pageLimit,
@@ -67,12 +67,12 @@ function EmployeeDevice() {
         const deviceInfoSnapshots = await getAllDeviceInfos();
         const tempDeviceInfos = [];
         deviceInfoSnapshots.forEach((deviceInfoSnap) => {
-          const temp = deviceInfoSnap.data();
-          temp.updatedTime = temp.updatedTime.toDate();
+          const tempDeviceInfo = deviceInfoSnap.data();
+          tempDeviceInfo.updatedTime = tempDeviceInfo.updatedTime.toDate();
           const email = deviceInfoSnap.id;
-          tempDeviceInfos.push({ email, ...temp });
+          tempDeviceInfos.push({ email, ...tempDeviceInfo });
         });
-        sortDeviceInfos(tempDeviceInfos, sortTokens);
+        sortByElementProperty(tempDeviceInfos, sortTokens);
         dispatch(deviceInfoAction.storeDeviceInfos(tempDeviceInfos));
         const deviceInfoInPage = tempDeviceInfos.slice(
           (currentPage - 1) * pageLimit,

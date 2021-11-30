@@ -1,38 +1,32 @@
 import React from "react";
 import "../styles/pagination.css";
+import classNames from "classnames";
 
 function Pagination({ currentPage, handlePageChange, totalItem, limit }) {
+  const pageIndexes = [currentPage];
+
+  for (let i = 1; i <= 2; i++) {
+    if (currentPage - i >= 1) {
+      pageIndexes.unshift(currentPage - i);
+    }
+    if (currentPage + i <= Math.ceil(totalItem / limit)) {
+      pageIndexes.push(currentPage + i);
+    }
+  }
+
   return (
     <div className="container-fluid" style={{ display: "flex" }}>
       <ul className="pagination">
-        {[2, 1].map(function generatePrevPage(index) {
-          if (currentPage - index < 1) {
-            return null;
-          }
+        {pageIndexes.map(function generatePagination(pageIndex) {
           return (
             <li
-              className="pagination__link"
-              key={currentPage - index}
-              onClick={() => handlePageChange(currentPage - index)}
+              className={classNames("pagination__link", {
+                "pagination__link--active": pageIndex === currentPage,
+              })}
+              key={pageIndex}
+              onClick={() => handlePageChange(pageIndex)}
             >
-              {currentPage - index}
-            </li>
-          );
-        })}
-        <li className="pagination__link--active pagination__link">
-          {currentPage}
-        </li>
-        {[1, 2].map(function generatePrevPage(index) {
-          if (currentPage + index > Math.ceil(totalItem / limit)) {
-            return null;
-          }
-          return (
-            <li
-              className="pagination__link"
-              key={currentPage + index}
-              onClick={() => handlePageChange(currentPage + index)}
-            >
-              {currentPage + index}
+              {pageIndex}
             </li>
           );
         })}

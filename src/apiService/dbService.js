@@ -4,7 +4,14 @@ import {
   doc,
   setDoc,
   collection,
+  query,
+  getDocs,
+  where,
+  writeBatch,
+  deleteDoc,
 } from "firebase/firestore";
+import ENV_CONFIG from "../config";
+
 import {
   DeviceInfo,
   deviceInfoConverter,
@@ -14,7 +21,7 @@ import {
 
 export default function generateDatabaseService() {
   const firebaseDB = getFirestore();
-
+  const batch = writeBatch(firebaseDB);
   function getUserByEmail(email) {
     const userRef = doc(firebaseDB, "users", email);
     return getDoc(userRef);
@@ -40,13 +47,41 @@ export default function generateDatabaseService() {
       collection(firebaseDB, "deviceRequests")
     ).withConverter(deviceRequestConverter);
     const deviceRequestNewData = new DeviceRequest(data);
-
     return setDoc(deviceRequestRef, deviceRequestNewData);
   }
+
+  function getAllDeviceInfos() {
+    const deviceInfoRef = collection(firebaseDB, "deviceInfos");
+    const deviceInfoQuery = query(deviceInfoRef);
+    return getDocs(deviceInfoQuery);
+  }
+
+  function deleteDeviceInfoByEmail(email) {
+    const deviceInfoDoc = doc(firebaseDB, "deviceInfos", email);
+    return deleteDoc(deviceInfoDoc);
+  }
+
+  async function deleteAllRelativeDeviceRequests(email) {
+    const deviceRequestRef = collection(firebaseDB, "deviceRequests");
+    const deviceRequestQuery = query(
+      deviceRequestRef,
+      where("email", "==", email),
+      where("status", "==", ENV_CONFIG.REQUEST.PENDING)
+    );
+    const pendingDeviceRequestSnaps = await getDocs(deviceRequestQuery);
+    pendingDeviceRequestSnaps.forEach((deviceRequest) => {
+      batch.delete(deviceRequest.ref);
+    });
+    await batch.commit();
+  }
+
   return {
     getUserByEmail,
     getDeviceInfoOfEmployeeByEmail,
     addDeviceInfoForm,
     addNewRequestDevice,
+    getAllDeviceInfos,
+    deleteDeviceInfoByEmail,
+    deleteAllRelativeDeviceRequests,
   };
 }

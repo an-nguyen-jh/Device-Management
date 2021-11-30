@@ -1,8 +1,10 @@
 .alert--success,
 .alert--error {
-  padding: 20px;
+  padding: 12px;
   border-radius: 5px;
   margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: 20% 80%;
 }
 
 .alert--error {
@@ -13,4 +15,17 @@
 .alert--success {
   background-color: var(--successBgColor);
   color: var(--successTextColor);
+}
+
+.alert__icon--success,
+.alert__icon--error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.alert--success svg,
+.alert--error svg {
+  width: 36px;
+  height: 36px;
 }

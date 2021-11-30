@@ -12,6 +12,7 @@ export class DeviceInfo {
     screenConfig,
     screenSize,
     team,
+    imageSrcs,
   }) {
     this.createdTime = new Date();
     this.updatedTime = new Date();
@@ -23,14 +24,15 @@ export class DeviceInfo {
       seriNumber: computersSeriNumber,
     };
     this.mouse = {
-      companyName: mouseCompanyName,
-      numberOf: numberOfMouse || 0,
+      companyName: mouseCompanyName || "",
+      numberOf: numberOfMouse || "0",
     };
     this.screen = {
-      numberOf: numberOfScreen || 0,
-      config: screenConfig || 0,
-      size: screenSize,
+      numberOf: numberOfScreen || "0",
+      config: screenConfig || "0",
+      size: screenSize || "",
     };
+    this.imageSrcs = imageSrcs || [];
   }
 }
 
@@ -50,6 +52,7 @@ export const deviceInfoConverter = {
       screen: {
         ...deviceInfo.screen,
       },
+      imageSrcs: deviceInfo.imageSrcs,
     };
   },
   fromFirestore: (snapshot, options) => {
@@ -59,9 +62,10 @@ export const deviceInfoConverter = {
 };
 
 export class DeviceRequest {
-  constructor({ name, team, device, numberOfDevice, notice }) {
+  constructor({ name, email, team, device, numberOfDevice, notice }) {
     this.team = team;
     this.device = device;
+    this.email = email;
     this.name = name;
     this.numberOfDevice = numberOfDevice;
     this.createdTime = new Date();
@@ -74,6 +78,7 @@ export const deviceRequestConverter = {
   toFirestore: (deviceRequest) => {
     return {
       name: deviceRequest.name,
+      email: deviceRequest.email,
       createdTime: deviceRequest.createdTime,
       device: deviceRequest.device,
       numberOfDevice: deviceRequest.numberOfDevice,

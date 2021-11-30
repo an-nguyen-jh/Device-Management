@@ -4,9 +4,12 @@ import "../styles/alert.css";
 
 class Alert extends Component {
   render() {
-    const { type, children } = this.props;
+    const { type, children, className, icon } = this.props;
     return (
-      <div className={classNames({ [`alert--${type}`]: true })}>{children}</div>
+      <div className={classNames({ [`alert--${type}`]: true }, className)}>
+        <div className="alert__icon--success">{icon}</div>
+        <span>{children}</span>
+      </div>
     );
   }
 }

@@ -1,14 +1,21 @@
+import classNames from "classnames";
 import React, { Component } from "react";
 import "../styles/input.css";
 
 class Select extends Component {
   render() {
-    const { className, error, errorMsg, options, ...rest } = this.props;
+    const { className, error, errorMsg, options, placeholder, ...rest } =
+      this.props;
 
     return (
       <>
-        <select className="input--outlined" {...rest}>
-          <option key={""} value={""}></option>
+        <select
+          className={classNames("input--outlined", { [className]: className })}
+          {...rest}
+        >
+          <option key={""} value={""}>
+            {placeholder ? placeholder : ""}
+          </option>
           {options.map((option) => {
             return (
               <option key={option.key} value={option.key}>

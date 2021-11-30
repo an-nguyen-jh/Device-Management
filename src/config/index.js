@@ -21,12 +21,23 @@ const REQUEST = {
   DENY: -1,
 };
 
+const SORT = {
+  ASCEND_NAME: "name_asc",
+  DESCEND_NAME: "name_desc",
+  ASCEND_UPDATE_DATE: "updatedTime_asc",
+  DESCEND_UPDATE_DATE: "updatedTime_desc",
+};
+
+const ITEM_LIMIT = 12;
+
 const ENV_CONFIG = {
   FIREBASE_CONFIG,
   ROLE,
   URL_FIRESTORAGE:
     "https://firebasestorage.googleapis.com/v0/b/device-management-911c9.appspot.com/o/",
   REQUEST,
+  SORT,
+  ITEM_LIMIT,
 };
 
 export default ENV_CONFIG;

@@ -1,0 +1,44 @@
+.toolbar-wrapper {
+  border-bottom: 2px solid var(--primaryBgColor);
+  width: 100%;
+  height: var(--appbarHeight);
+  background-color: #ffffff;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+.toolbar__functional-group {
+  display: flex;
+  margin-left: 12px;
+}
+
+.toolbar__functional-sort {
+  margin: auto;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.toolbar__layout-btn {
+  width: var(--appbarHeight);
+  height: 100%;
+  cursor: pointer;
+  transition: background-color var(--animationSpeed) linear;
+  display: flex;
+  margin-right: 12px;
+}
+
+.toolbar__layout-btn:hover,
+.toolbar__layout-btn:focus {
+  background-color: var(--primaryBgColor);
+}
+
+.toolbar__layout-btn__icon {
+  width: 36px;
+  height: 36px;
+  margin: auto;
+}

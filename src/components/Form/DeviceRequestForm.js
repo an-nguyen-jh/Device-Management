@@ -3,7 +3,7 @@ import "../styles/form.css";
 import toast from "react-hot-toast";
 import { Field, Form } from "react-final-form";
 import { Button, Input, Select } from "..";
-import { teamOptions, deviceOptions } from "../../config/formData/formData";
+import { teamOptions, deviceOptions } from "../../config/options/options";
 import { connect } from "react-redux";
 import { addNewRequestDevice } from "../../apiService";
 

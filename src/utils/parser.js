@@ -5,3 +5,7 @@ export default function parseFullFileURL(fileURL) {
   const filename = fileURL.split(urlFirestorage)[1].split("?")[0];
   return filename;
 }
+
+export function parseSortOption(option, separator) {
+  return option.split(separator);
+}

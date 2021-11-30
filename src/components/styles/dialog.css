@@ -1,0 +1,48 @@
+.dialog-wrapper {
+  position: fixed;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 100vw;
+  height: 100vh;
+  z-index: 200;
+  top: 0;
+}
+
+.dialog {
+  margin: auto;
+  width: 90%;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 24px;
+}
+
+.dialog__content {
+  display: grid;
+  grid-template-columns: 30% 70%;
+}
+
+.dialog__content p {
+  margin: 12px 0;
+  font-size: clamp(0.85rem, 2vw, 1.2rem);
+}
+
+.dialog__content h2 {
+  text-align: center;
+  margin: 12px 0;
+}
+
+.dialog__content__label {
+  font-weight: 600;
+}
+
+.dialog__btn-group {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+@media only screen and (min-width: 768px) {
+  .dialog {
+    width: 400px;
+  }
+}

@@ -60,7 +60,7 @@ function ConfirmDeleteDialog() {
     <div className="dialog-wrapper">
       <div className="dialog">
         <div className="dialog__content">
-          <h2 className="grid-span-2"> Confirm delete</h2>
+          <h3 className="grid-span-2"> Confirm delete</h3>
           <p className="grid-span-2">
             Are you sure you want to delete this device info ?
           </p>

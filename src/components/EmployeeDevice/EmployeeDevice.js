@@ -2,19 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Toolbar, ListView, GridView, Pagination } from "..";
 import { sortOptions } from "../../config/options/options";
 import ENV_CONFIG from "../../config";
-import { getDeviceInfos } from "../../apiService";
+import { getAllDeviceInfos } from "../../apiService";
 import toast from "react-hot-toast";
 import { useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { confirmDialogAction, deviceInfoAction } from "../../store/actions";
 import { parseSortOption } from "../../utils/parser";
 import { sortDeviceInfos } from "../../utils/sort";
+import { useQuery } from "../../utils/routerHandler";
 
 const tableHeaders = ["Thông tin", "Team", "Sửa đổi lần cuối", ""];
-
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
 
 //trigger component re render
 function EmployeeDevice() {
@@ -32,14 +29,7 @@ function EmployeeDevice() {
   const currentPage = parseInt(query.get("page")) || 1;
   const isUpdate = useSelector((state) => state.updateList);
 
-  const changeLayoutView = () => {
-    setIsListView(!isListView);
-    const deviceInfoInPage = totalDeviceInfos.slice(
-      (currentPage - 1) * pageLimit,
-      currentPage * pageLimit
-    );
-    setDeviceInfos(deviceInfoInPage);
-  };
+  const changeLayoutView = () => setIsListView(!isListView);
 
   const handleSortChange = (e) => {
     const sortTokens = parseSortOption(e.target.value, "_");
@@ -61,7 +51,6 @@ function EmployeeDevice() {
       (selectedPage - 1) * pageLimit,
       selectedPage * pageLimit
     );
-
     setDeviceInfos(deviceInfoInPage);
     history.push(
       `${location.pathname}?sort=${sortOption}&page=${selectedPage}`
@@ -75,7 +64,7 @@ function EmployeeDevice() {
     (async () => {
       const sortTokens = parseSortOption(sortOption, "_");
       try {
-        const deviceInfoSnapshots = await getDeviceInfos();
+        const deviceInfoSnapshots = await getAllDeviceInfos();
         const tempDeviceInfos = [];
         deviceInfoSnapshots.forEach((deviceInfoSnap) => {
           const temp = deviceInfoSnap.data();
@@ -91,7 +80,6 @@ function EmployeeDevice() {
         );
         setDeviceInfos(deviceInfoInPage);
       } catch (error) {
-        console.log(error);
         toast.error("Can not get devices list of employee", {
           className: "toast-notification",
         });

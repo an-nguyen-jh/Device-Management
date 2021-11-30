@@ -47,14 +47,12 @@ export default function generateDatabaseService() {
       collection(firebaseDB, "deviceRequests")
     ).withConverter(deviceRequestConverter);
     const deviceRequestNewData = new DeviceRequest(data);
-
     return setDoc(deviceRequestRef, deviceRequestNewData);
   }
 
-  function getDeviceInfos() {
+  function getAllDeviceInfos() {
     const deviceInfoRef = collection(firebaseDB, "deviceInfos");
     const deviceInfoQuery = query(deviceInfoRef);
-
     return getDocs(deviceInfoQuery);
   }
 
@@ -63,7 +61,7 @@ export default function generateDatabaseService() {
     return deleteDoc(deviceInfoDoc);
   }
 
-  async function deleteAllRelativeDeviceRequest(email) {
+  async function deleteAllRelativeDeviceRequests(email) {
     const deviceRequestRef = collection(firebaseDB, "deviceRequests");
     const deviceRequestQuery = query(
       deviceRequestRef,
@@ -82,8 +80,8 @@ export default function generateDatabaseService() {
     getDeviceInfoOfEmployeeByEmail,
     addDeviceInfoForm,
     addNewRequestDevice,
-    getDeviceInfos,
+    getAllDeviceInfos,
     deleteDeviceInfoByEmail,
-    deleteAllRelativeDeviceRequest,
+    deleteAllRelativeDeviceRequests,
   };
 }

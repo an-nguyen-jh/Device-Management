@@ -12,9 +12,9 @@ const {
   getDeviceInfoOfEmployeeByEmail,
   addDeviceInfoForm,
   addNewRequestDevice,
-  getDeviceInfos,
+  getAllDeviceInfos,
   deleteDeviceInfoByEmail,
-  deleteAllRelativeDeviceRequest,
+  deleteAllRelativeDeviceRequests,
 } = generatedDatabaseService();
 
 const { uploadEmployeeDeviceImage, deleteOldEmployeeImage } =
@@ -29,7 +29,7 @@ export {
   uploadEmployeeDeviceImage,
   deleteOldEmployeeImage,
   addNewRequestDevice,
-  getDeviceInfos,
+  getAllDeviceInfos,
   deleteDeviceInfoByEmail,
-  deleteAllRelativeDeviceRequest,
+  deleteAllRelativeDeviceRequests,
 };

@@ -12,7 +12,7 @@ export class DeviceInfo {
     screenConfig,
     screenSize,
     team,
-    oldImageSrcs,
+    imageSrcs,
   }) {
     this.createdTime = new Date();
     this.updatedTime = new Date();
@@ -32,7 +32,7 @@ export class DeviceInfo {
       config: screenConfig || "0",
       size: screenSize || "",
     };
-    this.imageSrcs = oldImageSrcs || [];
+    this.imageSrcs = imageSrcs || [];
   }
 }
 

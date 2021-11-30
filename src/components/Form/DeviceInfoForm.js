@@ -19,7 +19,7 @@ class DeviceInfoForm extends Component {
     super(props);
     this.state = {
       chosenImageSrc: [],
-      oldImageSrcs: [],
+      imageSrcs: [],
       previewImages: [],
       name: "",
       team: "",
@@ -101,7 +101,7 @@ class DeviceInfoForm extends Component {
   }
 
   async handleDeviceInfoSubmit(values) {
-    const { chosenImageSrc, oldImageSrcs } = this.state;
+    const { chosenImageSrc, imageSrcs } = this.state;
     const { userEmail } = this.props;
     try {
       let updateData = { ...values };
@@ -116,12 +116,12 @@ class DeviceInfoForm extends Component {
       }
 
       if (chosenImageSrc.length > 0) {
-        await this.deleteOldEmployeeDeviceImages(oldImageSrcs);
+        await this.deleteOldEmployeeDeviceImages(imageSrcs);
         const imageDownloadURLs = await this.uploadEmployeeDeviceImages(
           chosenImageSrc,
           userEmail
         );
-        Object.assign(updateData, { oldImageSrcs: imageDownloadURLs });
+        Object.assign(updateData, { imageSrcs: imageDownloadURLs });
       }
       await addDeviceInfoForm(updateData, userEmail);
       toast.success(

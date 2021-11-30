@@ -5,7 +5,7 @@ import { confirmDialogAction, updateListAction } from "../../store/actions";
 import "../styles/dialog.css";
 import { IoWarningOutline } from "react-icons/io5";
 import {
-  deleteAllRelativeDeviceRequest,
+  deleteAllRelativeDeviceRequests,
   deleteDeviceInfoByEmail,
   deleteOldEmployeeImage,
 } from "../../apiService";
@@ -38,7 +38,7 @@ function ConfirmDeleteDialog() {
   const handleDeleteDeviceInfo = async () => {
     try {
       await deleteDeviceInfoByEmail(email);
-      await deleteAllRelativeDeviceRequest(email);
+      await deleteAllRelativeDeviceRequests(email);
       await deleteOldEmployeeDeviceImages(imageSrcs);
       handleClose();
       toast.success("Successful delete employee's device info", {
@@ -46,7 +46,7 @@ function ConfirmDeleteDialog() {
       });
       dispatch(updateListAction.update());
     } catch (error) {
-      console.log(error);
+      //ignore error
     }
   };
 

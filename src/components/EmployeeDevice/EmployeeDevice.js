@@ -10,6 +10,8 @@ import { confirmDialogAction, deviceInfoAction } from "../../store/actions";
 import { parseSortOption } from "../../utils/parser";
 import { sortByElementProperty } from "../../utils/sort";
 import { useQuery } from "../../utils/routerHandler";
+import { Appbar } from "..";
+import { adminSubRouters } from "../../config/routes";
 
 const tableHeaders = ["Thông tin", "Team", "Sửa đổi lần cuối", ""];
 
@@ -60,8 +62,8 @@ function EmployeeDevice() {
   const handleDeleteDeviceInfo = ({ email, name, imageSrcs }) =>
     dispatch(confirmDialogAction.visible({ name, email, imageSrcs }));
 
-  const handleRedirectToItemDetailPage = (email) => {
-    history.push(`/admin/items-list/${email}`);
+  const handleRedirectToItemDetailPage = (uuid) => {
+    history.push(`${location.pathname}/${uuid}`);
   };
 
   useEffect(() => {
@@ -96,35 +98,38 @@ function EmployeeDevice() {
   }, [isUpdate]);
 
   return (
-    <div className="list-layout">
-      <Toolbar
-        changeLayout={changeLayoutView}
-        isListView={isListView}
-        sortOptions={sortOptions}
-        selectOption={sortOption}
-        sortHandler={handleSortChange}
-      ></Toolbar>
-      {isListView ? (
-        <ListView
-          tableHeaders={tableHeaders}
-          deviceInfos={deviceInfos}
-          handleDelete={handleDeleteDeviceInfo}
-          handleRedirect={handleRedirectToItemDetailPage}
-        ></ListView>
-      ) : (
-        <GridView
-          deviceInfos={deviceInfos}
-          handleDelete={handleDeleteDeviceInfo}
-          handleRedirect={handleRedirectToItemDetailPage}
-        ></GridView>
-      )}
-      <Pagination
-        currentPage={currentPage}
-        handlePageChange={handlePagination}
-        totalItem={totalDeviceInfos.length}
-        limit={pageLimit}
-      ></Pagination>
-    </div>
+    <>
+      <Appbar routers={adminSubRouters}></Appbar>
+      <div className="main-container">
+        <Toolbar
+          changeLayout={changeLayoutView}
+          isListView={isListView}
+          sortOptions={sortOptions}
+          selectOption={sortOption}
+          sortHandler={handleSortChange}
+        ></Toolbar>
+        {isListView ? (
+          <ListView
+            tableHeaders={tableHeaders}
+            deviceInfos={deviceInfos}
+            handleDelete={handleDeleteDeviceInfo}
+            handleRedirect={handleRedirectToItemDetailPage}
+          ></ListView>
+        ) : (
+          <GridView
+            deviceInfos={deviceInfos}
+            handleDelete={handleDeleteDeviceInfo}
+            handleRedirect={handleRedirectToItemDetailPage}
+          ></GridView>
+        )}
+        <Pagination
+          currentPage={currentPage}
+          handlePageChange={handlePagination}
+          totalItem={totalDeviceInfos.length}
+          limit={pageLimit}
+        ></Pagination>
+      </div>
+    </>
   );
 }
 export default EmployeeDevice;

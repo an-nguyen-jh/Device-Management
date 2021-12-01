@@ -1,42 +1,27 @@
 import React from "react";
-import { Appbar, ConfirmDeleteDialog } from "../../components";
+import { ConfirmDeleteDialog } from "../../components";
 import { Toaster } from "react-hot-toast";
 import { adminSubRouters } from "../../config/routes";
 import { Route, Switch, Redirect, useRouteMatch } from "react-router-dom";
+import { flattenRouters } from "../../utils/routerHandler";
 
 function Admin() {
   const match = useRouteMatch();
+  const flattRouters = flattenRouters(adminSubRouters);
+
   return (
     <div className="container page-wrapper">
       <Toaster />
       <ConfirmDeleteDialog />
       <div className="content bg-white">
         <Switch>
-          {adminSubRouters.map((router) => (
+          {flattRouters.map((router) => (
             <Route
-              exact
               key={router.pathname}
+              exact
               path={`${match.path}${router.pathname}`}
-              render={(props) => (
-                <>
-                  <Appbar routers={adminSubRouters}></Appbar>
-                  <router.component {...props}></router.component>
-                </>
-              )}
+              render={() => <router.component></router.component>}
             ></Route>
-            /* {router.hasDetailsPage && (
-                <Route path={`${match.path}${router.pathname}/:id`}>
-                  <div
-                    style={{
-                      width: 100,
-                      height: 100,
-                      background: "red",
-                      position: "fixed",
-                      zIndex: 2000,
-                    }}
-                  ></div>
-                </Route>
-              )} */
           ))}
           <Route exact path={`${match.path}`}>
             <Redirect to={`${match.path}${adminSubRouters[0].pathname}`} />

@@ -12,7 +12,7 @@ function GridView({ deviceInfos, handleDelete, handleRedirect }) {
             <div className="grid-layout__card" key={`${deviceInfo.name}${i}`}>
               <div
                 className="grid-layout__card-header"
-                onClick={() => handleRedirect(deviceInfo.email)}
+                onClick={() => handleRedirect(deviceInfo.uuid)}
               >
                 {deviceInfo.imageSrcs && deviceInfo.imageSrcs.length !== 0 ? (
                   <>
@@ -35,7 +35,7 @@ function GridView({ deviceInfos, handleDelete, handleRedirect }) {
               </div>
               <div
                 className="grid-layout__card-body"
-                onClick={() => handleRedirect(deviceInfo.email)}
+                onClick={() => handleRedirect(deviceInfo.uuid)}
               >
                 {generateAvatarByName(
                   deviceInfo.name,

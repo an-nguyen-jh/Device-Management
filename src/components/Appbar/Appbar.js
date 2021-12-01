@@ -81,7 +81,6 @@ class Appbar extends Component {
       this.props.location.pathname
     );
 
-    console.log(this.props.location, this.props.match, path);
     return (
       <div className="appbar">
         <div className="appbar__dropdown">

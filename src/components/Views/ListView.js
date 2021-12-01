@@ -34,7 +34,7 @@ function ListView({ tableHeaders, deviceInfos, handleDelete, handleRedirect }) {
             <div className="list-layout__row" key={`${deviceInfo.name}${i}`}>
               <div
                 className="list-layout__cell list-layout__first-cell"
-                onClick={() => handleRedirect(deviceInfo.email)}
+                onClick={() => handleRedirect(deviceInfo.uuid)}
               >
                 <div className="list-layout__row__img">
                   {deviceInfo.imageSrcs && deviceInfo.imageSrcs.length !== 0 ? (

@@ -1,4 +1,5 @@
 import ENV_CONFIG from "../config";
+import { v4 as uuidv4 } from "uuid";
 
 export class DeviceInfo {
   constructor({
@@ -16,6 +17,7 @@ export class DeviceInfo {
   }) {
     this.createdTime = new Date();
     this.updatedTime = new Date();
+    this.uuid = uuidv4();
     this.name = name;
     this.team = team;
     this.computer = {
@@ -53,6 +55,7 @@ export const deviceInfoConverter = {
         ...deviceInfo.screen,
       },
       imageSrcs: deviceInfo.imageSrcs,
+      uuid: deviceInfo.uuid,
     };
   },
   fromFirestore: (snapshot, options) => {

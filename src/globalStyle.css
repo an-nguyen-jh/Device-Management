@@ -62,7 +62,7 @@ a {
   height: 100%;
 }
 
-.list-layout {
+.main-container {
   padding-top: var(--appbarHeight);
 }
 

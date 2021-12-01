@@ -60,8 +60,8 @@ function ConfirmDeleteDialog() {
     <div className="dialog-wrapper">
       <div className="dialog">
         <div className="dialog__content">
-          <h3 className="grid-span-2"> Confirm delete</h3>
-          <p className="grid-span-2">
+          <h3 className="grid-col-span-2"> Confirm delete</h3>
+          <p className="grid-col-span-2">
             Are you sure you want to delete this device info ?
           </p>
           <p className="dialog__content__label">Employee: </p>
@@ -69,7 +69,7 @@ function ConfirmDeleteDialog() {
           <p className="dialog__content__label">Email: </p>
           <p>{email}</p>
           <Alert
-            className="grid-span-2"
+            className="grid-col-span-2"
             type="error"
             icon={<IoWarningOutline />}
           >

@@ -20,7 +20,7 @@ const bgColors = [
   "#7f8c8d",
 ];
 
-export function generateAvatarByName(name, className) {
+export function generateAvatarByName(name, className = "") {
   const nameSplits = name.split(" ");
   const representativeName =
     nameSplits[0].charAt(0).toUpperCase() +

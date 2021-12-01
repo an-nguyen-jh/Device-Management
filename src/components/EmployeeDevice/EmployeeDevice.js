@@ -13,7 +13,7 @@ import { useQuery } from "../../utils/routerHandler";
 import { Appbar } from "..";
 import { adminSubRouters } from "../../config/routes";
 
-const tableHeaders = ["Thông tin", "Team", "Sửa đổi lần cuối", ""];
+const tableHeaders = ["Name", "Team", "Last update", ""];
 
 //trigger component re render
 function EmployeeDevice() {

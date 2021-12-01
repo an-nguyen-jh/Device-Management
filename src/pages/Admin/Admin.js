@@ -9,7 +9,6 @@ function Admin() {
   return (
     <div className="container page-wrapper">
       <Toaster />
-      <Appbar routers={adminSubRouters}></Appbar>
       <ConfirmDeleteDialog />
       <div className="content bg-white">
         <Switch>
@@ -18,8 +17,26 @@ function Admin() {
               exact
               key={router.pathname}
               path={`${match.path}${router.pathname}`}
-              component={router.component}
+              render={(props) => (
+                <>
+                  <Appbar routers={adminSubRouters}></Appbar>
+                  <router.component {...props}></router.component>
+                </>
+              )}
             ></Route>
+            /* {router.hasDetailsPage && (
+                <Route path={`${match.path}${router.pathname}/:id`}>
+                  <div
+                    style={{
+                      width: 100,
+                      height: 100,
+                      background: "red",
+                      position: "fixed",
+                      zIndex: 2000,
+                    }}
+                  ></div>
+                </Route>
+              )} */
           ))}
           <Route exact path={`${match.path}`}>
             <Redirect to={`${match.path}${adminSubRouters[0].pathname}`} />

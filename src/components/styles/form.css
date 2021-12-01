@@ -1,5 +1,6 @@
 .form-wrapper {
   padding: 24px 0;
+  padding-top: calc(var(--appbarHeight) + 24px);
 }
 
 .form-center-container {

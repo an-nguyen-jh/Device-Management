@@ -60,6 +60,10 @@ function EmployeeDevice() {
   const handleDeleteDeviceInfo = ({ email, name, imageSrcs }) =>
     dispatch(confirmDialogAction.visible({ name, email, imageSrcs }));
 
+  const handleRedirectToItemDetailPage = (email) => {
+    history.push(`/admin/items-list/${email}`);
+  };
+
   useEffect(() => {
     (async () => {
       const sortTokens = parseSortOption(sortOption, "_");
@@ -92,7 +96,7 @@ function EmployeeDevice() {
   }, [isUpdate]);
 
   return (
-    <div>
+    <div className="list-layout">
       <Toolbar
         changeLayout={changeLayoutView}
         isListView={isListView}
@@ -105,11 +109,13 @@ function EmployeeDevice() {
           tableHeaders={tableHeaders}
           deviceInfos={deviceInfos}
           handleDelete={handleDeleteDeviceInfo}
+          handleRedirect={handleRedirectToItemDetailPage}
         ></ListView>
       ) : (
         <GridView
           deviceInfos={deviceInfos}
           handleDelete={handleDeleteDeviceInfo}
+          handleRedirect={handleRedirectToItemDetailPage}
         ></GridView>
       )}
       <Pagination

@@ -4,9 +4,9 @@ export function getRouterTitle(routers, path) {
   return routers.find((router) => router.pathname === `/${path}`)?.title;
 }
 
-export function getRouterLastSubDirectory(pathname) {
+export function getRouterSubDirectories(pathname) {
   const subDirectories = pathname.split("/");
-  return subDirectories[subDirectories.length - 1];
+  return subDirectories;
 }
 
 export function useQuery() {

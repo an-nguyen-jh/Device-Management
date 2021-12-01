@@ -62,11 +62,11 @@ a {
   height: 100%;
 }
 
-.page-wrapper {
+.list-layout {
+  padding-top: var(--appbarHeight);
 }
 
 .content {
-  padding-top: var(--appbarHeight);
   width: 100%;
   min-height: 100vh;
   background-color: var(--primaryBgColor);

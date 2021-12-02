@@ -11,9 +11,13 @@ function Carousel({ imageSrcs }) {
   const controlNavigationButtonActiveness = (imgIndex) => {
     if (imgIndex === 0) {
       setDisablePrevBtn(true);
+      setDisableNextBtn(false);
+
       return;
     } else if (imgIndex === imageSrcs.length - 1) {
       setDisableNextBtn(true);
+      setDisablePrevBtn(false);
+
       return;
     }
     setDisablePrevBtn(false);

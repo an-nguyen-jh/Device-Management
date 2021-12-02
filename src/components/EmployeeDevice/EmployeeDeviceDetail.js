@@ -12,6 +12,10 @@ import {
 } from "../../apiService";
 import toast from "react-hot-toast";
 import { getCurrentPathWithoutLastPart } from "../../utils/routerHandler";
+import {
+  deleteOldEmployeeDeviceImages,
+  uploadEmployeeDeviceImages,
+} from "../../utils/managerImage";
 
 function EmployeeDeviceDetail() {
   const [employeeEmail, setEmployeeEmail] = useState("");
@@ -31,6 +35,7 @@ function EmployeeDeviceDetail() {
   const [isChange, setIsChange] = useState(false);
   const [previewImages, setPreviewImages] = useState([]);
   const [chosenImageSrcs, setChosenImageSrcs] = useState([]);
+  const [reloadPage, setReloadPage] = useState(false);
   const { id } = useParams();
   const history = useHistory();
   const location = useLocation();
@@ -101,7 +106,16 @@ function EmployeeDeviceDetail() {
     };
     console.log(updatedData);
     try {
-      // await updateEmployeeDeviceInfo(updatedData, employeeEmail);
+      if (chosenImageSrcs.length > 0) {
+        await deleteOldEmployeeDeviceImages(imageSrcs);
+        const imageDownloadURLs = await uploadEmployeeDeviceImages(
+          chosenImageSrcs,
+          employeeEmail
+        );
+        Object.assign(updatedData, { imageSrcs: imageDownloadURLs });
+      }
+      await updateEmployeeDeviceInfo(updatedData, employeeEmail);
+      setReloadPage(true);
       toast.success("Successful update employee's device information", {
         className: "toast-notification",
       });
@@ -151,7 +165,7 @@ function EmployeeDeviceDetail() {
         });
       }
     })();
-  }, [id]);
+  }, [id, reloadPage]);
 
   return (
     <div className="device-detail-wrapper">
@@ -199,7 +213,6 @@ function EmployeeDeviceDetail() {
               onSubmit={handleUpdateDeviceInfo}
               subscription={{
                 submitting: true,
-                pristine: true,
               }}
               initialValues={{
                 computerCompanyName,
@@ -212,7 +225,7 @@ function EmployeeDeviceDetail() {
                 numberOfMouse,
               }}
             >
-              {({ handleSubmit, submitting, pristine }) => {
+              {({ handleSubmit, submitting }) => {
                 return (
                   <form onSubmit={handleSubmit} className="device__form">
                     <div className="device__form__input-row">
@@ -462,7 +475,7 @@ function EmployeeDeviceDetail() {
                       <Button
                         type="submit"
                         color="primary"
-                        disabled={submitting || pristine}
+                        disabled={submitting}
                       >
                         Submit
                       </Button>

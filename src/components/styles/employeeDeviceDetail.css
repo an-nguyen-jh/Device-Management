@@ -93,6 +93,22 @@
   margin-top: 12px;
 }
 
+.device-detail__time-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.device-detail__time {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+@media only screen and (min-width: 768px) {
+  .device-detail__time {
+    width: 50%;
+  }
+}
+
 @media only screen and (min-width: 1024px) {
   .device-detail {
     grid-template-columns: 1fr 3fr;

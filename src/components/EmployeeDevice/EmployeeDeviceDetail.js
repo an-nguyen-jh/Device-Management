@@ -89,7 +89,7 @@ function EmployeeDeviceDetail() {
         <div className="device-detail">
           <div className="device-detail__employee">
             <div className=" device-detail__employee__avatar">
-              {generateAvatarByName("Thanh Bình")}
+              {generateAvatarByName(employeeName)}
             </div>
             <p className="device-detail__employee__name">{employeeName}</p>
             <p className="device-detail__employee__email">{employeeEmail}</p>
@@ -103,8 +103,18 @@ function EmployeeDeviceDetail() {
           </div>
           <div className="device-detail__info">
             <h2 className="form__title">Employee's Device Information</h2>
+            <div className="device-detail__time-wrapper">
+              <div className="device-detail__time">
+                Create Time: {createdTime && createdTime.toLocaleDateString()}
+              </div>
+              <div className="device-detail__time">
+                Update Time: {updatedTime && updatedTime.toLocaleDateString()}
+              </div>
+            </div>
             <div className="form__split-bar"></div>
-            <Carousel></Carousel>
+            {imageSrcs.length > 0 && (
+              <Carousel imageSrcs={imageSrcs}></Carousel>
+            )}
             <Form
               onSubmit={handleUpdateDeviceInfo}
               subscription={{ submitting: true }}

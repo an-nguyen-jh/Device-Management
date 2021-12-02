@@ -5,7 +5,7 @@ import classNames from "classnames";
 
 function Carousel({ imageSrcs }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [diablePrevBtn, setDisablePrevBtn] = useState(true);
+  const [disablePrevBtn, setDisablePrevBtn] = useState(true);
   const [disableNextBtn, setDisableNextBtn] = useState(false);
 
   const controlNavigationButtonActiveness = (imgIndex) => {
@@ -26,7 +26,7 @@ function Carousel({ imageSrcs }) {
       return;
     }
     controlNavigationButtonActiveness(currentImgIndex);
-    setSelectedIndex(currentImgIndex);
+    setSelectedIndex((prevState) => prevState + step);
   };
 
   useEffect(() => {
@@ -41,7 +41,7 @@ function Carousel({ imageSrcs }) {
         <button
           className="carousel__control carousel__control__left-btn"
           onClick={() => navigateImage(-1)}
-          disabled={diablePrevBtn}
+          disabled={disablePrevBtn}
         >
           <IoIosArrowBack className="carousel__control__icon" />
         </button>

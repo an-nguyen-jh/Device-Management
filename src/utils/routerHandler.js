@@ -29,3 +29,7 @@ export function flattenRouters(routers) {
   });
   return flattRouters;
 }
+
+export function getCurrentPathWithoutLastPart(pathname) {
+  return pathname.slice(0, pathname.lastIndexOf("/"));
+}

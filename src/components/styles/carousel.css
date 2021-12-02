@@ -2,7 +2,7 @@
   margin: 12px 0;
   width: 100%;
   height: 55vh;
-  max-height: 500px;
+  max-height: 450px;
 }
 
 .carousel__main {
@@ -17,14 +17,13 @@
 .carousel__main-image-container {
   width: 100%;
   height: 100%;
-  display: flex;
-  transition: transform var(--animationSpeed);
 }
 
 .carousel__main-image {
   object-fit: contain;
   width: 100%;
   height: 100%;
+  transition: all var(--animationSpeed) ease-out;
 }
 
 .carousel__control {

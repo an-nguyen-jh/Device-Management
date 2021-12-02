@@ -3,14 +3,14 @@ import "../styles/employeeDeviceDetail.css";
 import { IoIosArrowBack } from "react-icons/io";
 import { generateAvatarByName } from "../../utils/generateAvatar";
 import { Button, Carousel, Input } from "..";
-import { Field, Form } from "react-final-form";
-import { useParams, useHistory } from "react-router-dom";
+import { Field, Form, FormSpy, useForm } from "react-final-form";
+import { useParams, useHistory, useLocation } from "react-router-dom";
 import { validate as uuidValidate, version as uuidVersion } from "uuid";
 import { getDeviceInfoOfEmployeeById } from "../../apiService";
 import toast from "react-hot-toast";
+import { getCurrentPathWithoutLastPart } from "../../utils/routerHandler";
 
 function EmployeeDeviceDetail() {
-  // const [email, setEmail] = useState("");
   const [employeeEmail, setEmployeeEmail] = useState("");
   const [employeeName, setEmployeeName] = useState("");
   const [employeeTeam, setEmployeeTeam] = useState("");
@@ -25,8 +25,11 @@ function EmployeeDeviceDetail() {
   const [numberOfScreen, setNumberOfScreen] = useState("");
   const [mouseCompanyName, setMouseCompanyName] = useState("");
   const [numberOfMouse, setNumberOfMouse] = useState("");
+  const [isChange, setIsChange] = useState(false);
   const { id } = useParams();
   const history = useHistory();
+  const location = useLocation();
+
   const validateRequireField = (value) => {
     return value && value.length > 0 ? undefined : "This field is required";
   };
@@ -34,7 +37,23 @@ function EmployeeDeviceDetail() {
     return value >= 0 ? undefined : "Number of device must be positive";
   };
 
-  const handleUpdateDeviceInfo = (values) => {};
+  const returnToItemDetailsPage = () => {
+    const parentPath = getCurrentPathWithoutLastPart(location.pathname);
+    let hasUnsavedChange = false;
+    if (isChange) {
+      hasUnsavedChange = window.confirm(
+        "You has unsaved change. Do you want to save it?"
+      );
+    }
+    if (hasUnsavedChange) {
+      return;
+    }
+    history.push(parentPath);
+  };
+
+  const handleUpdateDeviceInfo = (values) => {
+    console.log(values);
+  };
 
   useEffect(() => {
     const isValidUuid = uuidValidate(id) && uuidVersion(id) === 4;
@@ -79,7 +98,10 @@ function EmployeeDeviceDetail() {
   return (
     <div className="device-detail-wrapper">
       <div className="device-detail__navigation">
-        <div className="device-detail__navigation__go-back">
+        <div
+          className="device-detail__navigation__go-back"
+          onClick={returnToItemDetailsPage}
+        >
           <IoIosArrowBack />
           <span>Back</span>
         </div>
@@ -117,7 +139,10 @@ function EmployeeDeviceDetail() {
             )}
             <Form
               onSubmit={handleUpdateDeviceInfo}
-              subscription={{ submitting: true }}
+              subscription={{
+                submitting: true,
+                pristine: true,
+              }}
               initialValues={{
                 computerCompanyName,
                 computersSeriNumber,
@@ -129,7 +154,7 @@ function EmployeeDeviceDetail() {
                 numberOfMouse,
               }}
             >
-              {({ handleSubmit, submitting }) => {
+              {({ handleSubmit, submitting, pristine }) => {
                 return (
                   <form onSubmit={handleSubmit} className="device__form">
                     <div className="device__form__input-row">
@@ -366,12 +391,26 @@ function EmployeeDeviceDetail() {
                       <Button
                         type="submit"
                         color="primary"
-                        disabled={submitting}
+                        disabled={submitting || pristine}
                       >
                         Submit
                       </Button>
                       <Button variant="text">Delete </Button>
                     </div>
+                    <FormSpy
+                      subscription={{
+                        dirtyFields: true,
+                      }}
+                      onChange={(state) => {
+                        const { dirtyFields } = state;
+                        //??
+                        if (Object.keys(dirtyFields).length > 0) {
+                          setIsChange(true);
+                        } else {
+                          setIsChange(false);
+                        }
+                      }}
+                    />
                   </form>
                 );
               }}

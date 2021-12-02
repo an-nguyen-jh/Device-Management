@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import "../styles/employeeDeviceDetail.css";
 import { IoIosArrowBack } from "react-icons/io";
 import { generateAvatarByName } from "../../utils/generateAvatar";
-import { Button, Carousel, Input } from "..";
-import { Field, Form, FormSpy, useForm } from "react-final-form";
+import { Button, Carousel, Input, UploadImage } from "..";
+import { Field, Form, FormSpy } from "react-final-form";
 import { useParams, useHistory, useLocation } from "react-router-dom";
 import { validate as uuidValidate, version as uuidVersion } from "uuid";
-import { getDeviceInfoOfEmployeeById } from "../../apiService";
+import {
+  getDeviceInfoOfEmployeeById,
+  updateEmployeeDeviceInfo,
+} from "../../apiService";
 import toast from "react-hot-toast";
 import { getCurrentPathWithoutLastPart } from "../../utils/routerHandler";
 
@@ -26,6 +29,8 @@ function EmployeeDeviceDetail() {
   const [mouseCompanyName, setMouseCompanyName] = useState("");
   const [numberOfMouse, setNumberOfMouse] = useState("");
   const [isChange, setIsChange] = useState(false);
+  const [previewImages, setPreviewImages] = useState([]);
+  const [chosenImageSrcs, setChosenImageSrcs] = useState([]);
   const { id } = useParams();
   const history = useHistory();
   const location = useLocation();
@@ -51,8 +56,61 @@ function EmployeeDeviceDetail() {
     history.push(parentPath);
   };
 
-  const handleUpdateDeviceInfo = (values) => {
-    console.log(values);
+  const previewChosenImages = async (e) => {
+    if (e.target.files.length === 0) {
+      return;
+    }
+    const images = Array.from(e.target.files);
+    setChosenImageSrcs(images);
+    try {
+      const imageURIPromises = images.map((img) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.addEventListener("load", (event) => {
+            resolve(event.target.result);
+          });
+          reader.addEventListener("error", reject);
+          reader.readAsDataURL(img);
+        });
+      });
+      const previewImageURIs = await Promise.all(imageURIPromises);
+      setPreviewImages(previewImageURIs);
+    } catch (error) {
+      //ignore error
+    }
+  };
+
+  const handleUpdateDeviceInfo = async (values) => {
+    const updatedData = {
+      computer: {
+        companyName: values.computerCompanyName,
+        config: values.computerConfig,
+        seriNumber: values.computersSeriNumber,
+      },
+      mouse: {
+        companyName: values.mouseCompanyName,
+        numberOf: values.numberOfMouse,
+      },
+
+      screen: {
+        config: values.screenConfig,
+        numberOf: values.numberOfScreen,
+        size: values.screenSize,
+      },
+      updatedTime: new Date(),
+    };
+    console.log(updatedData);
+    try {
+      // await updateEmployeeDeviceInfo(updatedData, employeeEmail);
+      toast.success("Successful update employee's device information", {
+        className: "toast-notification",
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Can not get employee's device information", {
+        className: "toast-notification",
+      });
+    }
   };
 
   useEffect(() => {
@@ -385,6 +443,19 @@ function EmployeeDeviceDetail() {
                           )}
                         </Field>
                       </div>
+                    </div>
+                    <div
+                      className="device__form__input-row"
+                      style={{ flexWrap: "wrap" }}
+                    >
+                      <label className="device__form__label">
+                        Picture of employee's device: (upload new im ages will
+                        delete all old images)
+                      </label>
+                      <UploadImage
+                        uploadImages={previewImages}
+                        onChange={previewChosenImages}
+                      ></UploadImage>
                     </div>
                     <div className="form__split-bar"></div>
                     <div className="device__form__btn-group">

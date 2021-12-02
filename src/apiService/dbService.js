@@ -81,6 +81,12 @@ export default function generateDatabaseService() {
     return getDocs(deviceInfoQuery);
   }
 
+  function updateEmployeeDeviceInfo(data, email) {
+    const deviceInfoDoc = doc(firebaseDB, "deviceInfos", email);
+
+    return setDoc(deviceInfoDoc, data, { merge: true });
+  }
+
   return {
     getUserByEmail,
     getDeviceInfoOfEmployeeByEmail,
@@ -90,5 +96,6 @@ export default function generateDatabaseService() {
     deleteDeviceInfoByEmail,
     deleteAllRelativeDeviceRequests,
     getDeviceInfoOfEmployeeById,
+    updateEmployeeDeviceInfo,
   };
 }

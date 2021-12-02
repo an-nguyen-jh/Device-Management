@@ -2,12 +2,20 @@ import React, { useEffect, useState } from "react";
 import "../styles/employeeDeviceDetail.css";
 import { IoIosArrowBack } from "react-icons/io";
 import { generateAvatarByName } from "../../utils/generateAvatar";
-import { Button, Input } from "..";
+import { Button, Carousel, Input } from "..";
 import { Field, Form } from "react-final-form";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
+import { validate as uuidValidate, version as uuidVersion } from "uuid";
+import { getDeviceInfoOfEmployeeById } from "../../apiService";
+import toast from "react-hot-toast";
 
 function EmployeeDeviceDetail() {
-  const [deviceDetails, setDeviceDetails] = useState({});
+  // const [email, setEmail] = useState("");
+  const [employeeEmail, setEmployeeEmail] = useState("");
+  const [employeeName, setEmployeeName] = useState("");
+  const [employeeTeam, setEmployeeTeam] = useState("");
+  const [createdTime, setCreatedTime] = useState(null);
+  const [updatedTime, setUpdatedTime] = useState(null);
   const [imageSrcs, setImageSrcs] = useState([]);
   const [computerCompanyName, setComputerCompanyName] = useState("");
   const [computersSeriNumber, setComputersSeriNumber] = useState("");
@@ -18,7 +26,7 @@ function EmployeeDeviceDetail() {
   const [mouseCompanyName, setMouseCompanyName] = useState("");
   const [numberOfMouse, setNumberOfMouse] = useState("");
   const { id } = useParams();
-
+  const history = useHistory();
   const validateRequireField = (value) => {
     return value && value.length > 0 ? undefined : "This field is required";
   };
@@ -29,7 +37,43 @@ function EmployeeDeviceDetail() {
   const handleUpdateDeviceInfo = (values) => {};
 
   useEffect(() => {
-    console.log(id);
+    const isValidUuid = uuidValidate(id) && uuidVersion(id) === 4;
+    if (!isValidUuid) {
+      history.goBack();
+    }
+  }, [history, id]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const deviceInfoSnapShots = await getDeviceInfoOfEmployeeById(id);
+        let deviceInfo;
+        //only run once
+        deviceInfoSnapShots.forEach((deviceInfoSnap) => {
+          deviceInfo = { email: deviceInfoSnap.id, ...deviceInfoSnap.data() };
+        });
+
+        setEmployeeEmail(deviceInfo.email);
+        setEmployeeName(deviceInfo.name);
+        setEmployeeTeam(deviceInfo.team);
+        setCreatedTime(deviceInfo.createdTime.toDate());
+        setUpdatedTime(deviceInfo.updatedTime.toDate());
+        setImageSrcs(deviceInfo.imageSrcs);
+        setComputerCompanyName(deviceInfo.computer.companyName);
+        setComputerConfig(deviceInfo.computer.config);
+        setComputersSeriNumber(deviceInfo.computer.seriNumber);
+        setMouseCompanyName(deviceInfo.mouse.companyName);
+        setNumberOfMouse(deviceInfo.mouse.numberOf);
+        setNumberOfScreen(deviceInfo.screen.numberOf);
+        setScreenSize(deviceInfo.screen.size);
+        setScreenConfig(deviceInfo.screen.config);
+      } catch (error) {
+        console.log(error);
+        toast.error("Can not get employee's device information", {
+          className: "toast-notification",
+        });
+      }
+    })();
   }, [id]);
 
   return (
@@ -47,21 +91,20 @@ function EmployeeDeviceDetail() {
             <div className=" device-detail__employee__avatar">
               {generateAvatarByName("Thanh Bình")}
             </div>
-            <p className="device-detail__employee__name">deviceDetails.name</p>
-            <p className="device-detail__employee__email">
-              deviceDetails.emaildeviceDetails.email
-            </p>
-            <p className="device-detail__employee__team">
-              Team: deviceDetails.team
-            </p>
-            <Button
+            <p className="device-detail__employee__name">{employeeName}</p>
+            <p className="device-detail__employee__email">{employeeEmail}</p>
+            <p className="device-detail__employee__team">{employeeTeam}</p>
+            {/* <Button
               variant="text"
               className="device-detail__employee__sign-out"
             >
               Sign out
-            </Button>
+            </Button> */}
           </div>
           <div className="device-detail__info">
+            <h2 className="form__title">Employee's Device Information</h2>
+            <div className="form__split-bar"></div>
+            <Carousel></Carousel>
             <Form
               onSubmit={handleUpdateDeviceInfo}
               subscription={{ submitting: true }}
@@ -79,10 +122,6 @@ function EmployeeDeviceDetail() {
               {({ handleSubmit, submitting }) => {
                 return (
                   <form onSubmit={handleSubmit} className="device__form">
-                    <h2 className="form__title">
-                      Employee's Device Information
-                    </h2>
-                    <div className="form__split-bar"></div>
                     <div className="device__form__input-row">
                       <div className="device__form__input-wrapper">
                         <label className="device__form__label">

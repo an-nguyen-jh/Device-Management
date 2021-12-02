@@ -75,6 +75,12 @@ export default function generateDatabaseService() {
     await batch.commit();
   }
 
+  function getDeviceInfoOfEmployeeById(uuid) {
+    const deviceInfoRef = collection(firebaseDB, "deviceInfos");
+    const deviceInfoQuery = query(deviceInfoRef, where("uuid", "==", uuid));
+    return getDocs(deviceInfoQuery);
+  }
+
   return {
     getUserByEmail,
     getDeviceInfoOfEmployeeByEmail,
@@ -83,5 +89,6 @@ export default function generateDatabaseService() {
     getAllDeviceInfos,
     deleteDeviceInfoByEmail,
     deleteAllRelativeDeviceRequests,
+    getDeviceInfoOfEmployeeById,
   };
 }

@@ -34,3 +34,16 @@
 .button--secondary-color:focus {
   background-color: var(--secondaryLightColor);
 }
+
+.button--error-color {
+  color: var(--errorTextColor);
+}
+
+.button--error-color:hover,
+.button--error-color:focus {
+  background-color: var(--errorBgColor);
+}
+
+.button--success-color {
+  color: var(--successBgColor);
+}

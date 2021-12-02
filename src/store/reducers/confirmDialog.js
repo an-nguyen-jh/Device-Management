@@ -5,6 +5,7 @@ const confirmDialogInitState = {
   email: "",
   imageSrcs: null,
   open: false,
+  callback: null,
 };
 
 function confirmDialogReducer(
@@ -23,6 +24,7 @@ function confirmDialogReducer(
         email: "",
         open: false,
         imageSrcs: null,
+        callback: null,
       };
     default:
       return confirmDialogState;

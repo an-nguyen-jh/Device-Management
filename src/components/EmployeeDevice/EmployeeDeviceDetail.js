@@ -16,6 +16,8 @@ import {
   deleteOldEmployeeDeviceImages,
   uploadEmployeeDeviceImages,
 } from "../../utils/managerImage";
+import { confirmDialogAction } from "../../store/actions";
+import { useDispatch } from "react-redux";
 
 function EmployeeDeviceDetail() {
   const [employeeEmail, setEmployeeEmail] = useState("");
@@ -39,6 +41,7 @@ function EmployeeDeviceDetail() {
   const { id } = useParams();
   const history = useHistory();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const validateRequireField = (value) => {
     return value && value.length > 0 ? undefined : "This field is required";
@@ -47,18 +50,24 @@ function EmployeeDeviceDetail() {
     return value >= 0 ? undefined : "Number of device must be positive";
   };
 
-  const returnToItemDetailsPage = () => {
+  const goBackToItemListPage = () => {
     const parentPath = getCurrentPathWithoutLastPart(location.pathname);
-    let hasUnsavedChange = false;
+    history.push(parentPath);
+  };
+
+  const checkUnsavedChange = () => {
     if (isChange) {
-      hasUnsavedChange = window.confirm(
-        "You has unsaved change. Do you want to save it?"
-      );
+      return window.confirm("You has unsaved change. Do you want to save it?");
     }
+    return false;
+  };
+
+  const returnToItemDetailsPage = () => {
+    let hasUnsavedChange = checkUnsavedChange();
     if (hasUnsavedChange) {
       return;
     }
-    history.push(parentPath);
+    goBackToItemListPage();
   };
 
   const previewChosenImages = async (e) => {
@@ -85,6 +94,18 @@ function EmployeeDeviceDetail() {
     }
   };
 
+  const handleDeleteDeviceInfo = (e) => {
+    e.preventDefault();
+    dispatch(
+      confirmDialogAction.visible({
+        name: employeeName,
+        email: employeeEmail,
+        imageSrcs,
+        callback: goBackToItemListPage,
+      })
+    );
+  };
+
   const handleUpdateDeviceInfo = async (values) => {
     const updatedData = {
       computer: {
@@ -104,7 +125,7 @@ function EmployeeDeviceDetail() {
       },
       updatedTime: new Date(),
     };
-    console.log(updatedData);
+
     try {
       if (chosenImageSrcs.length > 0) {
         await deleteOldEmployeeDeviceImages(imageSrcs);
@@ -116,11 +137,12 @@ function EmployeeDeviceDetail() {
       }
       await updateEmployeeDeviceInfo(updatedData, employeeEmail);
       setReloadPage(true);
+      setChosenImageSrcs([]);
+      setPreviewImages([]);
       toast.success("Successful update employee's device information", {
         className: "toast-notification",
       });
     } catch (error) {
-      console.log(error);
       toast.error("Can not get employee's device information", {
         className: "toast-notification",
       });
@@ -159,7 +181,6 @@ function EmployeeDeviceDetail() {
         setScreenSize(deviceInfo.screen.size);
         setScreenConfig(deviceInfo.screen.config);
       } catch (error) {
-        console.log(error);
         toast.error("Can not get employee's device information", {
           className: "toast-notification",
         });
@@ -479,7 +500,13 @@ function EmployeeDeviceDetail() {
                       >
                         Submit
                       </Button>
-                      <Button variant="text">Delete </Button>
+                      <Button
+                        variant="text"
+                        color="error"
+                        onClick={handleDeleteDeviceInfo}
+                      >
+                        Delete
+                      </Button>
                     </div>
                     <FormSpy
                       subscription={{

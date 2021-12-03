@@ -47,3 +47,15 @@
 .button--success-color {
   color: var(--successBgColor);
 }
+
+.button--danger-color {
+  background-color: transparent;
+  color: #ff0000;
+  transition: all var(--animationSpeed) ease-out;
+}
+
+.button--danger-color:hover,
+.button--danger-color:focus {
+  background-color: #ff0000;
+  color: #ffffff;
+}

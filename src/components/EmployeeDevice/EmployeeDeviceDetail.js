@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "../styles/employeeDeviceDetail.css";
 import { IoIosArrowBack } from "react-icons/io";
 import { generateAvatarByName } from "../../utils/generateAvatar";
@@ -8,6 +8,7 @@ import { useParams, useHistory, useLocation } from "react-router-dom";
 import { validate as uuidValidate, version as uuidVersion } from "uuid";
 import {
   getDeviceInfoOfEmployeeById,
+  signout,
   updateEmployeeDeviceInfo,
 } from "../../apiService";
 import toast from "react-hot-toast";
@@ -16,7 +17,7 @@ import {
   deleteOldEmployeeDeviceImages,
   uploadEmployeeDeviceImages,
 } from "../../utils/managerImage";
-import { confirmDialogAction } from "../../store/actions";
+import { authenticationAction, confirmDialogAction } from "../../store/actions";
 import { useDispatch } from "react-redux";
 
 function EmployeeDeviceDetail() {
@@ -34,10 +35,10 @@ function EmployeeDeviceDetail() {
   const [numberOfScreen, setNumberOfScreen] = useState("");
   const [mouseCompanyName, setMouseCompanyName] = useState("");
   const [numberOfMouse, setNumberOfMouse] = useState("");
-  const [isChange, setIsChange] = useState(false);
   const [previewImages, setPreviewImages] = useState([]);
   const [chosenImageSrcs, setChosenImageSrcs] = useState([]);
   const [reloadPage, setReloadPage] = useState(false);
+  const formRef = useRef(null);
   const { id } = useParams();
   const history = useHistory();
   const location = useLocation();
@@ -55,7 +56,13 @@ function EmployeeDeviceDetail() {
     history.push(parentPath);
   };
 
+  const checkRevisionOfData = () => {
+    const { dirty: isValuesChange } = formRef.current.getState();
+    return isValuesChange;
+  };
+
   const checkUnsavedChange = () => {
+    const isChange = checkRevisionOfData();
     if (isChange) {
       return window.confirm("You has unsaved change. Do you want to save it?");
     }
@@ -68,6 +75,17 @@ function EmployeeDeviceDetail() {
       return;
     }
     goBackToItemListPage();
+  };
+
+  const signOut = async () => {
+    try {
+      let hasUnsavedChange = checkUnsavedChange();
+      if (hasUnsavedChange) {
+        return;
+      }
+      await signout();
+      dispatch(authenticationAction.removeUserAuthenticationInfo());
+    } catch (error) {}
   };
 
   const previewChosenImages = async (e) => {
@@ -199,334 +217,306 @@ function EmployeeDeviceDetail() {
           <span>Back</span>
         </div>
         <div className="device-detail__navigation__title">Item Details</div>
+        <Button
+          variant="text"
+          className="device-detail__navigation__sign-out"
+          onClick={signOut}
+        >
+          Sign Out
+        </Button>
       </div>
-      <div className="container-fluid">
-        <div className="device-detail">
-          <div className="device-detail__employee">
-            <div className=" device-detail__employee__avatar">
-              {generateAvatarByName(employeeName)}
-            </div>
-            <p className="device-detail__employee__name">{employeeName}</p>
-            <p className="device-detail__employee__email">{employeeEmail}</p>
-            <p className="device-detail__employee__team">{employeeTeam}</p>
-            {/* <Button
-              variant="text"
-              className="device-detail__employee__sign-out"
-            >
-              Sign out
-            </Button> */}
+      <div className=" container-fluid device-detail">
+        <div className="device-detail__employee">
+          <div className=" device-detail__employee__avatar">
+            {generateAvatarByName(employeeName)}
           </div>
-          <div className="device-detail__info">
-            <h2 className="form__title">Employee's Device Information</h2>
-            <div className="device-detail__time-wrapper">
-              <div className="device-detail__time">
-                Create Time: {createdTime && createdTime.toLocaleDateString()}
-              </div>
-              <div className="device-detail__time">
-                Update Time: {updatedTime && updatedTime.toLocaleDateString()}
-              </div>
+          <p className="device-detail__employee__name">{employeeName}</p>
+          <p className="device-detail__employee__email">{employeeEmail}</p>
+          <p className="device-detail__employee__team">{employeeTeam}</p>
+        </div>
+        <div className="device-detail__info">
+          <h2 className="form__title">Employee's Device Information</h2>
+          <div className="device-detail__time-wrapper">
+            <div className="device-detail__time">
+              Create Time: {createdTime && createdTime.toLocaleDateString()}
             </div>
-            <div className="form__split-bar"></div>
-            {imageSrcs.length > 0 && (
-              <Carousel imageSrcs={imageSrcs}></Carousel>
-            )}
-            <Form
-              onSubmit={handleUpdateDeviceInfo}
-              subscription={{
-                submitting: true,
-              }}
-              initialValues={{
-                computerCompanyName,
-                computersSeriNumber,
-                computerConfig,
-                screenSize,
-                screenConfig,
-                numberOfScreen,
-                mouseCompanyName,
-                numberOfMouse,
-              }}
-            >
-              {({ handleSubmit, submitting }) => {
-                return (
-                  <form onSubmit={handleSubmit} className="device__form">
-                    <div className="device__form__input-row">
-                      <div className="device__form__input-wrapper">
-                        <label className="device__form__label">
-                          Brand name of Laptop/PC provided by company:
-                          <span className="device__form__input-required">
-                            *
-                          </span>
-                        </label>
-                        <Field
-                          required
-                          name="computerCompanyName"
-                          type="text"
-                          placeholder="Brand name (Mac, Hp, Dell,...)"
-                          validate={validateRequireField}
-                          subscription={{
-                            value: true,
-                            touched: true,
-                            error: true,
-                            active: true,
-                          }}
-                        >
-                          {({ input, meta, ...rest }) => (
-                            <Input
-                              {...input}
-                              {...rest}
-                              error={meta.error && meta.touched && !meta.active}
-                              errorMsg={meta.error}
-                            ></Input>
-                          )}
-                        </Field>
-                      </div>
-                      <div className="device__form__input-wrapper ">
-                        <label className="device__form__label">
-                          Serial number of Laptop/PC provided by company:
-                          <span className="device__form__input-required">
-                            *
-                          </span>
-                        </label>
-                        <Field
-                          name="computersSeriNumber"
-                          type="text"
-                          required
-                          validate={validateRequireField}
-                          placeholder="Serial number of device"
-                          subscription={{
-                            value: true,
-                            touched: true,
-                            error: true,
-                            active: true,
-                          }}
-                        >
-                          {({ input, meta, ...rest }) => (
-                            <Input
-                              {...input}
-                              {...rest}
-                              error={meta.error && meta.touched && !meta.active}
-                              errorMsg={meta.error}
-                            ></Input>
-                          )}
-                        </Field>
-                      </div>
-                    </div>
-                    <div className="device__form__input-row">
-                      <div className="device__form__input-wrapper">
-                        <label className="device__form__label">
-                          Laptop/ PC configuration provided by company (System
-                          Name/ System Model/ Processor):{" "}
-                          <span className="device__form__input-required">
-                            *
-                          </span>
-                        </label>
-                        <Field
-                          name="computerConfig"
-                          type="text"
-                          required
-                          validate={validateRequireField}
-                          placeholder="(System Name/System Model/Processor)"
-                          subscription={{
-                            value: true,
-                            touched: true,
-                            error: true,
-                            active: true,
-                          }}
-                        >
-                          {({ input, meta, ...rest }) => (
-                            <Input
-                              {...input}
-                              {...rest}
-                              error={meta.error && meta.touched && !meta.active}
-                              errorMsg={meta.error}
-                            ></Input>
-                          )}
-                        </Field>
-                      </div>
-                    </div>
-                    <div className="device__form__input-row">
-                      <div className="device__form__input-wrapper">
-                        <label className="device__form__label">
-                          Number of monitor provided by company:
-                        </label>
-                        <Field
-                          name="numberOfScreen"
-                          type="number"
-                          validate={validateNumberOfDevice}
-                          subscription={{
-                            value: true,
-                            touched: true,
-                            error: true,
-                            active: true,
-                          }}
-                        >
-                          {({ input, meta, ...rest }) => (
-                            <>
-                              <Input
-                                {...input}
-                                {...rest}
-                                error={
-                                  meta.error && meta.touched && !meta.active
-                                }
-                                errorMsg={meta.error}
-                              ></Input>
-                            </>
-                          )}
-                        </Field>
-                      </div>
-                      <div className="device__form__input-wrapper ">
-                        <label className="device__form__label">
-                          Monitor configuration provided by company
-                        </label>
-                        <Field
-                          name="screenConfig"
-                          type="text"
-                          subscription={{
-                            value: true,
-                            touched: true,
-                            error: true,
-                            active: true,
-                          }}
-                        >
-                          {({ input, meta, ...rest }) => (
-                            <Input
-                              {...input}
-                              {...rest}
-                              error={meta.error && meta.touched && !meta.active}
-                              errorMsg={meta.error}
-                            ></Input>
-                          )}
-                        </Field>
-                      </div>
-                    </div>
-                    <div className="device__form__input-row">
-                      <div className="device__form__input-wrapper">
-                        <label className="device__form__label">
-                          Monitor resolution provided by company:
-                        </label>
-                        <Field
-                          name="screenSize"
-                          type="text"
-                          placeholder="Monitor resolution (width x height)"
-                          subscription={{
-                            value: true,
-                            touched: true,
-                            error: true,
-                            active: true,
-                          }}
-                        >
-                          {({ input, meta, ...rest }) => (
-                            <Input
-                              {...input}
-                              {...rest}
-                              error={meta.error && meta.touched && !meta.active}
-                              errorMsg={meta.error}
-                            ></Input>
-                          )}
-                        </Field>
-                      </div>
-                      <div className="device__form__input-wrapper "></div>
-                    </div>
-                    <div className="device__form__input-row">
-                      <div className="device__form__input-wrapper">
-                        <label className="device__form__label">
-                          Brand name of computer mouse provided by the company:
-                        </label>
-                        <Field
-                          name="mouseCompanyName"
-                          type="text"
-                          subscription={{
-                            value: true,
-                            touched: true,
-                            error: true,
-                            active: true,
-                          }}
-                        >
-                          {({ input, meta, ...rest }) => (
-                            <Input
-                              {...input}
-                              {...rest}
-                              error={meta.error && meta.touched && !meta.active}
-                              errorMsg={meta.error}
-                            ></Input>
-                          )}
-                        </Field>
-                      </div>
-                      <div className="device__form__input-wrapper ">
-                        <label className="device__form__label">
-                          Number of computer mouses provided by company
-                        </label>
-                        <Field
-                          name="numberOfMouse"
-                          type="number"
-                          validate={validateNumberOfDevice}
-                          subscription={{
-                            value: true,
-                            touched: true,
-                            error: true,
-                            active: true,
-                          }}
-                        >
-                          {({ input, meta, ...rest }) => (
-                            <Input
-                              {...input}
-                              {...rest}
-                              error={meta.error && meta.touched && !meta.active}
-                              errorMsg={meta.error}
-                            ></Input>
-                          )}
-                        </Field>
-                      </div>
-                    </div>
-                    <div
-                      className="device__form__input-row"
-                      style={{ flexWrap: "wrap" }}
-                    >
+            <div className="device-detail__time">
+              Update Time: {updatedTime && updatedTime.toLocaleDateString()}
+            </div>
+          </div>
+          <div className="form__split-bar"></div>
+          {imageSrcs.length > 0 && <Carousel imageSrcs={imageSrcs}></Carousel>}
+          <Form
+            onSubmit={handleUpdateDeviceInfo}
+            subscription={{
+              submitting: true,
+            }}
+            initialValues={{
+              computerCompanyName,
+              computersSeriNumber,
+              computerConfig,
+              screenSize,
+              screenConfig,
+              numberOfScreen,
+              mouseCompanyName,
+              numberOfMouse,
+            }}
+          >
+            {({ handleSubmit, submitting, form }) => {
+              formRef.current = form;
+              return (
+                <form onSubmit={handleSubmit} className="device__form">
+                  <div className="device__form__input-row">
+                    <div className="device__form__input-wrapper">
                       <label className="device__form__label">
-                        Picture of employee's device: (upload new im ages will
-                        delete all old images)
+                        Brand name of Laptop/PC provided by company:
+                        <span className="device__form__input-required">*</span>
                       </label>
-                      <UploadImage
-                        uploadImages={previewImages}
-                        onChange={previewChosenImages}
-                      ></UploadImage>
-                    </div>
-                    <div className="form__split-bar"></div>
-                    <div className="device__form__btn-group">
-                      <Button
-                        type="submit"
-                        color="primary"
-                        disabled={submitting}
+                      <Field
+                        required
+                        name="computerCompanyName"
+                        type="text"
+                        placeholder="Brand name (Mac, Hp, Dell,...)"
+                        validate={validateRequireField}
+                        subscription={{
+                          value: true,
+                          touched: true,
+                          error: true,
+                          active: true,
+                        }}
                       >
-                        Submit
-                      </Button>
-                      <Button
-                        variant="text"
-                        color="error"
-                        onClick={handleDeleteDeviceInfo}
-                      >
-                        Delete
-                      </Button>
+                        {({ input, meta, ...rest }) => (
+                          <Input
+                            {...input}
+                            {...rest}
+                            error={meta.error && meta.touched && !meta.active}
+                            errorMsg={meta.error}
+                          ></Input>
+                        )}
+                      </Field>
                     </div>
-                    <FormSpy
-                      subscription={{
-                        dirtyFields: true,
-                      }}
-                      onChange={(state) => {
-                        const { dirtyFields } = state;
-                        //??
-                        if (Object.keys(dirtyFields).length > 0) {
-                          setIsChange(true);
-                        } else {
-                          setIsChange(false);
-                        }
-                      }}
-                    />
-                  </form>
-                );
-              }}
-            </Form>
-          </div>
+                    <div className="device__form__input-wrapper ">
+                      <label className="device__form__label">
+                        Serial number of Laptop/PC provided by company:
+                        <span className="device__form__input-required">*</span>
+                      </label>
+                      <Field
+                        name="computersSeriNumber"
+                        type="text"
+                        required
+                        validate={validateRequireField}
+                        placeholder="Serial number of device"
+                        subscription={{
+                          value: true,
+                          touched: true,
+                          error: true,
+                          active: true,
+                        }}
+                      >
+                        {({ input, meta, ...rest }) => (
+                          <Input
+                            {...input}
+                            {...rest}
+                            error={meta.error && meta.touched && !meta.active}
+                            errorMsg={meta.error}
+                          ></Input>
+                        )}
+                      </Field>
+                    </div>
+                  </div>
+                  <div className="device__form__input-row">
+                    <div className="device__form__input-wrapper">
+                      <label className="device__form__label">
+                        Laptop/ PC configuration provided by company (System
+                        Name/ System Model/ Processor):{" "}
+                        <span className="device__form__input-required">*</span>
+                      </label>
+                      <Field
+                        name="computerConfig"
+                        type="text"
+                        required
+                        validate={validateRequireField}
+                        placeholder="(System Name/System Model/Processor)"
+                        subscription={{
+                          value: true,
+                          touched: true,
+                          error: true,
+                          active: true,
+                        }}
+                      >
+                        {({ input, meta, ...rest }) => (
+                          <Input
+                            {...input}
+                            {...rest}
+                            error={meta.error && meta.touched && !meta.active}
+                            errorMsg={meta.error}
+                          ></Input>
+                        )}
+                      </Field>
+                    </div>
+                  </div>
+                  <div className="device__form__input-row">
+                    <div className="device__form__input-wrapper">
+                      <label className="device__form__label">
+                        Number of monitor provided by company:
+                      </label>
+                      <Field
+                        name="numberOfScreen"
+                        type="number"
+                        validate={validateNumberOfDevice}
+                        subscription={{
+                          value: true,
+                          touched: true,
+                          error: true,
+                          active: true,
+                        }}
+                      >
+                        {({ input, meta, ...rest }) => (
+                          <>
+                            <Input
+                              {...input}
+                              {...rest}
+                              error={meta.error && meta.touched && !meta.active}
+                              errorMsg={meta.error}
+                            ></Input>
+                          </>
+                        )}
+                      </Field>
+                    </div>
+                    <div className="device__form__input-wrapper ">
+                      <label className="device__form__label">
+                        Monitor configuration provided by company
+                      </label>
+                      <Field
+                        name="screenConfig"
+                        type="text"
+                        subscription={{
+                          value: true,
+                          touched: true,
+                          error: true,
+                          active: true,
+                        }}
+                      >
+                        {({ input, meta, ...rest }) => (
+                          <Input
+                            {...input}
+                            {...rest}
+                            error={meta.error && meta.touched && !meta.active}
+                            errorMsg={meta.error}
+                          ></Input>
+                        )}
+                      </Field>
+                    </div>
+                  </div>
+                  <div className="device__form__input-row">
+                    <div className="device__form__input-wrapper">
+                      <label className="device__form__label">
+                        Monitor resolution provided by company:
+                      </label>
+                      <Field
+                        name="screenSize"
+                        type="text"
+                        placeholder="Monitor resolution (width x height)"
+                        subscription={{
+                          value: true,
+                          touched: true,
+                          error: true,
+                          active: true,
+                        }}
+                      >
+                        {({ input, meta, ...rest }) => (
+                          <Input
+                            {...input}
+                            {...rest}
+                            error={meta.error && meta.touched && !meta.active}
+                            errorMsg={meta.error}
+                          ></Input>
+                        )}
+                      </Field>
+                    </div>
+                    <div className="device__form__input-wrapper "></div>
+                  </div>
+                  <div className="device__form__input-row">
+                    <div className="device__form__input-wrapper">
+                      <label className="device__form__label">
+                        Brand name of computer mouse provided by the company:
+                      </label>
+                      <Field
+                        name="mouseCompanyName"
+                        type="text"
+                        subscription={{
+                          value: true,
+                          touched: true,
+                          error: true,
+                          active: true,
+                        }}
+                      >
+                        {({ input, meta, ...rest }) => (
+                          <Input
+                            {...input}
+                            {...rest}
+                            error={meta.error && meta.touched && !meta.active}
+                            errorMsg={meta.error}
+                          ></Input>
+                        )}
+                      </Field>
+                    </div>
+                    <div className="device__form__input-wrapper ">
+                      <label className="device__form__label">
+                        Number of computer mouses provided by company
+                      </label>
+                      <Field
+                        name="numberOfMouse"
+                        type="number"
+                        validate={validateNumberOfDevice}
+                        subscription={{
+                          value: true,
+                          touched: true,
+                          error: true,
+                          active: true,
+                        }}
+                      >
+                        {({ input, meta, ...rest }) => (
+                          <Input
+                            {...input}
+                            {...rest}
+                            error={meta.error && meta.touched && !meta.active}
+                            errorMsg={meta.error}
+                          ></Input>
+                        )}
+                      </Field>
+                    </div>
+                  </div>
+                  <div
+                    className="device__form__input-row"
+                    style={{ flexWrap: "wrap" }}
+                  >
+                    <label className="device__form__label">
+                      Picture of employee's device: (upload new im ages will
+                      delete all old images)
+                    </label>
+                    <UploadImage
+                      uploadImages={previewImages}
+                      onChange={previewChosenImages}
+                    ></UploadImage>
+                  </div>
+                  <div className="form__split-bar"></div>
+                  <div className="device__form__btn-group">
+                    <Button type="submit" color="primary" disabled={submitting}>
+                      Submit
+                    </Button>
+                    <Button
+                      variant="text"
+                      color="danger"
+                      onClick={handleDeleteDeviceInfo}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </form>
+              );
+            }}
+          </Form>
         </div>
       </div>
     </div>

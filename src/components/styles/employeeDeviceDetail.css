@@ -5,11 +5,11 @@
 }
 
 .device-detail__navigation {
-  /* background-color: var(--primaryLightColor); */
   color: var(--primaryColor);
   height: var(--appbarHeight);
   display: flex;
   align-items: center;
+  justify-content: space-between;
   position: relative;
   border-bottom: 1px solid var(--primaryDarkColor);
 }
@@ -31,6 +31,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.device-detail__navigation__sign-out {
+  text-transform: none;
 }
 
 .device-detail {
@@ -117,6 +121,8 @@
     grid-template-areas:
       "employee info"
       "empty info";
+    width: 100%;
+    padding: 0 24px;
   }
 
   .device-detail__employee {

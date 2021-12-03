@@ -13,6 +13,7 @@ import GridView from "./Views/GridView";
 import Pagination from "./Pagination/Pagination";
 import ConfirmDeleteDialog from "./Dialog/ConfirmDeleteDialog";
 import Carousel from "./Carousel/Carousel";
+import Table from "./Table/Table";
 
 export {
   Input,
@@ -30,4 +31,5 @@ export {
   Pagination,
   ConfirmDeleteDialog,
   Carousel,
+  Table,
 };

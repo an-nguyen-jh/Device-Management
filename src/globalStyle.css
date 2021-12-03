@@ -76,6 +76,10 @@ a {
   background-color: white;
 }
 
+.bg-primary {
+  background-color: var(--primaryBgColor);
+}
+
 .primary-color {
   background-color: var(--primaryColor);
 }

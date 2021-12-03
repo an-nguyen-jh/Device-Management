@@ -41,13 +41,15 @@ function Carousel({ imageSrcs }) {
   return (
     <div className="carousel-wrapper">
       <div className="carousel__main">
-        <button
-          className="carousel__control carousel__control__left-btn"
-          onClick={() => navigateImage(-1)}
-          disabled={disablePrevBtn}
-        >
-          <IoIosArrowBack className="carousel__control__icon" />
-        </button>
+        {!disablePrevBtn && (
+          <button
+            className="carousel__control carousel__control__left-btn"
+            onClick={() => navigateImage(-1)}
+            disabled={disablePrevBtn}
+          >
+            <IoIosArrowBack className="carousel__control__icon" />
+          </button>
+        )}
         <div className="carousel__main-image-container">
           <img
             src={imageSrcs[selectedIndex]}
@@ -55,13 +57,15 @@ function Carousel({ imageSrcs }) {
             className="carousel__main-image"
           />
         </div>
-        <button
-          className="carousel__control carousel__control__right-btn"
-          onClick={() => navigateImage(1)}
-          disabled={disableNextBtn}
-        >
-          <IoIosArrowForward className="carousel__control__icon" />
-        </button>
+        {!disableNextBtn && (
+          <button
+            className="carousel__control carousel__control__right-btn"
+            onClick={() => navigateImage(1)}
+            disabled={disableNextBtn}
+          >
+            <IoIosArrowForward className="carousel__control__icon" />
+          </button>
+        )}
       </div>
       <div className="carousel__image-list">
         {imageSrcs.map((_, i) => (

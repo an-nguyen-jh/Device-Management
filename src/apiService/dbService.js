@@ -22,6 +22,7 @@ import {
 export default function generateDatabaseService() {
   const firebaseDB = getFirestore();
   const batch = writeBatch(firebaseDB);
+
   function getUserByEmail(email) {
     const userRef = doc(firebaseDB, "users", email);
     return getDoc(userRef);

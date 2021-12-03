@@ -42,13 +42,11 @@ class DeviceRequestForm extends Component {
   async handleRequestDeviceSubmit(values) {
     try {
       const newRequestDevice = { ...values, employee: this.props.userEmail };
-      console.log(this.props.userEmail);
       await addNewRequestDevice(newRequestDevice);
       toast.success("Success request device", {
         className: "toast-notification",
       });
     } catch (error) {
-      console.log(error);
       toast.error("Error in request device", {
         className: "toast-notification",
       });

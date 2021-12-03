@@ -7,39 +7,29 @@ import { IoWarningOutline } from "react-icons/io5";
 import {
   deleteAllRelativeDeviceRequests,
   deleteDeviceInfoByEmail,
-  deleteOldEmployeeImage,
 } from "../../apiService";
 import toast from "react-hot-toast";
+import { deleteEmployeeOldDeviceImages } from "../../utils/manageImage";
 
 function ConfirmDeleteDialog() {
-  const { shouldDisplay, name, email, imageSrcs } = useSelector((state) => ({
-    shouldDisplay: state.confirmDialog.open,
-    name: state.confirmDialog.name,
-    email: state.confirmDialog.email,
-    imageSrcs: state.confirmDialog.imageSrcs,
-  }));
+  const { shouldDisplay, name, email, imageSrcs, callback } = useSelector(
+    (state) => ({
+      shouldDisplay: state.confirmDialog.open,
+      name: state.confirmDialog.name,
+      email: state.confirmDialog.email,
+      imageSrcs: state.confirmDialog.imageSrcs,
+      callback: state.confirmDialog.callback,
+    })
+  );
   const dispatch = useDispatch();
 
   const handleClose = () => dispatch(confirmDialogAction.invisible());
-
-  const deleteEmployeeDeviceImages = async (images) => {
-    try {
-      if (imageSrcs) {
-        const imageDeletePromises = images.map((imageURL) => {
-          return deleteOldEmployeeImage(imageURL);
-        });
-        await Promise.all(imageDeletePromises);
-      }
-    } catch (error) {
-      //ignore error
-    }
-  };
 
   const deleteDeviceInfoAndRelativeResources = async (email) => {
     return await Promise.all([
       await deleteDeviceInfoByEmail(email),
       await deleteAllRelativeDeviceRequests(email),
-      await deleteEmployeeDeviceImages(imageSrcs),
+      await deleteEmployeeOldDeviceImages(imageSrcs),
     ]);
   };
 
@@ -50,6 +40,9 @@ function ConfirmDeleteDialog() {
         className: "toast-notification",
       });
       handleClose();
+      if (callback) {
+        callback();
+      }
       dispatch(updateListAction.update());
     } catch (error) {
       //ignore error
@@ -60,8 +53,8 @@ function ConfirmDeleteDialog() {
     <div className="dialog-wrapper">
       <div className="dialog">
         <div className="dialog__content">
-          <h3 className="grid-span-2"> Confirm delete</h3>
-          <p className="grid-span-2">
+          <h2 className="grid-col-span-2"> Confirm delete</h2>
+          <p className="grid-col-span-2">
             Are you sure you want to delete this device info ?
           </p>
           <p className="dialog__content__label">Employee: </p>
@@ -69,7 +62,7 @@ function ConfirmDeleteDialog() {
           <p className="dialog__content__label">Email: </p>
           <p>{email}</p>
           <Alert
-            className="grid-span-2"
+            className="grid-col-span-2"
             type="error"
             icon={<IoWarningOutline />}
           >

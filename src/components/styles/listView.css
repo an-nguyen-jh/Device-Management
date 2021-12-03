@@ -38,6 +38,7 @@
 
 .list-layout__first-cell {
   flex: 1 1 auto !important;
+  cursor: pointer;
 }
 
 .list-layout__last-cell {
@@ -104,7 +105,7 @@
   }
 
   .list-layout__last-cell {
-    flex-basis: 80px;
+    flex-basis: 80px !important;
   }
 
   .list-layout__row__img {

@@ -1,24 +1,26 @@
 import React from "react";
-import { Appbar, ConfirmDeleteDialog } from "../../components";
+import { ConfirmDeleteDialog } from "../../components";
 import { Toaster } from "react-hot-toast";
 import { adminSubRouters } from "../../config/routes";
 import { Route, Switch, Redirect, useRouteMatch } from "react-router-dom";
+import { flattenRouters } from "../../utils/routerHandler";
 
 function Admin() {
   const match = useRouteMatch();
+  const flatSubRouters = flattenRouters(adminSubRouters);
+
   return (
     <div className="container page-wrapper">
       <Toaster />
-      <Appbar routers={adminSubRouters}></Appbar>
       <ConfirmDeleteDialog />
       <div className="content bg-white">
         <Switch>
-          {adminSubRouters.map((router) => (
+          {flatSubRouters.map((router) => (
             <Route
-              exact
               key={router.pathname}
+              exact
               path={`${match.path}${router.pathname}`}
-              component={router.component}
+              render={() => <router.component></router.component>}
             ></Route>
           ))}
           <Route exact path={`${match.path}`}>

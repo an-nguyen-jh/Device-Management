@@ -18,6 +18,9 @@ const DeviceRequest = lazy(() =>
 const EmployeeDevice = lazy(() =>
   import("../../components/EmployeeDevice/EmployeeDevice")
 );
+const EmployeeDeviceDetail = lazy(() =>
+  import("../../components/EmployeeDevice/EmployeeDeviceDetail")
+);
 
 const privateRoute = {
   [ENV_CONFIG.ROLE.EMPLOYEE]: {
@@ -51,6 +54,9 @@ const adminSubRouters = [
     title: "Employee Devices List",
     icon: <HiDocumentDuplicate />,
     component: EmployeeDevice,
+    hasDetailsPage: {
+      component: EmployeeDeviceDetail,
+    },
   },
   {
     pathname: "/device-request-list",

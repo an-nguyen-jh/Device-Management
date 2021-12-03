@@ -22,6 +22,7 @@ import {
 export default function generateDatabaseService() {
   const firebaseDB = getFirestore();
   const batch = writeBatch(firebaseDB);
+
   function getUserByEmail(email) {
     const userRef = doc(firebaseDB, "users", email);
     return getDoc(userRef);
@@ -75,6 +76,17 @@ export default function generateDatabaseService() {
     await batch.commit();
   }
 
+  function getDeviceInfoOfEmployeeById(uuid) {
+    const deviceInfoRef = collection(firebaseDB, "deviceInfos");
+    const deviceInfoQuery = query(deviceInfoRef, where("uuid", "==", uuid));
+    return getDocs(deviceInfoQuery);
+  }
+
+  function updateEmployeeDeviceInfo(data, email) {
+    const deviceInfoDoc = doc(firebaseDB, "deviceInfos", email);
+    return setDoc(deviceInfoDoc, data, { merge: true });
+  }
+
   return {
     getUserByEmail,
     getDeviceInfoOfEmployeeByEmail,
@@ -83,5 +95,7 @@ export default function generateDatabaseService() {
     getAllDeviceInfos,
     deleteDeviceInfoByEmail,
     deleteAllRelativeDeviceRequests,
+    getDeviceInfoOfEmployeeById,
+    updateEmployeeDeviceInfo,
   };
 }

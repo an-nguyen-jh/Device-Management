@@ -4,7 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 import { MdArrowDropDown } from "react-icons/md";
 import "../styles/appbar.css";
 import {
-  getRouterLastSubDirectory,
+  getRouterSubDirectories,
   getRouterTitle,
 } from "../../utils/routerHandler";
 import { Button } from "..";
@@ -38,10 +38,13 @@ class Appbar extends Component {
 
   componentDidMount() {
     const routers = this.props.routers;
-    const lastSubDirectory = getRouterLastSubDirectory(
+    const subDirectories = getRouterSubDirectories(
       this.props.location.pathname
     );
-    const routerTitle = getRouterTitle(routers, lastSubDirectory);
+    const routerTitle = getRouterTitle(
+      routers,
+      subDirectories[subDirectories.length - 1]
+    );
     this.setState({
       title: routerTitle,
     });
@@ -49,14 +52,20 @@ class Appbar extends Component {
 
   componentDidUpdate(prevProps) {
     const routers = this.props.routers;
-    const lastSubDirectory = getRouterLastSubDirectory(
+    const subDirectories = getRouterSubDirectories(
       this.props.location.pathname
     );
+    const prevSubDirectories = getRouterSubDirectories(
+      prevProps.location.pathname
+    );
     if (
-      lastSubDirectory !==
-      getRouterLastSubDirectory(prevProps.location.pathname)
+      subDirectories[subDirectories.length - 1] !==
+      prevSubDirectories[prevSubDirectories.length - 1]
     ) {
-      const routerTitle = getRouterTitle(routers, lastSubDirectory);
+      const routerTitle = getRouterTitle(
+        routers,
+        subDirectories[subDirectories.length - 1]
+      );
       this.setState({
         title: routerTitle,
         appbarToggle: false,
@@ -66,9 +75,11 @@ class Appbar extends Component {
 
   render() {
     const { appbarToggle: toggle, title } = this.state;
-    const path = this.props.match.path;
+    const path = getRouterSubDirectories(this.props.match.path)[1];
     const routers = this.props.routers;
-    const subPathname = this.props.location.pathname.split("/")[2];
+    const subDirectories = getRouterSubDirectories(
+      this.props.location.pathname
+    );
 
     return (
       <div className="appbar">
@@ -97,12 +108,13 @@ class Appbar extends Component {
                 key={router.pathname}
                 className={classNames("appbar__nav-item", {
                   "appbar__nav-item--active ":
-                    router.pathname === `/${subPathname}`,
+                    router.pathname ===
+                    `/${subDirectories[subDirectories.length - 1]}`,
                 })}
               >
                 <Link
                   className="appbar__nav-link"
-                  to={`${path}${router.pathname}`}
+                  to={`/${path}${router.pathname}`}
                 >
                   {router.icon}
                   <span>{router.title}</span>

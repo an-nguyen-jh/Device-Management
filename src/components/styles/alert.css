@@ -17,8 +17,8 @@
   color: var(--successTextColor);
 }
 
-.alert__icon--success,
-.alert__icon--error {
+.alert__icon,
+.alert__icon {
   display: flex;
   justify-content: center;
   align-items: center;

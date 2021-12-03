@@ -3,7 +3,7 @@ import "../styles/listView.css";
 import classNames from "classnames";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 
-function ListView({ tableHeaders, deviceInfos, handleDelete }) {
+function ListView({ tableHeaders, deviceInfos, handleDelete, handleRedirect }) {
   return (
     <div className="list-layout-wrapper">
       <div className="list-layout__header-wrapper">
@@ -32,7 +32,10 @@ function ListView({ tableHeaders, deviceInfos, handleDelete }) {
         <div className="list-layout__body">
           {deviceInfos.map((deviceInfo, i) => (
             <div className="list-layout__row" key={`${deviceInfo.name}${i}`}>
-              <div className="list-layout__cell list-layout__first-cell">
+              <div
+                className="list-layout__cell list-layout__first-cell"
+                onClick={() => handleRedirect(deviceInfo.uuid)}
+              >
                 <div className="list-layout__row__img">
                   {deviceInfo.imageSrcs && deviceInfo.imageSrcs.length !== 0 ? (
                     <>

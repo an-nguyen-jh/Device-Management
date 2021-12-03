@@ -7,7 +7,7 @@ class Alert extends Component {
     const { type, children, className, icon } = this.props;
     return (
       <div className={classNames({ [`alert--${type}`]: true }, className)}>
-        <div className="alert__icon--success">{icon}</div>
+        <div className="alert__icon">{icon}</div>
         <span>{children}</span>
       </div>
     );

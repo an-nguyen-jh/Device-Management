@@ -2,7 +2,6 @@ import ACTION_TAG from "../../config/redux/actionTag";
 
 const deviceInfoInitState = {
   deviceInfos: [],
-  selectedEmail: "",
 };
 
 function deviceInfoReducer(deviceInfoState = deviceInfoInitState, action) {

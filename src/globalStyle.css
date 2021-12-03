@@ -62,11 +62,11 @@ a {
   height: 100%;
 }
 
-.page-wrapper {
+.main-container {
+  padding-top: var(--appbarHeight);
 }
 
 .content {
-  padding-top: var(--appbarHeight);
   width: 100%;
   min-height: 100vh;
   background-color: var(--primaryBgColor);
@@ -105,8 +105,12 @@ a {
   justify-content: center;
 }
 
-.grid-span-2 {
+.grid-col-span-2 {
   grid-column: span 2;
+}
+
+.grid-row-span-2 {
+  grid-row: span 2;
 }
 
 @media only screen and (min-width: 1024px) {

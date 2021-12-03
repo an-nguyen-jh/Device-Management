@@ -3,7 +3,7 @@ import {
   uploadEmployeeDeviceImage,
 } from "../apiService";
 
-export async function deleteOldEmployeeDeviceImages(images) {
+export async function deleteEmployeeOldDeviceImages(images) {
   try {
     const imageDeletePromises = images.map((imageURL) => {
       return deleteOldEmployeeImage(imageURL);

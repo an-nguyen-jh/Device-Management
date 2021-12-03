@@ -12,12 +12,10 @@ function Carousel({ imageSrcs }) {
     if (imgIndex === 0) {
       setDisablePrevBtn(true);
       setDisableNextBtn(false);
-
       return;
     } else if (imgIndex === imageSrcs.length - 1) {
       setDisableNextBtn(true);
       setDisablePrevBtn(false);
-
       return;
     }
     setDisablePrevBtn(false);
@@ -33,6 +31,7 @@ function Carousel({ imageSrcs }) {
     setSelectedIndex((prevState) => prevState + step);
   };
 
+  //unnecessary navigation buttons when has only one image
   useEffect(() => {
     if (imageSrcs.length === 1) {
       setDisableNextBtn(true);

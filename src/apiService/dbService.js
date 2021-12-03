@@ -83,7 +83,6 @@ export default function generateDatabaseService() {
 
   function updateEmployeeDeviceInfo(data, email) {
     const deviceInfoDoc = doc(firebaseDB, "deviceInfos", email);
-
     return setDoc(deviceInfoDoc, data, { merge: true });
   }
 

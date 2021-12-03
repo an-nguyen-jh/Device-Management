@@ -3,7 +3,7 @@ import "../styles/employeeDeviceDetail.css";
 import { IoIosArrowBack } from "react-icons/io";
 import { generateAvatarByName } from "../../utils/generateAvatar";
 import { Button, Carousel, Input, UploadImage } from "..";
-import { Field, Form, FormSpy } from "react-final-form";
+import { Field, Form } from "react-final-form";
 import { useParams, useHistory, useLocation } from "react-router-dom";
 import { validate as uuidValidate, version as uuidVersion } from "uuid";
 import {
@@ -14,9 +14,9 @@ import {
 import toast from "react-hot-toast";
 import { getCurrentPathWithoutLastPart } from "../../utils/routerHandler";
 import {
-  deleteOldEmployeeDeviceImages,
+  deleteEmployeeOldDeviceImages,
   uploadEmployeeDeviceImages,
-} from "../../utils/managerImage";
+} from "../../utils/manageImage";
 import { authenticationAction, confirmDialogAction } from "../../store/actions";
 import { useDispatch } from "react-redux";
 
@@ -47,6 +47,7 @@ function EmployeeDeviceDetail() {
   const validateRequireField = (value) => {
     return value && value.length > 0 ? undefined : "This field is required";
   };
+
   const validateNumberOfDevice = (value) => {
     return value >= 0 ? undefined : "Number of device must be positive";
   };
@@ -56,13 +57,13 @@ function EmployeeDeviceDetail() {
     history.push(parentPath);
   };
 
-  const checkRevisionOfData = () => {
+  const checkDataPrimitiveness = () => {
     const { dirty: isValuesChange } = formRef.current.getState();
     return isValuesChange;
   };
 
   const checkUnsavedChange = () => {
-    const isChange = checkRevisionOfData();
+    const isChange = checkDataPrimitiveness();
     if (isChange) {
       return window.confirm("You has unsaved change. Do you want to save it?");
     }
@@ -146,7 +147,7 @@ function EmployeeDeviceDetail() {
 
     try {
       if (chosenImageSrcs.length > 0) {
-        await deleteOldEmployeeDeviceImages(imageSrcs);
+        await deleteEmployeeOldDeviceImages(imageSrcs);
         const imageDownloadURLs = await uploadEmployeeDeviceImages(
           chosenImageSrcs,
           employeeEmail

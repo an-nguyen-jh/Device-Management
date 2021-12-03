@@ -15,16 +15,11 @@ function GridView({ deviceInfos, handleDelete, handleRedirect }) {
                 onClick={() => handleRedirect(deviceInfo.uuid)}
               >
                 {deviceInfo.imageSrcs && deviceInfo.imageSrcs.length !== 0 ? (
-                  <>
-                    <img
-                      className="grid-layout__card-header__img"
-                      src={deviceInfo.imageSrcs[0]}
-                      alt="device"
-                    />
-                    <span className="list-layout__row__img-overlay">
-                      + {deviceInfo.imageSrcs.length}
-                    </span>
-                  </>
+                  <img
+                    className="grid-layout__card-header__img"
+                    src={deviceInfo.imageSrcs[0]}
+                    alt="device"
+                  />
                 ) : (
                   <img
                     className="grid-layout__card-header__img"
@@ -55,6 +50,7 @@ function GridView({ deviceInfos, handleDelete, handleRedirect }) {
               <div className="grid-layout__card-footer">
                 <Button
                   className="grid-layout__card-footer__delete"
+                  color="danger"
                   onClick={() =>
                     handleDelete({
                       email: deviceInfo.email,

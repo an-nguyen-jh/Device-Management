@@ -7,7 +7,7 @@ import { flattenRouters } from "../../utils/routerHandler";
 
 function Admin() {
   const match = useRouteMatch();
-  const flattRouters = flattenRouters(adminSubRouters);
+  const flatSubRouters = flattenRouters(adminSubRouters);
 
   return (
     <div className="container page-wrapper">
@@ -15,7 +15,7 @@ function Admin() {
       <ConfirmDeleteDialog />
       <div className="content bg-white">
         <Switch>
-          {flattRouters.map((router) => (
+          {flatSubRouters.map((router) => (
             <Route
               key={router.pathname}
               exact

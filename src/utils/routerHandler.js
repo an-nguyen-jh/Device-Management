@@ -14,20 +14,20 @@ export function useQuery() {
 }
 
 export function flattenRouters(routers) {
-  const flattRouters = [];
+  const flatRouters = [];
   routers.forEach((router) => {
-    flattRouters.push({
+    flatRouters.push({
       pathname: router.pathname,
       component: router.component,
     });
     if (router.hasDetailsPage) {
-      flattRouters.push({
+      flatRouters.push({
         pathname: `${router.pathname}/:id`,
         component: router.hasDetailsPage.component,
       });
     }
   });
-  return flattRouters;
+  return flatRouters;
 }
 
 export function getCurrentPathWithoutLastPart(pathname) {

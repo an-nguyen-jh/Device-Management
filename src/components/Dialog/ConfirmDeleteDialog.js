@@ -9,7 +9,7 @@ import {
   deleteDeviceInfoByEmail,
 } from "../../apiService";
 import toast from "react-hot-toast";
-import { deleteOldEmployeeDeviceImages } from "../../utils/managerImage";
+import { deleteEmployeeOldDeviceImages } from "../../utils/manageImage";
 
 function ConfirmDeleteDialog() {
   const { shouldDisplay, name, email, imageSrcs, callback } = useSelector(
@@ -29,7 +29,7 @@ function ConfirmDeleteDialog() {
     return await Promise.all([
       await deleteDeviceInfoByEmail(email),
       await deleteAllRelativeDeviceRequests(email),
-      await deleteOldEmployeeDeviceImages(imageSrcs),
+      await deleteEmployeeOldDeviceImages(imageSrcs),
     ]);
   };
 

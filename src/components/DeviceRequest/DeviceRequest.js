@@ -133,7 +133,7 @@ function DeviceRequest() {
 
     //free memory in localStorage
     return dispatch(deviceRequestAction.removeDeviceRequests());
-  }, [currentPage, dispatch, pageLimit, typeOption]);
+  }, [dispatch, pageLimit, typeOption]);
 
   return (
     <>

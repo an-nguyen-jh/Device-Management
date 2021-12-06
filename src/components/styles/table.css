@@ -6,6 +6,10 @@
   margin-bottom: 12px;
 }
 
+.table__toolbar__select {
+  width: auto;
+}
+
 .table__header--light,
 .table__header--success,
 .table__header--error {

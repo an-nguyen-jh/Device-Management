@@ -30,3 +30,18 @@ export const sortOptions = [
     value: "UpdatedDate descending",
   },
 ];
+
+export const tableOptions = [
+  {
+    key: ENV_CONFIG.REQUEST.PENDING,
+    value: "Pending Request",
+  },
+  {
+    key: ENV_CONFIG.REQUEST.SOLVE,
+    value: "Solve Request",
+  },
+  {
+    key: ENV_CONFIG.REQUEST.DENY,
+    value: "Deny Request",
+  },
+];

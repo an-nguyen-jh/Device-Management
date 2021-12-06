@@ -8,9 +8,12 @@ import ENV_CONFIG from "../../config";
 import { useHistory, useLocation } from "react-router";
 import { parseSortOption } from "../../utils/parser";
 import { sortByElementProperty } from "../../utils/sort";
-import { getDeviceRequest } from "../../apiService";
+import {
+  getDeviceRequest,
+  updateStatusOfDeviceRequest,
+} from "../../apiService";
 import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { deviceRequestAction } from "../../store/actions";
 
 const tableHeaders = [
@@ -23,12 +26,12 @@ const tableHeaders = [
 ];
 
 function DeviceRequest() {
-  const [reload, setReload] = useState(false);
+  const [reload, setReload] = useState(Math.random());
   const [deviceRequests, setDeviceRequests] = useState([]);
-
-  const { totalDeviceRequests } = useSelector((state) => ({
-    totalDeviceRequests: state.deviceRequest.deviceRequests,
-  }));
+  const [totalDeviceRequests, setTotalDeviceRequests] = useState([]);
+  // const { totalDeviceRequests } = useSelector((state) => ({
+  //   totalDeviceRequests: state.deviceRequest.deviceRequests,
+  // }));
   const dispatch = useDispatch();
   const pageLimit = ENV_CONFIG.REQUEST_LIMIT;
   const query = useQuery();
@@ -54,7 +57,18 @@ function DeviceRequest() {
 
   const handleAcceptRequest = () => {};
 
-  const handleDenyRequest = () => {};
+  const handleDenyRequest = async (requestId) => {
+    try {
+      await updateStatusOfDeviceRequest(requestId, ENV_CONFIG.REQUEST.DENY);
+      setReload(Math.random());
+      toast.success("Deny employee's device request", {
+        className: "toast-notification",
+      });
+    } catch (error) {
+      //ignore error
+      console.log(error);
+    }
+  };
 
   const createTableBaseOnTableOption = (option) => {
     switch (option) {
@@ -117,7 +131,8 @@ function DeviceRequest() {
             });
           });
           sortByElementProperty(tempDeviceRequests, sortTokens);
-          dispatch(deviceRequestAction.storeDeviceRequests(tempDeviceRequests));
+          // dispatch(deviceRequestAction.storeDeviceRequests(tempDeviceRequests));
+          setTotalDeviceRequests(tempDeviceRequests);
           const deviceRequestsInPage = tempDeviceRequests.slice(
             (currentPage - 1) * pageLimit,
             currentPage * pageLimit
@@ -133,7 +148,7 @@ function DeviceRequest() {
 
     //free memory in localStorage
     return dispatch(deviceRequestAction.removeDeviceRequests());
-  }, [dispatch, pageLimit, typeOption]);
+  }, [dispatch, pageLimit, typeOption, reload]);
 
   return (
     <>

@@ -68,10 +68,17 @@ function Table({
             </div>
             {handleAccept && handleDeny ? (
               <div className="table__btn-group table__last-cell">
-                <div className="table__btn--resolve">
+                <div
+                  className="table__btn--resolve"
+                  data-tooltip="Resolve this request"
+                >
                   <FaCheck></FaCheck>
                 </div>
-                <div className="table__btn--deny">
+                <div
+                  className="table__btn--deny"
+                  data-tooltip="Deny this request"
+                  onClick={() => handleDeny(deviceRequest.id)}
+                >
                   <FaTimes></FaTimes>
                 </div>
               </div>

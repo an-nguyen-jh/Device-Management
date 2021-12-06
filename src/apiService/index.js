@@ -18,6 +18,7 @@ const {
   getDeviceInfoOfEmployeeById,
   updateEmployeeDeviceInfo,
   getDeviceRequest,
+  updateStatusOfDeviceRequest,
 } = generatedDatabaseService();
 
 const { uploadEmployeeDeviceImage, deleteOldEmployeeImage } =
@@ -38,4 +39,5 @@ export {
   getDeviceInfoOfEmployeeById,
   updateEmployeeDeviceInfo,
   getDeviceRequest,
+  updateStatusOfDeviceRequest,
 };

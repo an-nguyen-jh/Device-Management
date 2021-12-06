@@ -87,10 +87,18 @@ export default function generateDatabaseService() {
     return setDoc(deviceInfoDoc, data, { merge: true });
   }
 
-  function getDeviceRequest(type){
+  function getDeviceRequest(type) {
     const deviceRequestRef = collection(firebaseDB, "deviceRequests");
-    const deviceRequestQuery = query(deviceRequestRef, where("status", "==", type));
-    return getDocs(deviceRequestQuery); 
+    const deviceRequestQuery = query(
+      deviceRequestRef,
+      where("status", "==", type)
+    );
+    return getDocs(deviceRequestQuery);
+  }
+
+  function updateStatusOfDeviceRequest(requestId, status) {
+    const deviceRequestDoc = doc(firebaseDB, "deviceRequests", requestId);
+    return setDoc(deviceRequestDoc, { status }, { merge: true });
   }
 
   return {
@@ -103,6 +111,7 @@ export default function generateDatabaseService() {
     deleteAllRelativeDeviceRequests,
     getDeviceInfoOfEmployeeById,
     updateEmployeeDeviceInfo,
-    getDeviceRequest
+    getDeviceRequest,
+    updateStatusOfDeviceRequest,
   };
 }

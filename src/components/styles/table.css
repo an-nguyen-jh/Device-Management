@@ -106,21 +106,66 @@
 .table__btn--resolve,
 .table__btn--deny {
   display: flex;
+  flex-direction: column;
   width: 36px;
   height: 36px;
   margin: 5px 0;
   border-radius: 5px;
   cursor: pointer;
+  position: relative;
+}
+
+.table__btn--resolve[data-tooltip]::before,
+.table__btn--resolve[data-tooltip]::before,
+.table__btn--deny[data-tooltip]::before,
+.table__btn--deny[data-tooltip]::before {
+  content: attr(data-tooltip);
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 3;
+  top: 25%;
+  left: -100%;
+  text-transform: none;
+  word-wrap: break-word;
+  width: 120px;
+  line-height: initial;
+  display: block;
+  height: fit-content;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 0.6rem;
+  transform: scale(0) translate(-200%, 50%);
+  transition: transform var(--animationSpeed) ease-out;
+}
+
+.table__btn--resolve:hover[data-tooltip]::before,
+.table__btn--resolve:focus[data-tooltip]::before,
+.table__btn--deny:hover[data-tooltip]::before,
+.table__btn--deny:focus[data-tooltip]::before {
+  transform: scale(1) translate(-70%, 0%);
 }
 
 .table__btn--resolve {
-  background-color: var(--successBgColor);
   color: var(--successTextColor);
 }
 
+.table__btn--resolve:hover,
+.table__btn--resolve:focus {
+  background-color: var(--successBgColor);
+}
+
 .table__btn--deny {
-  background-color: var(--errorBgColor);
-  color: var(--errorTextColor);
+  background-color: transparent;
+  color: #ff0000;
+}
+
+.table__btn--deny:hover,
+.table__btn--deny:focus {
+  color: #ffffff;
+  background-color: #ff0000;
 }
 
 .table__btn--resolve svg,

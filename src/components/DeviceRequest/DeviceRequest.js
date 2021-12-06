@@ -26,6 +26,10 @@ const fakeData = [
 ];
 
 function DeviceRequest() {
+  const handleAcceptRequest = () => {};
+
+  const handleDenyRequest = () => {};
+
   return (
     <>
       <Appbar routers={adminSubRouters}></Appbar>
@@ -35,9 +39,19 @@ function DeviceRequest() {
             tableHeaders={tableHeaders}
             color="light"
             deviceRequests={fakeData}
+            handleAccept={handleAcceptRequest}
+            handleDeny={handleDenyRequest}
           ></Table>
-          {/* <Table tableHeaders={tableHeaders} color="warning"></Table>
-          <Table tableHeaders={tableHeaders} color="success"></Table> */}
+          <Table
+            tableHeaders={tableHeaders}
+            deviceRequests={fakeData}
+            color="error"
+          ></Table>
+          <Table
+            tableHeaders={tableHeaders}
+            deviceRequests={fakeData}
+            color="success"
+          ></Table>
         </div>
       </div>
     </>

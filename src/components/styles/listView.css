@@ -148,7 +148,7 @@
   }
 }
 
-@media only screen and (min-width: 1256px) {
+@media only screen and (min-width: 1280px) {
   .list-layout__cell {
     flex-basis: 250px;
   }

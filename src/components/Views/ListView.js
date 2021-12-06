@@ -51,7 +51,10 @@ function ListView({ tableHeaders, deviceInfos, handleDelete, handleRedirect }) {
                     />
                   )}
                 </div>
-                <span>{deviceInfo.name}</span>
+                <div>
+                  <p>{deviceInfo.name}</p>
+                  <p>{deviceInfo.email}</p>
+                </div>
               </div>
               <div className="list-layout__cell">
                 <span>{deviceInfo.team}</span>

@@ -29,9 +29,7 @@ export default function generateDatabaseService() {
   }
 
   function getDeviceInfoOfEmployeeByEmail(email) {
-    const deviceInfoRef = doc(firebaseDB, "deviceInfos", email).withConverter(
-      deviceInfoConverter
-    );
+    const deviceInfoRef = doc(firebaseDB, "deviceInfos", email);
     return getDoc(deviceInfoRef);
   }
 

@@ -7,9 +7,9 @@ export const teamOptions = [
   { key: "Admin", value: "Admin" },
 ];
 export const deviceOptions = [
-  { key: "computer", value: "Máy tính" },
-  { key: "screen", value: "Màn hình" },
-  { key: "mouse", value: "Chuột" },
+  { key: ENV_CONFIG.DEVICE.COMPUTER, value: "Máy tính" },
+  { key: ENV_CONFIG.DEVICE.MONITOR, value: "Màn hình" },
+  { key: ENV_CONFIG.DEVICE.MOUSE, value: "Chuột" },
 ];
 
 export const sortOptions = [

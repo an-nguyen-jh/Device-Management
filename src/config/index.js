@@ -28,6 +28,12 @@ const SORT = {
   DESCEND_UPDATE_DATE: "updatedTime_desc",
 };
 
+const DEVICE = {
+  COMPUTER: "computer",
+  MOUSE: "mouse",
+  MONITOR: "screen",
+};
+
 const ITEM_LIMIT = 12;
 
 const REQUEST_LIMIT = 10;
@@ -41,6 +47,7 @@ const ENV_CONFIG = {
   SORT,
   ITEM_LIMIT,
   REQUEST_LIMIT,
+  DEVICE,
 };
 
 export default ENV_CONFIG;

@@ -9,11 +9,13 @@ import { useHistory, useLocation } from "react-router";
 import { parseSortOption } from "../../utils/parser";
 import { sortByElementProperty } from "../../utils/sort";
 import {
+  getDeviceInfoOfEmployeeByEmail,
   getDeviceRequest,
+  updateEmployeeDeviceInfo,
   updateStatusOfDeviceRequest,
 } from "../../apiService";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deviceRequestAction } from "../../store/actions";
 
 const tableHeaders = [
@@ -28,10 +30,9 @@ const tableHeaders = [
 function DeviceRequest() {
   const [reload, setReload] = useState(Math.random());
   const [deviceRequests, setDeviceRequests] = useState([]);
-  const [totalDeviceRequests, setTotalDeviceRequests] = useState([]);
-  // const { totalDeviceRequests } = useSelector((state) => ({
-  //   totalDeviceRequests: state.deviceRequest.deviceRequests,
-  // }));
+  const { totalDeviceRequests } = useSelector((state) => ({
+    totalDeviceRequests: state.deviceRequest.deviceRequests,
+  }));
   const dispatch = useDispatch();
   const pageLimit = ENV_CONFIG.REQUEST_LIMIT;
   const query = useQuery();
@@ -55,7 +56,41 @@ function DeviceRequest() {
     );
   };
 
-  const handleAcceptRequest = () => {};
+  const updateDeviceInfo = async (email, device, amount) => {
+    try {
+      const deviceInfoSnap = await getDeviceInfoOfEmployeeByEmail(email);
+      const updatedDeviceInfo = { ...deviceInfoSnap.data() };
+      if (device === ENV_CONFIG.DEVICE.COMPUTER) {
+        updatedDeviceInfo.computer = {};
+      } else {
+        updatedDeviceInfo[device].numberOf += amount;
+      }
+      // console.log(updatedDeviceInfo);
+
+      await updateEmployeeDeviceInfo(updatedDeviceInfo, email);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleAcceptRequest = async (requestId, email, device, amount) => {
+    try {
+      await updateStatusOfDeviceRequest(requestId, ENV_CONFIG.REQUEST.SOLVE);
+      await updateDeviceInfo(email, device, amount);
+      setReload(Math.random());
+      let notice = "Accept employee's device request";
+      if (device === ENV_CONFIG.DEVICE.COMPUTER) {
+        notice = `Provided new computer for ${email}, You need update computer info in device details page`;
+      }
+      toast.success(notice, {
+        className: "toast-notification",
+      });
+      // await
+    } catch (error) {
+      //ignore error
+      console.log(error);
+    }
+  };
 
   const handleDenyRequest = async (requestId) => {
     try {
@@ -131,8 +166,7 @@ function DeviceRequest() {
             });
           });
           sortByElementProperty(tempDeviceRequests, sortTokens);
-          // dispatch(deviceRequestAction.storeDeviceRequests(tempDeviceRequests));
-          setTotalDeviceRequests(tempDeviceRequests);
+          dispatch(deviceRequestAction.storeDeviceRequests(tempDeviceRequests));
           const deviceRequestsInPage = tempDeviceRequests.slice(
             (currentPage - 1) * pageLimit,
             currentPage * pageLimit

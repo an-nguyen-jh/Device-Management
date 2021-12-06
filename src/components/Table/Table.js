@@ -71,6 +71,14 @@ function Table({
                 <div
                   className="table__btn--resolve"
                   data-tooltip="Resolve this request"
+                  onClick={() =>
+                    handleAccept(
+                      deviceRequest.id,
+                      deviceRequest.email,
+                      deviceRequest.device,
+                      deviceRequest.numberOfDevice
+                    )
+                  }
                 >
                   <FaCheck></FaCheck>
                 </div>

@@ -77,11 +77,11 @@
   overflow: hidden;
   padding: 12px 12px;
   text-align: left;
-  white-space: normal;
+  word-break: break-word;
 }
 
 .table__first-cell {
-  flex: 1 1 auto !important;
+  flex: 1 1 150px !important;
   display: block;
 }
 
@@ -185,8 +185,11 @@
     width: 20px;
   }
 
+  .table__first-cell {
+    flex: 1 1 auto !important;
+  }
+
   .table__cell {
-    flex-basis: 175px;
     flex-grow: 0;
     flex-shrink: 0;
   }
@@ -214,7 +217,14 @@
   .table__cell {
     display: block;
   }
+
+  .table__cell:nth-last-child(2) {
+    flex-basis: 175px;
+  }
 }
 
 @media only screen and (min-width: 1280px) {
+  .table__cell {
+    flex-basis: 175px;
+  }
 }

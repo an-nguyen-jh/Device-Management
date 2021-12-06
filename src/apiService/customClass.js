@@ -26,12 +26,12 @@ export class DeviceInfo {
       seriNumber: computersSeriNumber,
     };
     this.mouse = {
-      companyName: mouseCompanyName || "",
-      numberOf: numberOfMouse || "0",
+      companyName: mouseCompanyName,
+      numberOf: numberOfMouse || 0,
     };
     this.screen = {
-      numberOf: numberOfScreen || "0",
-      config: screenConfig || "0",
+      numberOf: numberOfScreen || 0,
+      config: screenConfig || 0,
       size: screenSize || "",
     };
     this.imageSrcs = imageSrcs || [];

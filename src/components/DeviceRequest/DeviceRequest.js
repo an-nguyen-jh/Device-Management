@@ -10,7 +10,8 @@ import { parseSortOption } from "../../utils/parser";
 import { sortByElementProperty } from "../../utils/sort";
 import { getDeviceRequest } from "../../apiService";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { deviceRequestAction } from "../../store/actions";
 
 const tableHeaders = [
   "Name",
@@ -25,6 +26,9 @@ function DeviceRequest() {
   const [reload, setReload] = useState(false);
   const [deviceRequests, setDeviceRequests] = useState([]);
 
+  const { totalDeviceRequests } = useSelector((state) => ({
+    totalDeviceRequests: state.deviceRequest.deviceRequests,
+  }));
   const dispatch = useDispatch();
   const pageLimit = ENV_CONFIG.REQUEST_LIMIT;
   const query = useQuery();
@@ -34,8 +38,17 @@ function DeviceRequest() {
   const typeOption = parseInt(query.get("type")) || ENV_CONFIG.REQUEST.PENDING;
 
   const handleTableOptionChange = (e) => {
+    history.push(`${location.pathname}?type=${e.target.value}`);
+  };
+
+  const handlePagination = (selectedPage) => {
+    const deviceRequestsInPage = totalDeviceRequests.slice(
+      (selectedPage - 1) * pageLimit,
+      selectedPage * pageLimit
+    );
+    setDeviceRequests(deviceRequestsInPage);
     history.push(
-      `${location.pathname}?type=${e.target.value}&page=${currentPage}`
+      `${location.pathname}?type=${typeOption}&page=${selectedPage}`
     );
   };
 
@@ -48,30 +61,36 @@ function DeviceRequest() {
       case ENV_CONFIG.REQUEST.PENDING:
         return (
           <Table
-            tableHeaders={tableHeaders}
             color="light"
             currentPage={currentPage}
             deviceRequests={deviceRequests}
             handleAccept={handleAcceptRequest}
             handleDeny={handleDenyRequest}
+            handlePagination={handlePagination}
+            tableHeaders={tableHeaders}
+            totalItem={totalDeviceRequests.length}
           ></Table>
         );
       case ENV_CONFIG.REQUEST.SOLVE:
         return (
           <Table
-            tableHeaders={tableHeaders}
-            deviceRequests={deviceRequests}
-            currentPage={currentPage}
             color="success"
+            currentPage={currentPage}
+            deviceRequests={deviceRequests}
+            handlePagination={handlePagination}
+            tableHeaders={tableHeaders}
+            totalItem={totalDeviceRequests.length}
           ></Table>
         );
       case ENV_CONFIG.REQUEST.DENY:
         return (
           <Table
-            tableHeaders={tableHeaders}
-            deviceRequests={deviceRequests}
-            currentPage={currentPage}
             color="error"
+            currentPage={currentPage}
+            deviceRequests={deviceRequests}
+            handlePagination={handlePagination}
+            tableHeaders={tableHeaders}
+            totalItem={totalDeviceRequests.length}
           ></Table>
         );
       default:
@@ -98,7 +117,7 @@ function DeviceRequest() {
             });
           });
           sortByElementProperty(tempDeviceRequests, sortTokens);
-
+          dispatch(deviceRequestAction.storeDeviceRequests(tempDeviceRequests));
           const deviceRequestsInPage = tempDeviceRequests.slice(
             (currentPage - 1) * pageLimit,
             currentPage * pageLimit
@@ -111,7 +130,10 @@ function DeviceRequest() {
         }
       }
     })();
-  }, [currentPage, pageLimit, typeOption]);
+
+    //free memory in localStorage
+    return dispatch(deviceRequestAction.removeDeviceRequests());
+  }, [currentPage, dispatch, pageLimit, typeOption]);
 
   return (
     <>

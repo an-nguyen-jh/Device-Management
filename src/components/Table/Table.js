@@ -12,13 +12,14 @@ function getDeviceVAlueByDeviceOption(key) {
 }
 
 function Table({
-  tableHeaders,
   color,
-  totalItem,
+  currentPage,
   deviceRequests,
   handleAccept,
-  currentPage,
   handleDeny,
+  handlePagination,
+  tableHeaders,
+  totalItem,
 }) {
   const pageLimit = ENV_CONFIG.REQUEST_LIMIT;
 
@@ -85,6 +86,7 @@ function Table({
           totalItem={totalItem}
           currentPage={currentPage}
           limit={pageLimit}
+          handlePageChange={handlePagination}
         ></Pagination>
       </div>
     </div>

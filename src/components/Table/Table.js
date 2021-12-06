@@ -5,6 +5,7 @@ import "../styles/listView.css";
 import { Pagination } from "..";
 import { deviceOptions } from "../../config/options/options";
 import { FaCheck, FaTimes } from "react-icons/fa";
+import ENV_CONFIG from "../../config";
 function getDeviceVAlueByDeviceOption(key) {
   const deviceOption = deviceOptions.find((option) => option.key === key);
   return deviceOption.value;
@@ -13,10 +14,14 @@ function getDeviceVAlueByDeviceOption(key) {
 function Table({
   tableHeaders,
   color,
+  totalItem,
   deviceRequests,
   handleAccept,
+  currentPage,
   handleDeny,
 }) {
+  const pageLimit = ENV_CONFIG.REQUEST_LIMIT;
+
   return (
     <div className="table-wrapper">
       <div className={classNames({ [`table__header--${color}`]: true })}>
@@ -38,8 +43,11 @@ function Table({
         ))}
       </div>
       <div className="table__body">
-        {deviceRequests.map((deviceRequest) => (
-          <div className="table__row">
+        {deviceRequests.map((deviceRequest, i) => (
+          <div className="table__row" key={deviceRequest.id}>
+            <div className="table__row__index">
+              <span>{(currentPage - 1) * pageLimit + (i + 1)}</span>
+            </div>
             <div className="table__cell table__first-cell">
               <p className="table__cell__name">{deviceRequest.name}</p>
               <p>{deviceRequest.email}</p>
@@ -73,7 +81,11 @@ function Table({
         ))}
       </div>
       <div className="table__footer">
-        <Pagination totalItem={10} currentPage={1} limit={10}></Pagination>
+        <Pagination
+          totalItem={totalItem}
+          currentPage={currentPage}
+          limit={pageLimit}
+        ></Pagination>
       </div>
     </div>
   );

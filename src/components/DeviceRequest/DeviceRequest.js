@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Appbar, Select, Table } from "..";
 import { adminSubRouters } from "../../config/routes";
 import "../styles/deviceRequest.css";
-import { sortOptions, tableOptions } from "../../config/options/options";
+import { tableOptions } from "../../config/options/options";
 import { useQuery } from "../../utils/routerHandler";
 import ENV_CONFIG from "../../config";
 import { useHistory, useLocation } from "react-router";
 import { parseSortOption } from "../../utils/parser";
 import { sortByElementProperty } from "../../utils/sort";
+import { getDeviceRequest } from "../../apiService";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
 
 const tableHeaders = [
   "Name",
@@ -18,47 +21,21 @@ const tableHeaders = [
   "",
 ];
 
-const fakeData = [
-  {
-    createdTime: new Date(),
-    device: "screen",
-    email: "jh.employee19@gmail.com",
-    name: "Phạm Hoài Dung",
-    notice: "Hư hỏng",
-    numberOfDevice: 1,
-    status: 0,
-    team: "Designer",
-  },
-];
-
 function DeviceRequest() {
   const [reload, setReload] = useState(false);
+  const [deviceRequests, setDeviceRequests] = useState([]);
 
+  const dispatch = useDispatch();
+  const pageLimit = ENV_CONFIG.REQUEST_LIMIT;
   const query = useQuery();
   const history = useHistory();
   const location = useLocation();
-  const sortOption = query.get("sort") || sortOptions[0].key;
   const currentPage = parseInt(query.get("page")) || 1;
-  const tableOption = parseInt(query.get("type")) || ENV_CONFIG.REQUEST.PENDING;
+  const typeOption = parseInt(query.get("type")) || ENV_CONFIG.REQUEST.PENDING;
 
   const handleTableOptionChange = (e) => {
     history.push(
-      `${location.pathname}?type=${e.target.value}&sort=${sortOption}&page=${currentPage}`
-    );
-  };
-
-  const handleSortChange = (e) => {
-    const sortTokens = parseSortOption(e.target.value, "_");
-    // const tempDeviceInfos = [...totalDeviceInfos];
-    // sortByElementProperty(tempDeviceInfos, sortTokens);
-    // dispatch(deviceInfoAction.storeDeviceInfos(tempDeviceInfos));
-    // const deviceInfoInPage = tempDeviceInfos.slice(
-    //   (currentPage - 1) * pageLimit,
-    //   currentPage * pageLimit
-    // );
-    // setDeviceInfos(deviceInfoInPage);
-    history.push(
-      `${location.pathname}?type=${tableOption}&sort=${e.target.value}&page=${currentPage}`
+      `${location.pathname}?type=${e.target.value}&page=${currentPage}`
     );
   };
 
@@ -73,7 +50,8 @@ function DeviceRequest() {
           <Table
             tableHeaders={tableHeaders}
             color="light"
-            deviceRequests={fakeData}
+            currentPage={currentPage}
+            deviceRequests={deviceRequests}
             handleAccept={handleAcceptRequest}
             handleDeny={handleDenyRequest}
           ></Table>
@@ -82,7 +60,8 @@ function DeviceRequest() {
         return (
           <Table
             tableHeaders={tableHeaders}
-            deviceRequests={fakeData}
+            deviceRequests={deviceRequests}
+            currentPage={currentPage}
             color="success"
           ></Table>
         );
@@ -90,7 +69,8 @@ function DeviceRequest() {
         return (
           <Table
             tableHeaders={tableHeaders}
-            deviceRequests={fakeData}
+            deviceRequests={deviceRequests}
+            currentPage={currentPage}
             color="error"
           ></Table>
         );
@@ -101,9 +81,37 @@ function DeviceRequest() {
 
   useEffect(() => {
     (async () => {
-      console.log("Update");
+      if (typeof typeOption === "number") {
+        //default sort option
+        const sortTokens = parseSortOption("createdTime_asc", "_");
+        try {
+          const deviceRequestSnapShots = await getDeviceRequest(typeOption);
+          let tempDeviceRequests = [];
+          deviceRequestSnapShots.forEach((deviceRequestSnap) => {
+            const tempDeviceRequest = deviceRequestSnap.data();
+            const deviceRequestId = deviceRequestSnap.id;
+            tempDeviceRequest.createdTime =
+              tempDeviceRequest.createdTime.toDate();
+            tempDeviceRequests.push({
+              id: deviceRequestId,
+              ...tempDeviceRequest,
+            });
+          });
+          sortByElementProperty(tempDeviceRequests, sortTokens);
+
+          const deviceRequestsInPage = tempDeviceRequests.slice(
+            (currentPage - 1) * pageLimit,
+            currentPage * pageLimit
+          );
+          setDeviceRequests(deviceRequestsInPage);
+        } catch (error) {
+          toast.error(`Can not get data of table`, {
+            className: "toast-notification",
+          });
+        }
+      }
     })();
-  }, []);
+  }, [currentPage, pageLimit, typeOption]);
 
   return (
     <>
@@ -115,24 +123,17 @@ function DeviceRequest() {
               <div className="toolbar__functional-group">
                 <Select
                   className="toolbar__functional-sort "
-                  value={tableOption}
+                  value={typeOption}
                   options={tableOptions}
                   placeholder="--Table--"
                   onChange={handleTableOptionChange}
-                ></Select>
-                <Select
-                  className="toolbar__functional-sort table__toolbar__select"
-                  value={sortOption}
-                  onChange={handleSortChange}
-                  options={sortOptions}
-                  placeholder="--Sort by--"
                 ></Select>
               </div>
             </div>
           </div>
         </div>
         <div className="device-request-container">
-          {createTableBaseOnTableOption(tableOption)}
+          {createTableBaseOnTableOption(typeOption)}
         </div>
       </div>
     </>

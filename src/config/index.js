@@ -30,6 +30,8 @@ const SORT = {
 
 const ITEM_LIMIT = 12;
 
+const REQUEST_LIMIT = 10;
+
 const ENV_CONFIG = {
   FIREBASE_CONFIG,
   ROLE,
@@ -38,6 +40,7 @@ const ENV_CONFIG = {
   REQUEST,
   SORT,
   ITEM_LIMIT,
+  REQUEST_LIMIT,
 };
 
 export default ENV_CONFIG;

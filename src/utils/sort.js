@@ -17,6 +17,14 @@ const sortPrototypes = {
       return b.updatedTime > a.updatedTime ? 1 : -1;
     },
   },
+  createdTime: {
+    asc: (a, b) => {
+      return a.createdTime > b.createdTime ? 1 : -1;
+    },
+    desc: (a, b) => {
+      return b.createdTime > a.createdTime ? 1 : -1;
+    },
+  },
 };
 
 export function sortByElementProperty(unsortedArray, sortTokens) {

@@ -43,32 +43,10 @@
   font-weight: 600;
 }
 
-.table__cell {
-  align-items: center;
-  display: none;
-  flex-basis: 150px;
-  font-size: 0.85rem;
-  height: 100%;
-  overflow: hidden;
-  padding: 12px 12px;
-  text-align: left;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.table__first-cell {
-  flex: 1 1 auto !important;
-}
-
-.table__last-cell {
-  flex: 0 0 60px !important;
-  text-align: center;
-}
-
-.table__cell:first-child,
-.table__cell:last-child,
-.table__cell:nth-last-child(3) {
-  display: block;
+.table__header--light .table__first-cell,
+.table__header--success .table__first-cell,
+.table__header--error .table__first-cell {
+  margin-left: 20px;
 }
 
 .table__body {
@@ -83,6 +61,38 @@
   display: flex;
   overflow: hidden;
   width: 100%;
+}
+
+.table__row__index {
+  display: none;
+  justify-content: center;
+}
+
+.table__cell {
+  align-items: center;
+  display: none;
+  flex-basis: 150px;
+  font-size: 0.85rem;
+  height: 100%;
+  overflow: hidden;
+  padding: 12px 12px;
+  text-align: left;
+  white-space: normal;
+}
+
+.table__first-cell {
+  flex: 1 1 auto !important;
+  display: block;
+}
+
+.table__last-cell {
+  flex: 0 0 60px !important;
+  text-align: center;
+  display: flex;
+}
+
+.table__cell:nth-last-child(3) {
+  display: block;
 }
 
 .table__btn-group {
@@ -124,6 +134,12 @@
 }
 
 @media only screen and (min-width: 768px) {
+  .table__row__index {
+    display: flex;
+    margin: auto;
+    width: 20px;
+  }
+
   .table__cell {
     flex-basis: 175px;
     flex-grow: 0;
@@ -140,8 +156,18 @@
 }
 
 @media only screen and (min-width: 1024px) {
+  .table__header--light .table__first-cell,
+  .table__header--success .table__first-cell,
+  .table__header--error .table__first-cell {
+    margin-left: 40px;
+  }
+
+  .table__row__index {
+    width: 40px;
+  }
+
   .table__cell {
-    display: flex;
+    display: block;
   }
 }
 

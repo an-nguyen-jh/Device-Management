@@ -36,7 +36,7 @@ const DEVICE = {
 
 const ITEM_LIMIT = 12;
 
-const REQUEST_LIMIT = 10;
+const REQUEST_LIMIT_ON_PAGE = 10;
 
 const ENV_CONFIG = {
   FIREBASE_CONFIG,
@@ -46,7 +46,7 @@ const ENV_CONFIG = {
   REQUEST,
   SORT,
   ITEM_LIMIT,
-  REQUEST_LIMIT,
+  REQUEST_LIMIT_ON_PAGE,
   DEVICE,
 };
 

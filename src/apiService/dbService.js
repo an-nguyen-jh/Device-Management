@@ -85,11 +85,11 @@ export default function generateDatabaseService() {
     return setDoc(deviceInfoDoc, data, { merge: true });
   }
 
-  function getDeviceRequest(type) {
+  function getDeviceRequests(status) {
     const deviceRequestRef = collection(firebaseDB, "deviceRequests");
     const deviceRequestQuery = query(
       deviceRequestRef,
-      where("status", "==", type)
+      where("status", "==", status)
     );
     return getDocs(deviceRequestQuery);
   }
@@ -109,7 +109,7 @@ export default function generateDatabaseService() {
     deleteAllRelativeDeviceRequests,
     getDeviceInfoOfEmployeeById,
     updateEmployeeDeviceInfo,
-    getDeviceRequest,
+    getDeviceRequests,
     updateStatusOfDeviceRequest,
   };
 }

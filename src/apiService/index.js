@@ -17,7 +17,7 @@ const {
   deleteAllRelativeDeviceRequests,
   getDeviceInfoOfEmployeeById,
   updateEmployeeDeviceInfo,
-  getDeviceRequest,
+  getDeviceRequests,
   updateStatusOfDeviceRequest,
 } = generatedDatabaseService();
 
@@ -38,6 +38,6 @@ export {
   deleteAllRelativeDeviceRequests,
   getDeviceInfoOfEmployeeById,
   updateEmployeeDeviceInfo,
-  getDeviceRequest,
+  getDeviceRequests,
   updateStatusOfDeviceRequest,
 };

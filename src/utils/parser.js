@@ -9,3 +9,8 @@ export default function parseFullFileURL(fileURL) {
 export function parseSortOption(option, separator) {
   return option.split(separator);
 }
+
+export function getValuesByOption(options, key) {
+  const option = options.find((option) => option.key === key);
+  return option.value;
+}

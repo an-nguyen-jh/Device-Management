@@ -10,7 +10,7 @@ import { parseSortOption } from "../../utils/parser";
 import { sortByElementProperty } from "../../utils/sort";
 import {
   getDeviceInfoOfEmployeeByEmail,
-  getDeviceRequest,
+  getDeviceRequests,
   updateEmployeeDeviceInfo,
   updateStatusOfDeviceRequest,
 } from "../../apiService";
@@ -34,7 +34,7 @@ function DeviceRequest() {
     totalDeviceRequests: state.deviceRequest.deviceRequests,
   }));
   const dispatch = useDispatch();
-  const pageLimit = ENV_CONFIG.REQUEST_LIMIT;
+  const pageLimit = ENV_CONFIG.REQUEST_LIMIT_ON_PAGE;
   const query = useQuery();
   const history = useHistory();
   const location = useLocation();
@@ -46,11 +46,11 @@ function DeviceRequest() {
   };
 
   const handlePagination = (selectedPage) => {
-    const deviceRequestsInPage = totalDeviceRequests.slice(
+    const deviceRequestsOnPage = totalDeviceRequests.slice(
       (selectedPage - 1) * pageLimit,
       selectedPage * pageLimit
     );
-    setDeviceRequests(deviceRequestsInPage);
+    setDeviceRequests(deviceRequestsOnPage);
     history.push(
       `${location.pathname}?type=${typeOption}&page=${selectedPage}`
     );
@@ -65,11 +65,9 @@ function DeviceRequest() {
       } else {
         updatedDeviceInfo[device].numberOf += amount;
       }
-      // console.log(updatedDeviceInfo);
-
       await updateEmployeeDeviceInfo(updatedDeviceInfo, email);
     } catch (error) {
-      console.log(error);
+      //ignore error
     }
   };
 
@@ -85,10 +83,8 @@ function DeviceRequest() {
       toast.success(notice, {
         className: "toast-notification",
       });
-      // await
     } catch (error) {
       //ignore error
-      console.log(error);
     }
   };
 
@@ -101,7 +97,6 @@ function DeviceRequest() {
       });
     } catch (error) {
       //ignore error
-      console.log(error);
     }
   };
 
@@ -153,7 +148,7 @@ function DeviceRequest() {
         //default sort option
         const sortTokens = parseSortOption("createdTime_asc", "_");
         try {
-          const deviceRequestSnapShots = await getDeviceRequest(typeOption);
+          const deviceRequestSnapShots = await getDeviceRequests(typeOption);
           let tempDeviceRequests = [];
           deviceRequestSnapShots.forEach((deviceRequestSnap) => {
             const tempDeviceRequest = deviceRequestSnap.data();
@@ -167,11 +162,11 @@ function DeviceRequest() {
           });
           sortByElementProperty(tempDeviceRequests, sortTokens);
           dispatch(deviceRequestAction.storeDeviceRequests(tempDeviceRequests));
-          const deviceRequestsInPage = tempDeviceRequests.slice(
+          const deviceRequestsOnPage = tempDeviceRequests.slice(
             (currentPage - 1) * pageLimit,
             currentPage * pageLimit
           );
-          setDeviceRequests(deviceRequestsInPage);
+          setDeviceRequests(deviceRequestsOnPage);
         } catch (error) {
           toast.error(`Can not get data of table`, {
             className: "toast-notification",

@@ -60,7 +60,7 @@ const adminSubRouters = [
   },
   {
     pathname: "/device-request-list",
-    title: "Device Request list",
+    title: "Device Request List",
     icon: <FaList />,
     component: DeviceRequest,
   },

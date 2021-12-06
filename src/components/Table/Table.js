@@ -6,10 +6,7 @@ import { Pagination } from "..";
 import { deviceOptions } from "../../config/options/options";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import ENV_CONFIG from "../../config";
-function getDeviceVAlueByDeviceOption(key) {
-  const deviceOption = deviceOptions.find((option) => option.key === key);
-  return deviceOption.value;
-}
+import { getValuesByOption } from "../../utils/parser";
 
 function Table({
   color,
@@ -60,7 +57,7 @@ function Table({
               <p>{deviceRequest.createdTime.toLocaleDateString()}</p>
             </div>
             <div className="table__cell">
-              <p>{getDeviceVAlueByDeviceOption(deviceRequest.device)}</p>
+              <p>{getValuesByOption(deviceOptions, deviceRequest.device)}</p>
               <p>Số lượng: {deviceRequest.numberOfDevice}</p>
             </div>
             <div className="table__cell">

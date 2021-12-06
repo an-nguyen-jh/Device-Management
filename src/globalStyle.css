@@ -64,6 +64,7 @@ a {
 
 .main-container {
   padding-top: var(--appbarHeight);
+  padding-bottom: 12px;
 }
 
 .content {

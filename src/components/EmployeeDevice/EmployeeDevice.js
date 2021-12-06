@@ -107,7 +107,6 @@ function EmployeeDevice() {
           sortOptions={sortOptions}
           selectOption={sortOption}
           sortHandler={handleSortChange}
-          // totalItem={totalDeviceRequests.length}
         ></Toolbar>
         {isListView ? (
           <ListView

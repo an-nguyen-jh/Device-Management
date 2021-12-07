@@ -37,7 +37,7 @@ function EmployeeDeviceDetail() {
   const [numberOfMouse, setNumberOfMouse] = useState("");
   const [previewImages, setPreviewImages] = useState([]);
   const [chosenImageSrcs, setChosenImageSrcs] = useState([]);
-  const [reloadPage, setReloadPage] = useState(false);
+  const [reloadPage, setReloadPage] = useState(0);
   const formRef = useRef(null);
   const { id } = useParams();
   const history = useHistory();
@@ -155,7 +155,8 @@ function EmployeeDeviceDetail() {
         Object.assign(updatedData, { imageSrcs: imageDownloadURLs });
       }
       await updateEmployeeDeviceInfo(updatedData, employeeEmail);
-      setReloadPage(true);
+      setReloadPage((preState) => ++preState);
+
       setChosenImageSrcs([]);
       setPreviewImages([]);
       toast.success("Successful update employee's device information", {

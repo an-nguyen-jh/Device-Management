@@ -64,6 +64,7 @@ a {
 
 .main-container {
   padding-top: var(--appbarHeight);
+  padding-bottom: 12px;
 }
 
 .content {
@@ -74,6 +75,10 @@ a {
 
 .bg-white {
   background-color: white;
+}
+
+.bg-primary {
+  background-color: var(--primaryBgColor);
 }
 
 .primary-color {

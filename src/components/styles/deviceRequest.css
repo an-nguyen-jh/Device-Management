@@ -1,0 +1,13 @@
+.device-request-container {
+  width: 100%;
+  min-height: 100vh;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 12px 12px 0 12px;
+}
+
+@media only screen and (min-width: 1280px) {
+  .device-request-container {
+    max-width: 1200px;
+  }
+}

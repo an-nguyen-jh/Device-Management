@@ -19,7 +19,7 @@
 .list-layout__cell {
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  word-break: break-word;
   padding: 12px 12px;
   font-size: 0.85rem;
   height: 100%;
@@ -37,7 +37,7 @@
 }
 
 .list-layout__first-cell {
-  flex: 1 1 auto !important;
+  flex: 1 1 150px !important;
   cursor: pointer;
 }
 
@@ -51,7 +51,6 @@
 }
 
 .list-layout__row {
-  height: 48px;
   align-items: center;
   border-bottom: 1px solid #dadce0;
   display: flex;
@@ -148,7 +147,7 @@
   }
 }
 
-@media only screen and (min-width: 1256px) {
+@media only screen and (min-width: 1280px) {
   .list-layout__cell {
     flex-basis: 250px;
   }

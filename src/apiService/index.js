@@ -17,6 +17,8 @@ const {
   deleteAllRelativeDeviceRequests,
   getDeviceInfoOfEmployeeById,
   updateEmployeeDeviceInfo,
+  getDeviceRequests,
+  updateStatusOfDeviceRequest,
 } = generatedDatabaseService();
 
 const { uploadEmployeeDeviceImage, deleteOldEmployeeImage } =
@@ -36,4 +38,6 @@ export {
   deleteAllRelativeDeviceRequests,
   getDeviceInfoOfEmployeeById,
   updateEmployeeDeviceInfo,
+  getDeviceRequests,
+  updateStatusOfDeviceRequest,
 };

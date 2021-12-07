@@ -7,9 +7,9 @@ export const teamOptions = [
   { key: "Admin", value: "Admin" },
 ];
 export const deviceOptions = [
-  { key: "computer", value: "Máy tính" },
-  { key: "screen", value: "Màn hình" },
-  { key: "mouse", value: "Chuột" },
+  { key: ENV_CONFIG.DEVICE.COMPUTER, value: "Máy tính" },
+  { key: ENV_CONFIG.DEVICE.MONITOR, value: "Màn hình" },
+  { key: ENV_CONFIG.DEVICE.MOUSE, value: "Chuột" },
 ];
 
 export const sortOptions = [
@@ -28,5 +28,20 @@ export const sortOptions = [
   {
     key: ENV_CONFIG.SORT.DESCEND_UPDATE_DATE,
     value: "UpdatedDate descending",
+  },
+];
+
+export const tableOptions = [
+  {
+    key: ENV_CONFIG.REQUEST.PENDING,
+    value: "Pending Request",
+  },
+  {
+    key: ENV_CONFIG.REQUEST.SOLVE,
+    value: "Solve Request",
+  },
+  {
+    key: ENV_CONFIG.REQUEST.DENY,
+    value: "Deny Request",
   },
 ];

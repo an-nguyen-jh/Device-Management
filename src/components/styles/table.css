@@ -1,0 +1,230 @@
+.table-wrapper {
+  border: 1px solid var(--primaryBgColor);
+  width: 100%;
+  border-radius: 10px;
+  background-color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.table__toolbar__select {
+  width: auto;
+}
+
+.table__header--light,
+.table__header--success,
+.table__header--error {
+  align-items: center;
+  display: flex;
+
+  width: 100%;
+  height: 40px;
+
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+
+  color: #ffffff;
+}
+
+.table__header--light {
+  background-color: var(--primaryLightColor);
+}
+
+.table__header--success {
+  background-color: var(--successTextColor);
+}
+
+.table__header--error {
+  background-color: var(--errorTextColor);
+}
+
+.table__header--light .table__cell,
+.table__header--success .table__cell,
+.table__header--error .table__cell {
+  font-weight: 600;
+}
+
+.table__header--light .table__first-cell,
+.table__header--success .table__first-cell,
+.table__header--error .table__first-cell {
+  margin-left: 20px;
+}
+
+.table__body {
+  font-weight: 400;
+  height: 100%;
+  width: 100%;
+}
+
+.table__row {
+  align-items: center;
+  border-bottom: 1px solid var(--primaryBgColor);
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+}
+
+.table__row__index {
+  display: none;
+  justify-content: center;
+}
+
+.table__cell {
+  align-items: center;
+  display: none;
+  flex-basis: 150px;
+  font-size: 0.85rem;
+  height: 100%;
+  overflow: hidden;
+  padding: 12px 12px;
+  text-align: left;
+  word-break: break-word;
+}
+
+.table__first-cell {
+  flex: 1 1 150px !important;
+  display: block;
+}
+
+.table__last-cell {
+  flex: 0 0 60px !important;
+  text-align: center;
+  display: flex;
+}
+
+.table__cell:nth-last-child(3) {
+  display: block;
+}
+
+.table__btn-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.table__btn--resolve,
+.table__btn--deny {
+  display: flex;
+  flex-direction: column;
+  width: 36px;
+  height: 36px;
+  margin: 5px 0;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+}
+
+.table__btn--resolve[data-tooltip]::before,
+.table__btn--resolve[data-tooltip]::before,
+.table__btn--deny[data-tooltip]::before,
+.table__btn--deny[data-tooltip]::before {
+  content: attr(data-tooltip);
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 3;
+  top: 25%;
+  left: -100%;
+  text-transform: none;
+  word-wrap: break-word;
+  width: 120px;
+  line-height: initial;
+  display: block;
+  height: fit-content;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 0.6rem;
+  transform: scale(0) translate(-200%, 50%);
+  transition: transform var(--animationSpeed) ease-out;
+}
+
+.table__btn--resolve:hover[data-tooltip]::before,
+.table__btn--resolve:focus[data-tooltip]::before,
+.table__btn--deny:hover[data-tooltip]::before,
+.table__btn--deny:focus[data-tooltip]::before {
+  transform: scale(1) translate(-70%, 0%);
+}
+
+.table__btn--resolve {
+  color: var(--successTextColor);
+}
+
+.table__btn--resolve:hover,
+.table__btn--resolve:focus {
+  background-color: var(--successBgColor);
+}
+
+.table__btn--deny {
+  background-color: transparent;
+  color: #ff0000;
+}
+
+.table__btn--deny:hover,
+.table__btn--deny:focus {
+  color: #ffffff;
+  background-color: #ff0000;
+}
+
+.table__btn--resolve svg,
+.table__btn--deny svg {
+  margin: auto;
+}
+
+.table__footer {
+  border-top: 2px solid var(--primaryBgColor);
+  height: 60px;
+}
+
+@media only screen and (min-width: 768px) {
+  .table__row__index {
+    display: flex;
+    margin: auto;
+    width: 20px;
+  }
+
+  .table__first-cell {
+    flex: 1 1 auto !important;
+  }
+
+  .table__cell {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  .table__last-cell {
+    flex-basis: 80px !important;
+  }
+
+  .table__cell:nth-last-child(2) {
+    display: block;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .table__header--light .table__first-cell,
+  .table__header--success .table__first-cell,
+  .table__header--error .table__first-cell {
+    margin-left: 40px;
+  }
+
+  .table__row__index {
+    width: 40px;
+  }
+
+  .table__cell {
+    display: block;
+  }
+
+  .table__cell:nth-last-child(2) {
+    flex-basis: 175px;
+  }
+}
+
+@media only screen and (min-width: 1280px) {
+  .table__cell {
+    flex-basis: 175px;
+  }
+}

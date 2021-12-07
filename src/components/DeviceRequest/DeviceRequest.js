@@ -75,7 +75,7 @@ function DeviceRequest() {
     try {
       await updateStatusOfDeviceRequest(requestId, ENV_CONFIG.REQUEST.SOLVE);
       await updateDeviceInfo(email, device, amount);
-      setReload(Math.random());
+      setReload((preState) => ++preState);
       let notice = "Accept employee's device request";
       if (device === ENV_CONFIG.DEVICE.COMPUTER) {
         notice = `Provided new computer for ${email}, You need update computer info in device details page`;
@@ -91,7 +91,8 @@ function DeviceRequest() {
   const handleDenyRequest = async (requestId) => {
     try {
       await updateStatusOfDeviceRequest(requestId, ENV_CONFIG.REQUEST.DENY);
-      setReload(Math.random());
+      setReload((preState) => ++preState);
+
       toast.success("Deny employee's device request", {
         className: "toast-notification",
       });

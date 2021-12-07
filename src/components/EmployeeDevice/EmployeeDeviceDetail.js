@@ -155,7 +155,8 @@ function EmployeeDeviceDetail() {
         Object.assign(updatedData, { imageSrcs: imageDownloadURLs });
       }
       await updateEmployeeDeviceInfo(updatedData, employeeEmail);
-      setReloadPage(Math.random());
+      setReloadPage((preState) => ++preState);
+
       setChosenImageSrcs([]);
       setPreviewImages([]);
       toast.success("Successful update employee's device information", {

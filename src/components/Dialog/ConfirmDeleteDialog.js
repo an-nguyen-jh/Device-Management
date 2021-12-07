@@ -12,15 +12,15 @@ import toast from "react-hot-toast";
 import { deleteEmployeeOldDeviceImages } from "../../utils/manageImage";
 
 function ConfirmDeleteDialog() {
-  const { shouldDisplay, name, email, imageSrcs, callback } = useSelector(
-    (state) => ({
+  const { shouldDisplay, name, email, imageSrcs, callback, preCount } =
+    useSelector((state) => ({
       shouldDisplay: state.confirmDialog.open,
       name: state.confirmDialog.name,
       email: state.confirmDialog.email,
       imageSrcs: state.confirmDialog.imageSrcs,
       callback: state.confirmDialog.callback,
-    })
-  );
+      preCount: state.updateList,
+    }));
   const dispatch = useDispatch();
 
   const handleClose = () => dispatch(confirmDialogAction.invisible());
@@ -43,7 +43,7 @@ function ConfirmDeleteDialog() {
       if (callback) {
         callback();
       }
-      dispatch(updateListAction.update());
+      dispatch(updateListAction.update(preCount));
     } catch (error) {
       //ignore error
     }

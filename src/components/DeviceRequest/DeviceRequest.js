@@ -28,7 +28,7 @@ const tableHeaders = [
 ];
 
 function DeviceRequest() {
-  const [reload, setReload] = useState(Math.random());
+  const [reload, setReload] = useState(0);
   const [deviceRequests, setDeviceRequests] = useState([]);
   const { totalDeviceRequests } = useSelector((state) => ({
     totalDeviceRequests: state.deviceRequest.deviceRequests,

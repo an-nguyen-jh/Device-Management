@@ -37,7 +37,7 @@ function EmployeeDeviceDetail() {
   const [numberOfMouse, setNumberOfMouse] = useState("");
   const [previewImages, setPreviewImages] = useState([]);
   const [chosenImageSrcs, setChosenImageSrcs] = useState([]);
-  const [reloadPage, setReloadPage] = useState(Math.random());
+  const [reloadPage, setReloadPage] = useState(0);
   const formRef = useRef(null);
   const { id } = useParams();
   const history = useHistory();

@@ -18,7 +18,7 @@ function Table({
   tableHeaders,
   totalItem,
 }) {
-  const pageLimit = ENV_CONFIG.REQUEST_LIMIT;
+  const pageLimit = ENV_CONFIG.REQUEST_LIMIT_ON_PAGE;
 
   return (
     <div className="table-wrapper">

@@ -26,7 +26,7 @@ class DeviceRequestForm extends Component {
   };
 
   validateNumberOfDevice = (value) => {
-    return value > 0 ? undefined : "Number of device must be positive";
+    return value > 0 ? undefined : "Number of devices must be greater than 0";
   };
 
   clearFormInput(e) {
@@ -42,7 +42,11 @@ class DeviceRequestForm extends Component {
 
   async handleRequestDeviceSubmit(values) {
     try {
-      const newRequestDevice = { ...values, employee: this.props.userEmail };
+      const newRequestDevice = {
+        ...values,
+        numberOfDevice: parseInt(values.numberOfDevice),
+        employee: this.props.userEmail,
+      };
       await addNewRequestDevice(newRequestDevice);
       toast.success("Success request device", {
         className: "toast-notification",

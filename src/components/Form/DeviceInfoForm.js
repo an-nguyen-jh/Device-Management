@@ -104,7 +104,11 @@ class DeviceInfoForm extends Component {
     const { chosenImageSrc, imageSrcs } = this.state;
     const { userEmail } = this.props;
     try {
-      let updateData = { ...values };
+      let updateData = {
+        ...values,
+        numberOfScreen: parseInt(values.numberOfScreen),
+        numberOfMouse: parseInt(values.numberOfMouse),
+      };
       const isDeviceInfoExists = (
         await getDeviceInfoOfEmployeeByEmail(userEmail)
       ).exists();

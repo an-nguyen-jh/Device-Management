@@ -29,7 +29,8 @@ class DeviceRequestForm extends Component {
     return value > 0 ? undefined : "Number of device must be positive";
   };
 
-  clearFormInput() {
+  clearFormInput(e) {
+    e.preventDefault();
     this.setState({
       name: "",
       team: "",
@@ -69,7 +70,7 @@ class DeviceRequestForm extends Component {
               notice,
             }}
           >
-            {({ handleSubmit, submitting }) => {
+            {({ handleSubmit, submitting, form }) => {
               return (
                 <form onSubmit={handleSubmit} className="device__form">
                   <h2 className="form__title"> Yêu cầu cấp thiết bị</h2>
@@ -223,7 +224,13 @@ class DeviceRequestForm extends Component {
                     <Button type="submit" color="primary" disabled={submitting}>
                       Submit
                     </Button>
-                    <Button variant="text" onClick={this.clearFormInput}>
+                    <Button
+                      variant="text"
+                      onClick={(e) => {
+                        form.reset();
+                        this.clearFormInput(e);
+                      }}
+                    >
                       Clear Form
                     </Button>
                   </div>

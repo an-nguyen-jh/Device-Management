@@ -109,7 +109,7 @@ class DeviceInfoForm extends Component {
         await getDeviceInfoOfEmployeeByEmail(userEmail)
       ).exists();
       if (isDeviceInfoExists) {
-        toast.error("You already store your device info", {
+        toast.error("You already provided your device info", {
           className: "toast-notification",
         });
         return;
@@ -137,7 +137,8 @@ class DeviceInfoForm extends Component {
     }
   }
 
-  clearFormInput() {
+  clearFormInput(e) {
+    e.preventDefault();
     this.setState({
       name: "",
       team: "",
@@ -210,7 +211,7 @@ class DeviceInfoForm extends Component {
               numberOfMouse,
             }}
           >
-            {({ handleSubmit, submitting }) => {
+            {({ handleSubmit, submitting, form }) => {
               return (
                 <form onSubmit={handleSubmit} className="device__form">
                   <h2 className="form__title"> quản lý thiết bị</h2>
@@ -514,7 +515,13 @@ class DeviceInfoForm extends Component {
                     <Button type="submit" color="primary" disabled={submitting}>
                       Submit
                     </Button>
-                    <Button variant="text" onClick={this.clearFormInput}>
+                    <Button
+                      variant="text"
+                      onClick={(e) => {
+                        form.reset();
+                        this.clearFormInput(e);
+                      }}
+                    >
                       Clear Form
                     </Button>
                   </div>

@@ -4,6 +4,7 @@ import classNames from "classnames";
 class Input extends Component {
   render() {
     const { className, error, errorMsg, placeholder, ...rest } = this.props;
+    console.log(rest);
     return (
       <>
         <input

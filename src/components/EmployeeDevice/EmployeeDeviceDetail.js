@@ -17,8 +17,10 @@ import {
   deleteEmployeeOldDeviceImages,
   uploadEmployeeDeviceImages,
 } from "../../utils/manageImage";
+
 import { authenticationAction, confirmDialogAction } from "../../store/actions";
 import { useDispatch } from "react-redux";
+import { removeElementInArray } from "../../utils/arrayHandler";
 
 function EmployeeDeviceDetail() {
   const [employeeEmail, setEmployeeEmail] = useState("");
@@ -111,6 +113,13 @@ function EmployeeDeviceDetail() {
     } catch (error) {
       //ignore error
     }
+  };
+
+  const handleDeleteImageInPreviewFrame = (i) => {
+    const remainPreviewImage = removeElementInArray(previewImages, i);
+    const remainChosenImageSrcs = removeElementInArray(chosenImageSrcs, i);
+    setPreviewImages(remainPreviewImage);
+    setChosenImageSrcs(remainChosenImageSrcs);
   };
 
   const handleDeleteDeviceInfo = (e) => {
@@ -500,6 +509,7 @@ function EmployeeDeviceDetail() {
                     <UploadImage
                       uploadImages={previewImages}
                       onChange={previewChosenImages}
+                      handleRemove={handleDeleteImageInPreviewFrame}
                     ></UploadImage>
                   </div>
                   <div className="form__split-bar"></div>

@@ -45,7 +45,7 @@ class DeviceRequestForm extends Component {
       const newRequestDevice = {
         ...values,
         numberOfDevice: parseInt(values.numberOfDevice),
-        employee: this.props.userEmail,
+        email: this.props.userEmail,
       };
       await addNewRequestDevice(newRequestDevice);
       toast.success("Success request device", {

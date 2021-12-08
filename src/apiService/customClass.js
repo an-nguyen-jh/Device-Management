@@ -65,10 +65,10 @@ export const deviceInfoConverter = {
 };
 
 export class DeviceRequest {
-  constructor({ name, employee, team, device, numberOfDevice, notice }) {
+  constructor({ name, email, team, device, numberOfDevice, notice }) {
     this.team = team;
     this.device = device;
-    this.email = employee;
+    this.email = email;
     this.name = name;
     this.numberOfDevice = numberOfDevice;
     this.createdTime = new Date();

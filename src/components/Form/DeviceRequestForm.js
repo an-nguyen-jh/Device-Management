@@ -89,7 +89,6 @@ class DeviceRequestForm extends Component {
                         name="name"
                         type="text"
                         placeholder="Nhập họ và tên"
-                        required
                         validate={this.validateRequireField}
                         subscription={{
                           value: true,
@@ -118,7 +117,6 @@ class DeviceRequestForm extends Component {
                       <Field
                         name="team"
                         type="text"
-                        required
                         subscription={{
                           value: true,
                           touched: true,
@@ -149,7 +147,6 @@ class DeviceRequestForm extends Component {
                       <Field
                         name="device"
                         type="text"
-                        required
                         subscription={{
                           value: true,
                           touched: true,

@@ -35,6 +35,7 @@ function Carousel({ imageSrcs }) {
   useEffect(() => {
     if (imageSrcs.length === 1) {
       setDisableNextBtn(true);
+      setDisablePrevBtn(true);
     } else {
       setDisableNextBtn(false);
     }

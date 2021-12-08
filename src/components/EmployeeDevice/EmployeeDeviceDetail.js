@@ -143,12 +143,12 @@ function EmployeeDeviceDetail() {
       },
       mouse: {
         companyName: values.mouseCompanyName,
-        numberOf: values.numberOfMouse,
+        numberOf: parseInt(values.numberOfMouse),
       },
 
       screen: {
         config: values.screenConfig,
-        numberOf: values.numberOfScreen,
+        numberOf: parseInt(values.numberOfScreen),
         size: values.screenSize,
       },
       updatedTime: new Date(),

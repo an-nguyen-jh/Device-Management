@@ -32,6 +32,11 @@
   cursor: pointer;
 }
 
+.upload__remove-btn svg {
+  width: 25px;
+  height: 25px;
+}
+
 .upload__img {
   object-fit: cover;
   width: 100%;

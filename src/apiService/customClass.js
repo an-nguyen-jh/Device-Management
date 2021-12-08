@@ -31,7 +31,7 @@ export class DeviceInfo {
     };
     this.screen = {
       numberOf: numberOfScreen || 0,
-      config: screenConfig || 0,
+      config: screenConfig || "",
       size: screenSize || "",
     };
     this.imageSrcs = imageSrcs || [];

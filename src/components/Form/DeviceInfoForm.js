@@ -13,12 +13,13 @@ import { connect } from "react-redux";
 import toast from "react-hot-toast";
 import { teamOptions } from "../../config/options/options";
 import { withRouter } from "react-router";
+import { removeElementInArray } from "../../utils/arrayHandler";
 
 class DeviceInfoForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      chosenImageSrc: [],
+      chosenImageSrcs: [],
       imageSrcs: [],
       previewImages: [],
       name: "",
@@ -35,13 +36,15 @@ class DeviceInfoForm extends Component {
     this.hanldeChooseImages = this.previewChosenImages.bind(this);
     this.handleDeviceInfoSubmit = this.handleDeviceInfoSubmit.bind(this);
     this.clearFormInput = this.clearFormInput.bind(this);
+    this.handleDeleteImageInPreviewFrame =
+      this.handleDeleteImageInPreviewFrame.bind(this);
   }
 
   previewChosenImages = async (e) => {
     if (e.target.files.length > 0) {
       const images = Array.from(e.target.files);
       this.setState({
-        chosenImageSrc: images,
+        chosenImageSrcs: images,
       });
       try {
         const imageURIPromises = images.map((img) => {
@@ -59,13 +62,18 @@ class DeviceInfoForm extends Component {
       } catch (error) {
         //ignore error
       }
-    } else {
-      this.setState({
-        chosenImageSrc: [],
-        previewImages: [],
-      });
     }
   };
+
+  handleDeleteImageInPreviewFrame(i) {
+    const { chosenImageSrcs, previewImages } = this.state;
+    const remainPreviewImage = removeElementInArray(previewImages, i);
+    const remainChosenImageSrcs = removeElementInArray(chosenImageSrcs, i);
+    this.setState({
+      previewImages: remainPreviewImage,
+      chosenImageSrcs: remainChosenImageSrcs,
+    });
+  }
 
   validateRequireField = (value) => {
     return value && value.length > 0 ? undefined : "This field is required";
@@ -101,7 +109,7 @@ class DeviceInfoForm extends Component {
   }
 
   async handleDeviceInfoSubmit(values) {
-    const { chosenImageSrc, imageSrcs } = this.state;
+    const { chosenImageSrcs, imageSrcs } = this.state;
     const { userEmail } = this.props;
     try {
       let updateData = {
@@ -119,10 +127,10 @@ class DeviceInfoForm extends Component {
         return;
       }
 
-      if (chosenImageSrc.length > 0) {
+      if (chosenImageSrcs.length > 0) {
         await this.deleteOldEmployeeDeviceImages(imageSrcs);
         const imageDownloadURLs = await this.uploadEmployeeDeviceImages(
-          chosenImageSrc,
+          chosenImageSrcs,
           userEmail
         );
         Object.assign(updateData, { imageSrcs: imageDownloadURLs });
@@ -230,7 +238,6 @@ class DeviceInfoForm extends Component {
                         name="name"
                         type="text"
                         placeholder="Nhập họ và tên"
-                        required
                         validate={this.validateRequireField}
                         subscription={{
                           value: true,
@@ -259,7 +266,6 @@ class DeviceInfoForm extends Component {
                       <Field
                         name="team"
                         type="text"
-                        required
                         subscription={{
                           value: true,
                           touched: true,
@@ -288,7 +294,6 @@ class DeviceInfoForm extends Component {
                         <span className="device__form__input-required">*</span>
                       </label>
                       <Field
-                        required
                         name="computerCompanyName"
                         type="text"
                         placeholder="Tên hãng PC/LapTop (Mac, Hp, Dell,...)"
@@ -318,7 +323,6 @@ class DeviceInfoForm extends Component {
                       <Field
                         name="computersSeriNumber"
                         type="text"
-                        required
                         validate={this.validateRequireField}
                         placeholder="Số seri của thiết bị "
                         subscription={{
@@ -349,7 +353,6 @@ class DeviceInfoForm extends Component {
                       <Field
                         name="computerConfig"
                         type="text"
-                        required
                         validate={this.validateRequireField}
                         placeholder="(System Name/System Model/Processor)"
                         subscription={{
@@ -512,6 +515,7 @@ class DeviceInfoForm extends Component {
                     <UploadImage
                       uploadImages={previewImages}
                       onChange={this.previewChosenImages}
+                      handleRemove={this.handleDeleteImageInPreviewFrame}
                     ></UploadImage>
                   </div>
                   <div className="form__split-bar"></div>

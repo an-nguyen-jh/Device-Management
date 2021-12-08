@@ -38,6 +38,7 @@ function Carousel({ imageSrcs }) {
     } else {
       setDisableNextBtn(false);
     }
+    setSelectedIndex(0);
   }, [imageSrcs.length]);
 
   return (

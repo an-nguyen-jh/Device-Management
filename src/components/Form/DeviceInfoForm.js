@@ -5,7 +5,6 @@ import {
   getDeviceInfoOfEmployeeByEmail,
   addDeviceInfoForm,
   uploadEmployeeDeviceImage,
-  deleteOldEmployeeImage,
 } from "../../apiService";
 import { Button } from "../index";
 import "../styles/form.css";
@@ -13,13 +12,13 @@ import { connect } from "react-redux";
 import toast from "react-hot-toast";
 import { teamOptions } from "../../config/options/options";
 import { withRouter } from "react-router";
+import { removeElementInArray } from "../../utils/arrayHandler";
 
 class DeviceInfoForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      chosenImageSrc: [],
-      imageSrcs: [],
+      chosenImageSrcs: [],
       previewImages: [],
       name: "",
       team: "",
@@ -35,13 +34,15 @@ class DeviceInfoForm extends Component {
     this.hanldeChooseImages = this.previewChosenImages.bind(this);
     this.handleDeviceInfoSubmit = this.handleDeviceInfoSubmit.bind(this);
     this.clearFormInput = this.clearFormInput.bind(this);
+    this.handleDeleteImageInPreviewFrame =
+      this.handleDeleteImageInPreviewFrame.bind(this);
   }
 
   previewChosenImages = async (e) => {
     if (e.target.files.length > 0) {
       const images = Array.from(e.target.files);
       this.setState({
-        chosenImageSrc: images,
+        chosenImageSrcs: images,
       });
       try {
         const imageURIPromises = images.map((img) => {
@@ -59,13 +60,18 @@ class DeviceInfoForm extends Component {
       } catch (error) {
         //ignore error
       }
-    } else {
-      this.setState({
-        chosenImageSrc: [],
-        previewImages: [],
-      });
     }
   };
+
+  handleDeleteImageInPreviewFrame(i) {
+    const { chosenImageSrcs, previewImages } = this.state;
+    const remainPreviewImage = removeElementInArray(previewImages, i);
+    const remainChosenImageSrcs = removeElementInArray(chosenImageSrcs, i);
+    this.setState({
+      previewImages: remainPreviewImage,
+      chosenImageSrcs: remainChosenImageSrcs,
+    });
+  }
 
   validateRequireField = (value) => {
     return value && value.length > 0 ? undefined : "This field is required";
@@ -89,36 +95,28 @@ class DeviceInfoForm extends Component {
     }
   }
 
-  async deleteOldEmployeeDeviceImages(images) {
-    try {
-      const imageDeletePromises = images.map((imageURL) => {
-        return deleteOldEmployeeImage(imageURL);
-      });
-      await Promise.all(imageDeletePromises);
-    } catch (error) {
-      //ignore error
-    }
-  }
-
   async handleDeviceInfoSubmit(values) {
-    const { chosenImageSrc, imageSrcs } = this.state;
+    const { chosenImageSrcs } = this.state;
     const { userEmail } = this.props;
     try {
-      let updateData = { ...values };
+      let updateData = {
+        ...values,
+        numberOfScreen: parseInt(values.numberOfScreen),
+        numberOfMouse: parseInt(values.numberOfMouse),
+      };
       const isDeviceInfoExists = (
         await getDeviceInfoOfEmployeeByEmail(userEmail)
       ).exists();
       if (isDeviceInfoExists) {
-        toast.error("You already store your device info", {
+        toast.error("You already provided your device info", {
           className: "toast-notification",
         });
         return;
       }
 
-      if (chosenImageSrc.length > 0) {
-        await this.deleteOldEmployeeDeviceImages(imageSrcs);
+      if (chosenImageSrcs.length > 0) {
         const imageDownloadURLs = await this.uploadEmployeeDeviceImages(
-          chosenImageSrc,
+          chosenImageSrcs,
           userEmail
         );
         Object.assign(updateData, { imageSrcs: imageDownloadURLs });
@@ -137,7 +135,8 @@ class DeviceInfoForm extends Component {
     }
   }
 
-  clearFormInput() {
+  clearFormInput(e) {
+    e.preventDefault();
     this.setState({
       name: "",
       team: "",
@@ -149,6 +148,8 @@ class DeviceInfoForm extends Component {
       numberOfScreen: 0,
       mouseCompanyName: "",
       numberOfMouse: 0,
+      chosenImageSrcs: [],
+      previewImages: [],
     });
   }
 
@@ -210,7 +211,7 @@ class DeviceInfoForm extends Component {
               numberOfMouse,
             }}
           >
-            {({ handleSubmit, submitting }) => {
+            {({ handleSubmit, submitting, form }) => {
               return (
                 <form onSubmit={handleSubmit} className="device__form">
                   <h2 className="form__title"> quản lý thiết bị</h2>
@@ -225,7 +226,6 @@ class DeviceInfoForm extends Component {
                         name="name"
                         type="text"
                         placeholder="Nhập họ và tên"
-                        required
                         validate={this.validateRequireField}
                         subscription={{
                           value: true,
@@ -254,7 +254,6 @@ class DeviceInfoForm extends Component {
                       <Field
                         name="team"
                         type="text"
-                        required
                         subscription={{
                           value: true,
                           touched: true,
@@ -283,7 +282,6 @@ class DeviceInfoForm extends Component {
                         <span className="device__form__input-required">*</span>
                       </label>
                       <Field
-                        required
                         name="computerCompanyName"
                         type="text"
                         placeholder="Tên hãng PC/LapTop (Mac, Hp, Dell,...)"
@@ -313,7 +311,6 @@ class DeviceInfoForm extends Component {
                       <Field
                         name="computersSeriNumber"
                         type="text"
-                        required
                         validate={this.validateRequireField}
                         placeholder="Số seri của thiết bị "
                         subscription={{
@@ -344,7 +341,6 @@ class DeviceInfoForm extends Component {
                       <Field
                         name="computerConfig"
                         type="text"
-                        required
                         validate={this.validateRequireField}
                         placeholder="(System Name/System Model/Processor)"
                         subscription={{
@@ -507,6 +503,7 @@ class DeviceInfoForm extends Component {
                     <UploadImage
                       uploadImages={previewImages}
                       onChange={this.previewChosenImages}
+                      handleRemove={this.handleDeleteImageInPreviewFrame}
                     ></UploadImage>
                   </div>
                   <div className="form__split-bar"></div>
@@ -514,7 +511,13 @@ class DeviceInfoForm extends Component {
                     <Button type="submit" color="primary" disabled={submitting}>
                       Submit
                     </Button>
-                    <Button variant="text" onClick={this.clearFormInput}>
+                    <Button
+                      variant="text"
+                      onClick={(e) => {
+                        form.reset();
+                        this.clearFormInput(e);
+                      }}
+                    >
                       Clear Form
                     </Button>
                   </div>

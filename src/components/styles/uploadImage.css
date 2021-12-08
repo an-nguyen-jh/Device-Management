@@ -11,8 +11,8 @@
 
 .upload {
   position: relative;
-  width: 200px;
   flex-shrink: 0;
+  flex-basis: 200px;
   margin: 12px;
   height: 200px;
 }
@@ -24,13 +24,17 @@
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  border: 3px solid #000000;
   background-color: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0;
   cursor: pointer;
+}
+
+.upload__remove-btn svg {
+  width: 25px;
+  height: 25px;
 }
 
 .upload__img {

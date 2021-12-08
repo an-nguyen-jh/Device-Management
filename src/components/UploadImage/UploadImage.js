@@ -1,16 +1,22 @@
 import React, { Component } from "react";
 import { Button } from "..";
 import "../styles/uploadImage.css";
-
+import { TiDeleteOutline } from "react-icons/ti";
 class UploadImage extends Component {
   render() {
-    const { uploadImages, onChange } = this.props;
+    const { uploadImages, onChange, handleRemove } = this.props;
     return (
       <>
         <div className="upload-wrapper">
           {uploadImages.length > 0 &&
-            uploadImages.map((imgSrc) => (
+            uploadImages.map((imgSrc, i) => (
               <div className="upload" key={imgSrc}>
+                <div
+                  className="upload__remove-btn"
+                  onClick={() => handleRemove(i)}
+                >
+                  <TiDeleteOutline></TiDeleteOutline>
+                </div>
                 <img
                   className="upload__img"
                   alt="Preview"

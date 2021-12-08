@@ -17,8 +17,10 @@ import {
   deleteEmployeeOldDeviceImages,
   uploadEmployeeDeviceImages,
 } from "../../utils/manageImage";
+
 import { authenticationAction, confirmDialogAction } from "../../store/actions";
 import { useDispatch } from "react-redux";
+import { removeElementInArray } from "../../utils/arrayHandler";
 
 function EmployeeDeviceDetail() {
   const [employeeEmail, setEmployeeEmail] = useState("");
@@ -113,6 +115,13 @@ function EmployeeDeviceDetail() {
     }
   };
 
+  const handleDeleteImageInPreviewFrame = (i) => {
+    const remainPreviewImage = removeElementInArray(previewImages, i);
+    const remainChosenImageSrcs = removeElementInArray(chosenImageSrcs, i);
+    setPreviewImages(remainPreviewImage);
+    setChosenImageSrcs(remainChosenImageSrcs);
+  };
+
   const handleDeleteDeviceInfo = (e) => {
     e.preventDefault();
     dispatch(
@@ -134,12 +143,12 @@ function EmployeeDeviceDetail() {
       },
       mouse: {
         companyName: values.mouseCompanyName,
-        numberOf: values.numberOfMouse,
+        numberOf: parseInt(values.numberOfMouse),
       },
 
       screen: {
         config: values.screenConfig,
-        numberOf: values.numberOfScreen,
+        numberOf: parseInt(values.numberOfScreen),
         size: values.screenSize,
       },
       updatedTime: new Date(),
@@ -240,10 +249,10 @@ function EmployeeDeviceDetail() {
           <h2 className="form__title">Employee's Device Information</h2>
           <div className="device-detail__time-wrapper">
             <div className="device-detail__time">
-              Create Time: {createdTime && createdTime.toLocaleDateString()}
+              Create Date: {createdTime && createdTime.toLocaleDateString()}
             </div>
             <div className="device-detail__time">
-              Update Time: {updatedTime && updatedTime.toLocaleDateString()}
+              Update Date: {updatedTime && updatedTime.toLocaleDateString()}
             </div>
           </div>
           <div className="form__split-bar"></div>
@@ -500,6 +509,7 @@ function EmployeeDeviceDetail() {
                     <UploadImage
                       uploadImages={previewImages}
                       onChange={previewChosenImages}
+                      handleRemove={handleDeleteImageInPreviewFrame}
                     ></UploadImage>
                   </div>
                   <div className="form__split-bar"></div>

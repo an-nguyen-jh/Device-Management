@@ -26,10 +26,11 @@ class DeviceRequestForm extends Component {
   };
 
   validateNumberOfDevice = (value) => {
-    return value > 0 ? undefined : "Number of device must be positive";
+    return value > 0 ? undefined : "Number of devices must be greater than 0";
   };
 
-  clearFormInput() {
+  clearFormInput(e) {
+    e.preventDefault();
     this.setState({
       name: "",
       team: "",
@@ -41,7 +42,11 @@ class DeviceRequestForm extends Component {
 
   async handleRequestDeviceSubmit(values) {
     try {
-      const newRequestDevice = { ...values, employee: this.props.userEmail };
+      const newRequestDevice = {
+        ...values,
+        numberOfDevice: parseInt(values.numberOfDevice),
+        email: this.props.userEmail,
+      };
       await addNewRequestDevice(newRequestDevice);
       toast.success("Success request device", {
         className: "toast-notification",
@@ -69,7 +74,7 @@ class DeviceRequestForm extends Component {
               notice,
             }}
           >
-            {({ handleSubmit, submitting }) => {
+            {({ handleSubmit, submitting, form }) => {
               return (
                 <form onSubmit={handleSubmit} className="device__form">
                   <h2 className="form__title"> Yêu cầu cấp thiết bị</h2>
@@ -84,7 +89,6 @@ class DeviceRequestForm extends Component {
                         name="name"
                         type="text"
                         placeholder="Nhập họ và tên"
-                        required
                         validate={this.validateRequireField}
                         subscription={{
                           value: true,
@@ -113,7 +117,6 @@ class DeviceRequestForm extends Component {
                       <Field
                         name="team"
                         type="text"
-                        required
                         subscription={{
                           value: true,
                           touched: true,
@@ -144,7 +147,6 @@ class DeviceRequestForm extends Component {
                       <Field
                         name="device"
                         type="text"
-                        required
                         subscription={{
                           value: true,
                           touched: true,
@@ -223,7 +225,13 @@ class DeviceRequestForm extends Component {
                     <Button type="submit" color="primary" disabled={submitting}>
                       Submit
                     </Button>
-                    <Button variant="text" onClick={this.clearFormInput}>
+                    <Button
+                      variant="text"
+                      onClick={(e) => {
+                        form.reset();
+                        this.clearFormInput(e);
+                      }}
+                    >
                       Clear Form
                     </Button>
                   </div>

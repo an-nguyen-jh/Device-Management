@@ -240,10 +240,10 @@ function EmployeeDeviceDetail() {
           <h2 className="form__title">Employee's Device Information</h2>
           <div className="device-detail__time-wrapper">
             <div className="device-detail__time">
-              Create Time: {createdTime && createdTime.toLocaleDateString()}
+              Create Date: {createdTime && createdTime.toLocaleDateString()}
             </div>
             <div className="device-detail__time">
-              Update Time: {updatedTime && updatedTime.toLocaleDateString()}
+              Update Date: {updatedTime && updatedTime.toLocaleDateString()}
             </div>
           </div>
           <div className="form__split-bar"></div>

@@ -60,6 +60,7 @@ function DeviceRequest() {
     try {
       const deviceInfoSnap = await getDeviceInfoOfEmployeeByEmail(email);
       const updatedDeviceInfo = { ...deviceInfoSnap.data() };
+      updatedDeviceInfo.updatedTime = new Date();
       if (device === ENV_CONFIG.DEVICE.COMPUTER) {
         updatedDeviceInfo.computer = {};
       } else {
@@ -147,7 +148,7 @@ function DeviceRequest() {
     (async () => {
       if (typeof typeOption === "number") {
         //default sort option
-        const sortTokens = parseSortOption("createdTime_asc", "_");
+        const sortTokens = parseSortOption("createdTime_desc", "_");
         try {
           const deviceRequestSnapShots = await getDeviceRequests(typeOption);
           let tempDeviceRequests = [];

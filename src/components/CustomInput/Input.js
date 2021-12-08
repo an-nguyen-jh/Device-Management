@@ -3,11 +3,14 @@ import "../styles/input.css";
 import classNames from "classnames";
 class Input extends Component {
   render() {
-    const { className, error, errorMsg, placeholder, ...rest } = this.props;
+    const { className, error, errorMsg, placeholder, type, onChange, ...rest } =
+      this.props;
     return (
       <>
         <input
           className={classNames("input--outlined", className)}
+          type={type}
+          onChange={onChange}
           placeholder={placeholder ? placeholder : "Your answer"}
           {...rest}
         />

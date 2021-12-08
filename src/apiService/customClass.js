@@ -31,7 +31,7 @@ export class DeviceInfo {
     };
     this.screen = {
       numberOf: numberOfScreen || 0,
-      config: screenConfig || 0,
+      config: screenConfig || "",
       size: screenSize || "",
     };
     this.imageSrcs = imageSrcs || [];
@@ -65,12 +65,12 @@ export const deviceInfoConverter = {
 };
 
 export class DeviceRequest {
-  constructor({ name, employee, team, device, numberOfDevice, notice }) {
+  constructor({ name, email, team, device, numberOfDevice, notice }) {
     this.team = team;
     this.device = device;
-    this.email = employee;
+    this.email = email;
     this.name = name;
-    this.numberOfDevice = numberOfDevice;
+    this.numberOfDevice = numberOfDevice || 1;
     this.createdTime = new Date();
     this.status = ENV_CONFIG.REQUEST.PENDING;
     this.notice = notice;

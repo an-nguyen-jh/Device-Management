@@ -5,7 +5,6 @@ import {
   getDeviceInfoOfEmployeeByEmail,
   addDeviceInfoForm,
   uploadEmployeeDeviceImage,
-  deleteOldEmployeeImage,
 } from "../../apiService";
 import { Button } from "../index";
 import "../styles/form.css";
@@ -20,7 +19,6 @@ class DeviceInfoForm extends Component {
     super(props);
     this.state = {
       chosenImageSrcs: [],
-      imageSrcs: [],
       previewImages: [],
       name: "",
       team: "",
@@ -97,19 +95,8 @@ class DeviceInfoForm extends Component {
     }
   }
 
-  async deleteOldEmployeeDeviceImages(images) {
-    try {
-      const imageDeletePromises = images.map((imageURL) => {
-        return deleteOldEmployeeImage(imageURL);
-      });
-      await Promise.all(imageDeletePromises);
-    } catch (error) {
-      //ignore error
-    }
-  }
-
   async handleDeviceInfoSubmit(values) {
-    const { chosenImageSrcs, imageSrcs } = this.state;
+    const { chosenImageSrcs } = this.state;
     const { userEmail } = this.props;
     try {
       let updateData = {
@@ -128,7 +115,6 @@ class DeviceInfoForm extends Component {
       }
 
       if (chosenImageSrcs.length > 0) {
-        await this.deleteOldEmployeeDeviceImages(imageSrcs);
         const imageDownloadURLs = await this.uploadEmployeeDeviceImages(
           chosenImageSrcs,
           userEmail
@@ -162,6 +148,8 @@ class DeviceInfoForm extends Component {
       numberOfScreen: 0,
       mouseCompanyName: "",
       numberOfMouse: 0,
+      chosenImageSrcs: [],
+      previewImages: [],
     });
   }
 

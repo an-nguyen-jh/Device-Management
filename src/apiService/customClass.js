@@ -70,7 +70,7 @@ export class DeviceRequest {
     this.device = device;
     this.email = email;
     this.name = name;
-    this.numberOfDevice = numberOfDevice;
+    this.numberOfDevice = numberOfDevice || 1;
     this.createdTime = new Date();
     this.status = ENV_CONFIG.REQUEST.PENDING;
     this.notice = notice;

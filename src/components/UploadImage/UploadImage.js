@@ -13,11 +13,7 @@ class UploadImage extends Component {
               <div className="upload" key={imgSrc}>
                 <div
                   className="upload__remove-btn"
-                  onClick={() => {
-                    if (handleRemove) {
-                      handleRemove(i);
-                    }
-                  }}
+                  onClick={() => handleRemove(i)}
                 >
                   <TiDeleteOutline></TiDeleteOutline>
                 </div>
